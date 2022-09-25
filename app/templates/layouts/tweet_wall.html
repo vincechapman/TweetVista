@@ -1,0 +1,8 @@
+<section id="tweet-wall">
+    {# This block iterates though a list of tweet objects that we pass in as 'tweets', and then generates the html for each tweet using 'tweet_macro' #}
+    {% from 'objects/tweet.html' import tweet_macro %}
+    {% for Tweet_Object in tweets %}
+        {{ tweet_macro(Tweet_Object) }}
+    {% endfor %}
+    {##}
+</section>
