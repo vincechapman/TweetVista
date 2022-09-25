@@ -1,0 +1,131 @@
+{% macro tweet_macro(Tweet_Object) %}
+
+    <div class="tweet-container">
+
+        {# Row 1 - Tweet Media #}
+        {% with media_type = Tweet_Object.media_type %}
+            {% if media_type == 'image' %}
+                <img class="tweet-media" src="{{ Tweet_Object.media_url }}" alt="The image attached to the tweet.">
+            {% elif media_type == 'video' %}
+                <video class="tweet-media" src="{{ Tweet_Object.media_url }}"></video>
+            {# Anything else will be ignored. #}
+            {# We can add more media types here if we like. #}
+            {% endif %}
+        {% endwith %}
+        {##}
+
+        <div class="tweet-content">
+
+            {#  Row 2 - User Details #}
+            <div class="columns is-multiline is-vcentered mb-0">
+
+                <div class="tweet-profile-pic column is-narrow pr-1">
+                    <img src="{{ Tweet_Object.author.display_name }}" alt="Profile picture for tweet author.">
+                </div>
+
+                <div class="tweet-user-details column is-narrow pl-1">
+                    <div>{{ Tweet_Object.author.display_name }}</div>
+                    <div>{{ Tweet_Object.author.handle }}</div>
+                </div>
+
+                <div class="column is-narrow">
+                    <span class="icon-text tweet-track-button">
+                        <span class="icon">
+                            <img src="{{ url_for('static', filename='images/icons/Plus-Icon.png') }}" alt="Button to track this handle.">
+                        </span>
+                        <span>TRACK</span>
+                    </span>
+                </div>
+
+            </div>
+            {##}
+
+            {# Row 3 - Body #}
+            <p class="tweet-text">
+                {{ Tweet_Object.text }}
+            </p>
+            {##}
+
+            {# Row 4 - Hashtags #}
+            {% if Tweet_Object.hashtags %}
+                <div class="tweet-hashtags">
+                    {% for hashtag in Tweet_Object.hashtags %}
+                        <span>{{ hashtag }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {##}
+
+            {# Row 5 - Link #}
+            {% if Tweet_Object.link %}
+                <a class="tweet-link" href="">{{ Tweet_Object.link }}</a>
+            {% endif %}
+            {##}
+
+            {# Row 6 - Metrics #}
+            <div class="columns mt-1">
+                <div class="tweet-twitter-metrics column">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <img src="/images/icons/Plus-Icon.png" alt="">
+                        </span>
+                        <span>{{ Tweet_Object.comment_count }}</span>
+                    </span>
+                    <span class="icon-text">
+                        <span class="icon">
+                            <img src="/images/icons/Plus-Icon.png" alt="">
+                        </span>
+                        <span>{{ Tweet_Object.retweet_count }}</span>
+                    </span>
+                    <span class="icon-text">
+                        <span class="icon">
+                            <img src="/images/icons/Plus-Icon.png" alt="">
+                        </span>
+                        <span>{{ Tweet_Object.like_count }}</span>
+                    </span>
+                </div>
+                <div class="tweet-score column is-3 has-text-right">
+                    <span>TS</span>
+                    <span>{{ Tweet_Object.author.tweet_score }}</span>
+                </div>
+            </div>
+            {##}
+
+        </div>
+
+        <hr class="tweet-horizontal-line" />
+
+        {# Row 7 - Filter controls #}
+        <div class="tweet-filter-controls columns is-multiline is-vcentered has-text-left m-1">
+            <div class="column is-narrow">
+                <span class="icon-text" onclick="{# Add a function here that uses fetch to communicate with our api, then flash the response from the api on screen #}">
+                    <span class="icon">
+                        <img src="/images/icons/Plus-Icon.png" alt="">
+                    </span>
+                    <span>LOCKER</span>
+                </span>
+            </div>
+
+            <div class="column is-narrow">
+                <span class="icon-text" onclick="{# Add a function here that uses fetch to communicate with our api, then flash the response from the api on screen #}">
+                    <span class="icon">
+                        <img src="/images/icons/Plus-Icon.png" alt="">
+                    </span>
+                    <span>KEYWORDS</span>
+                </span>
+            </div>
+
+            <div class="column is-narrow">
+                <span class="icon-text" onclick="{# Add a function here that uses fetch to communicate with our api, then flash the response from the api on screen #}">
+                    <span class="icon">
+                        <img src="/images/icons/Plus-Icon.png" alt="">
+                    </span>
+                    <span>HASHTAGS</span>
+                </span>
+            </div>
+        </div>
+        {##}
+
+    </div>
+
+{% endmacro %}
