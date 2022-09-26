@@ -3,15 +3,17 @@
     <div class="tweet-container">
 
         {# Row 1 - Tweet Media #}
-        {% with media_type = Tweet_Object.media_type %}
-            {% if media_type == 'image' %}
-                <img class="tweet-media" src="{{ Tweet_Object.media_url }}" alt="The image attached to the tweet.">
-            {% elif media_type == 'video' %}
-                <video class="tweet-media" src="{{ Tweet_Object.media_url }}"></video>
-            {# Anything else will be ignored. #}
-            {# We can add more media types here if we like. #}
-            {% endif %}
-        {% endwith %}
+        {% if Tweet_Object.media_url[0] %}
+            {% with media_type = Tweet_Object.media_type %}
+                {% if media_type == 'image' %}
+                    <img class="tweet-media" src="{{ Tweet_Object.media_url[0][0]['url']}}" alt="The image attached to the tweet.">
+                {% elif media_type == 'video' %}
+                    <video class="tweet-media" src="{{ Tweet_Object.media_url[0] }}"></video>
+                {# Anything else will be ignored. #}
+                {# We can add more media types here if we like. #}
+                {% endif %}
+            {% endwith %}
+        {% endif %}
         {##}
 
         <div class="tweet-content">
@@ -20,7 +22,7 @@
             <div class="columns is-multiline is-vcentered mb-0">
 
                 <div class="tweet-profile-pic column is-narrow pr-1">
-                    <img src="{{ Tweet_Object.author.display_name }}" alt="Profile picture for tweet author.">
+                    <img src="{{ Tweet_Object.author.profile_image }}" alt="Profile picture for tweet author.">
                 </div>
 
                 <div class="tweet-user-details column is-narrow pl-1">
@@ -69,7 +71,7 @@
                         <span class="icon">
                             <img src="/images/icons/Plus-Icon.png" alt="">
                         </span>
-                        <span>{{ Tweet_Object.comment_count }}</span>
+                        <span>{{ Tweet_Object.reply_count }}</span>
                     </span>
                     <span class="icon-text">
                         <span class="icon">
@@ -84,9 +86,9 @@
                         <span>{{ Tweet_Object.like_count }}</span>
                     </span>
                 </div>
-                <div class="tweet-score column is-3 has-text-right">
+                <div class="tweet-score column is-4 has-text-right">
                     <span>TS</span>
-                    <span>{{ Tweet_Object.author.tweet_score }}</span>
+                    <span>{{ Tweet_Object.tweet_score }}</span>
                 </div>
             </div>
             {##}

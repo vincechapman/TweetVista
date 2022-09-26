@@ -1,0 +1,55 @@
+{% extends 'layouts/base.html' %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/pages/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/layouts/side_menu.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/layouts/account.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/objects/tweet.css') }}">
+{% endblock %}
+
+{% block body %}
+
+    <div class="columns is-desktop">
+
+        <nav id="side-menu" class="column is-3">
+            {% include 'layouts/side_menu.html' %}
+        </nav>
+
+        <main class="column">
+
+            <header class="columns is-vcentered">
+
+                <div id="tweet-wall-controls" class="column">
+                    {# include 'layouts/filter_control.html' #}
+                    <form action="#" method="post">
+                        <div class="columns" style="max-width: 700px; margin: 0 auto;">
+                            <div class="column">
+                                <label for="search-query"></label>
+                                <input class="input" type="search" name="search-query" id="search-query">
+                            </div>
+                            <div class="column is-narrow">
+                                <input class="button" type="submit">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="account" class="column is-narrow">
+                    {% include 'layouts/account.html' %}
+                </div>
+
+            </header>
+
+            {% if tweets %}
+                <div id="tweet-wall-results">
+                    {% include 'layouts/tweet_masonry_display.html' %}
+                </div>
+            {% else %}
+                {# Could add some sort of 'searching' or 'listening out for new tweets' animation here #}
+            {% endif %}
+
+        </main>
+
+    </div>
+
+{% endblock %}

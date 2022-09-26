@@ -1,0 +1,45 @@
+<div id="side-menu-container">
+    <div class="side-menu-item">
+        <div>
+            <a>Hello</a>
+        </div>
+    </div>
+    <div class="side-menu-item">
+        <div>
+            <a>About</a>
+        </div>
+    </div>
+    <div class="side-menu-item">
+        <div>
+            <a>Contact</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    const menuItems = document.querySelectorAll(".side-menu-item");
+
+    for (let i = 0; i < menuItems.length; i++) {
+        menuItems[i].addEventListener("click", function() {
+            let active = document.getElementsByClassName('is-active')
+            for (let i = 0; i < active.length; i++) {
+                active[i].classList.remove('is-active')
+            }
+            let belowActive = document.getElementsByClassName('is-below-active')
+            for (let i = 0; i < belowActive.length; i++) {
+                belowActive[i].classList.remove('is-below-active')
+            }
+            let aboveActive = document.getElementsByClassName('is-above-active')
+            for (let i = 0; i < aboveActive.length; i++) {
+                aboveActive[i].classList.remove('is-above-active')
+            }
+            menuItems[i].classList.add('is-active')
+            if (i - 1 >= 0) {
+                menuItems[i - 1].classList.add('is-above-active')
+            }
+            if (i + 1 <= menuItems.length) {
+                menuItems[i + 1].classList.add('is-below-active')
+            }
+        })
+    }
+</script>
