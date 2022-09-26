@@ -1,0 +1,45 @@
+@use '../variables/colours'
+
+#side-menu-container
+    background-color: colours.$deep-purple
+    width: 100%
+    height: 100vh
+    padding: 30px 0 30px 30px
+    text-align: center
+    font-size: 1.1em
+    font-weight: 500
+
+.side-menu-item
+    display: block
+
+.side-menu-item > div > a
+    color: colours.$lilac
+
+
+.side-menu-item:not(.is-active) > div > a:hover
+    color: colours.$white
+
+.side-menu-item > div
+    padding: 15px 10px
+    margin-left: -20px
+
+.is-active
+    background-color: colours.$background-grey
+    border-radius: 70px 0 0 70px
+
+.is-active > div > a
+    color: colours.$hot-pink
+
+.is-above-active
+    background-color: colours.$background-grey
+
+.is-above-active > div
+    background-color: colours.$deep-purple
+    border-radius: 0 0 15px 0
+
+.is-below-active
+    background-color: colours.$background-grey
+
+.is-below-active > div
+    background-color: colours.$deep-purple
+    border-radius: 0 15px 0 0

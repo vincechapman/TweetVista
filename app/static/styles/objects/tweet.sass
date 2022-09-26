@@ -1,0 +1,53 @@
+@use '../variables/colours'
+
+.tweet-container
+    color: black
+    background-color: colours.$white
+    border: 1px solid colours.$light-grey
+    border-radius: 7px
+    overflow: hidden
+    //max-width: 350px /* might get rid of this and just make it 100% - then control the size with the column width */
+    line-height: 1.2
+    font-size: 0.9em
+    margin: 0.5rem 0
+
+.tweet-profile-pic > img
+    object-fit: cover
+    width: 40px
+    height: 40px
+    border-radius: 5px
+
+.tweet-user-details > div:nth-child(1)
+    font-weight: bold
+    font-size: 1.1em
+
+.tweet-content
+    padding: 15px
+
+.tweet-hashtags, .tweet-link
+    color: colours.$electric-blue
+
+.tweet-score
+    font-weight: bold
+
+.tweet-score > span:nth-child(1)
+    color: #F07F23
+    font-size: 0.8em
+    margin-right: -3px
+
+.tweet-score > span:nth-child(2)
+    color: colours.$deep-purple
+    font-size: 1.4em
+
+.tweet-horizontal-line
+    height: 1px
+    background-color: colours.$light-grey
+    margin: 0 0
+
+.tweet-filter-controls, .tweet-track-button, .tweet-twitter-metrics
+    color: colours.$deep-purple
+    font-size: 0.6em
+    font-weight: bold
+
+.tweet-twitter-metrics > *
+    margin-right: 10px

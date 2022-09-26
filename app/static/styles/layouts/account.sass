@@ -1,0 +1,24 @@
+@use '../variables/colours'
+
+@import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+
+#account-container
+    text-align: right
+
+.account-user-details
+    padding-right: 0
+
+.account-user-details > div:nth-child(1)
+    font-weight: 500
+
+.account-user-details > div:nth-child(2)
+    font-size: 0.8em
+    font-weight: 300
+    color: colours.$mid-grey
+
+.account-profile-picture > img
+    margin: 0
+    object-fit: cover
+    width: 50px
+    height: 50px
+    border-radius: 100%
