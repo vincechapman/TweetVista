@@ -1,17 +1,12 @@
 <div id="side-menu-container">
-    <div class="side-menu-item">
-        <div>
-            <a>Hello</a>
-        </div>
+    <div id="site-logo">
+        <img src="https://cdn.freebiesupply.com/logos/large/2x/containership-logo-png-transparent.png" alt="Website logo">
     </div>
-    <div class="side-menu-item">
-        <div>
-            <a>About</a>
-        </div>
-    </div>
-    <div class="side-menu-item">
-        <div>
-            <a>Contact</a>
+    <div id="side-menu-items-container">
+        <div class="side-menu-item">
+            <div>
+                <a href="{{ url_for('dashboard.main') }}">Dashboard</a>
+            </div>
         </div>
     </div>
 </div>
@@ -20,6 +15,9 @@
     const menuItems = document.querySelectorAll(".side-menu-item");
 
     for (let i = 0; i < menuItems.length; i++) {
+        if (menuItems[i].children[0].children[0]['href'] === window.location.href) {
+            menuItems[i].classList.add('is-active')
+        }
         menuItems[i].addEventListener("click", function() {
             let active = document.getElementsByClassName('is-active')
             for (let i = 0; i < active.length; i++) {
