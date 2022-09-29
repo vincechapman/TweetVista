@@ -1,7 +1,12 @@
 import json
 import logging
 import pprint
-from HTTPAccess.webconn_singleton import WebConnection
+
+if __name__ == '__main__':
+    from TLApi.HTTPAccess.webconn_singleton import WebConnection
+else:
+    from .. HTTPAccess.webconn_singleton import WebConnection
+
 __author__ = 'dhagan'
 log = logging.getLogger('access_tli')
 log.setLevel(logging.DEBUG)
@@ -40,29 +45,22 @@ def get_campaign(campaign_id):
         return {}
 
 
-import json
+def run_stream(campaign_id):
 
-
-def run_stream():
+    import json
 
     wc = web_conn()
-
-    ret_dict = wc.get_client_campaigns()
-    data = ret_dict.get('data', [])
-    campaign = data[0]
-    campaign_id = campaign.get('id', '0')
 
     for tweet in wc.get_twitter_stream(campaign_id):
 
         tweet_json = json.loads(tweet)
-        print(json.dumps(tweet_json, indent=4))
-
-
+        tweet_json_string = json.dumps(tweet_json)
+        yield tweet_json_string
 
 
 def authenticate_user():
 
-    wc = web_conn(url='https://tlapi.ictbenchmark.org/',usr='d.hagan',pwd='changeme')
+    wc = web_conn(url='https://tlapi.ictbenchmark.org/', usr='d.hagan', pwd='changeme')
     ret_dict = wc.authenticate_user()
     sessionid = wc.get_sessionid()
     if sessionid is not None:
@@ -71,7 +69,8 @@ def authenticate_user():
     wc = web_conn(sessionid=sessionid)
     ret_dict = wc.is_authenticated()
     log.info(f'{ret_dict}')
-    pass
+
+    return wc
 
 
 def web_conn(usr=None, pwd=None, url=None, sessionid=None):
@@ -84,16 +83,18 @@ def web_conn(usr=None, pwd=None, url=None, sessionid=None):
     return wc
 
 
-if __name__ == '__main__':
-
-    #campaign = get_campaign(4)
-    #with open('campaign.json','w') as js:
-    #    json.dump(campaign,js,indent=4)
+def main():
 
     authenticate_user()
-    test_login_conn()
-
     run_stream()
+
+    for count, i in enumerate(run_stream(), start=1):
+        print(count, i)
+
+
+if __name__ == '__main__':
+
+    main()
 
 
 
