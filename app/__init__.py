@@ -36,4 +36,10 @@ def create_app():
     from . blueprints.dashboard import dashboard as dashboard_bp
     app.register_blueprint(dashboard_bp)
 
+    from . blueprints.api import api as api_bp
+    app.register_blueprint(api_bp)
+
+    from . blueprints.auth import auth as auth_bp
+    app.register_blueprint(auth_bp)
+
     return app
