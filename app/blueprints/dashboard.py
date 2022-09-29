@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, g
 from flask_login import login_required
 
 dashboard = Blueprint('dashboard', __name__, url_prefix='/dashboard')
@@ -54,21 +54,20 @@ class Tweet(object):
 @dashboard.route('/')
 def main():
 
-    tweets = None
+    """This is a basic stream that uses yield to stream the tweets directly into a plain html file."""
 
-    if request.method == 'POST':
+    from TLApi.AccessTLIServer.access_tli import authenticate_user, test_login_conn, run_stream
 
-        search_query = request.form['search-query']
+    # This only creates a new web connection if one does not already exist globally
+    if 'wc' not in g:
+        g.wc = authenticate_user()
 
-        from twitter_api import collect_tweets, parse_response
+    try:
+        data = g.wc.get_client_campaigns()
+    except Exception as e:
+        print(e)
+        campaigns = None
+    else:
+        campaigns = data.get('data', [])
 
-        response = collect_tweets(search_query + ' -is:retweet')
-
-        print('RESPONSE:', response)
-
-        if response:
-            tweets = parse_response(response)
-        else:
-            tweets = None
-
-    return render_template('pages/dashboard.html', tweets=tweets)
+    return render_template('pages/dashboard.html', campaigns=campaigns)
