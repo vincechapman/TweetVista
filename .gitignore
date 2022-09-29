@@ -1,5 +1,6 @@
-/.env
-/Tweet-Vista-Wall.jpg
-/.idea/
+.env
+venv/
+Tweet-Vista-Wall.jpg
+.idea/
+twitter_api/
 /tweet_locator
-dummy_data.json
