@@ -1,6 +1,16 @@
+# Ignore environment variables and the virtual environment directory
 .env
 venv/
+
+# The image file for James' design
 Tweet-Vista-Wall.jpg
+
+# Ignore project files
 .idea/
+
+# Ignore temporary twitter api module. This will eventually be removed from the project once I've integrated with tweet_locator system.
 twitter_api/
-/tweet_locator
+
+# Ignores css files created by the sass compiler.
+*.css
+*.css.map
