@@ -1,0 +1,310 @@
+{% macro campaign_selection_macro(campaigns) %}
+
+    <div class="dropdown" id="client-selection-dropdown" style="display: none;">
+        <div class="dropdown-trigger">
+            <button class="input" aria-haspopup="true" aria-controls="dropdown-menu">
+                <span id="client-dropdown-placeholder">Client</span>
+                <span class="icon is-small">
+            <i class="fas fa-angle-down" aria-hidden="true"></i>
+          </span>
+            </button>
+        </div>
+        <div class="dropdown-menu" role="menu">
+            <div class="dropdown-content">
+                {% for campaign in campaigns %}
+                    <a class="dropdown-item">
+                        {{ campaign['name'] }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="dropdown" id="campaign-selection-dropdown">
+        <div class="dropdown-trigger">
+            <button class="input" aria-haspopup="true" aria-controls="dropdown-menu">
+                <span id="campaign-dropdown-placeholder">Campaign</span>
+                <span class="icon is-small">
+            <i class="fas fa-angle-down" aria-hidden="true"></i>
+          </span>
+            </button>
+        </div>
+        <div class="dropdown-menu" role="menu">
+            <div class="dropdown-content">
+                <div class="dropdown-item has-text-info" id="campaign-filter-message">
+                    Showing campaigns for all clients
+                </div>
+                <hr class="dropdown-divider">
+                {% for campaign in campaigns %}
+                    <a class="dropdown-item campaign" data-client="{{ campaign['name'] }}" data-campaign="{{ campaign['id'] }}">
+                        {{ campaign['id'] }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        // Displays client dropdown only if JS is available
+        document.getElementById('client-selection-dropdown').style.display = 'inline-flex'
+
+        // Adding toggle for dropdown menus
+        const dropDowns = document.getElementsByClassName('dropdown')
+        function toggleDropdown() {
+            this.classList.toggle('is-active')
+        }
+        for (let i = 0; i < dropDowns.length; i++) {
+            dropDowns[i].addEventListener('click', toggleDropdown, false);
+        }
+
+        // Adding ability to filter campaigns by client
+        const clients = document.querySelectorAll('#client-selection-dropdown > .dropdown-menu > .dropdown-content > .dropdown-item')
+        const campaigns = document.querySelectorAll('#campaign-selection-dropdown > .dropdown-menu > .dropdown-content > .dropdown-item.campaign')
+        const originalCampaignFilterMessage = document.getElementById('campaign-filter-message').innerHTML
+
+        function removeClientFilter() {
+            for (let i = 0; i < campaigns.length; i++) {
+                campaigns[i].style.display = 'block'
+            }
+            for (let i = 0; i < clients.length; i++) {
+                clients[i].classList.remove('is-active')
+            }
+
+            // Set text back to default
+            document.getElementById('campaign-filter-message').innerHTML = originalCampaignFilterMessage
+            document.getElementById('client-dropdown-placeholder').innerText = 'Client'
+
+        }
+
+        function selectClientFilter() {
+
+            let chosen_client = this.innerText
+
+            // Sets dropdown placeholder to chosen client
+            document.getElementById('client-dropdown-placeholder').innerText = chosen_client
+
+            // Setting chosen client to active styling
+            for (let i = 0; i < clients.length; i++) {
+                if (clients[i] === this) {
+                    clients[i].classList.add('is-active')
+                } else {
+                    clients[i].classList.remove('is-active')
+                }
+            }
+
+            // Hides all but selected client campaigns, plus changes message at the top.
+            document.getElementById('campaign-filter-message').innerHTML = `Only showing campaigns for ${chosen_client} <div id="remove-filter-button" onclick="removeClientFilter()">Remove filter?</div>`
+            for (let i = 0; i < campaigns.length; i++) {
+                if (campaigns[i].getAttribute('data-client') === chosen_client) {
+                    campaigns[i].style.display = 'block'
+                } else {
+                    campaigns[i].style.display = 'none'
+                }
+            }
+        }
+
+        // Event listener to check if a client has been clicked
+        for (let i = 0; i < clients.length; i++) {
+            clients[i].addEventListener('click', selectClientFilter, false);
+        }
+
+
+
+        // Event listener to check if a campaign has been clicked
+        for (let i = 0; i < campaigns.length; i++) {
+            campaigns[i].addEventListener('click', campaignClick, false);
+        }
+
+        function campaignClick() {
+
+            document.getElementById('campaign-dropdown-placeholder').innerHTML = this.innerHTML
+
+            // Setting chosen client to active styling
+            for (let i = 0; i < campaigns.length; i++) {
+                if (campaigns[i] === this) {
+                    campaigns[i].classList.add('is-active')
+                } else {
+                    campaigns[i].classList.remove('is-active')
+                }
+            }
+
+            // Call api
+            fetch('{{ url_for('api.get_stream') }}', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'client': this.getAttribute('data-client'),
+                    'campaign': this.getAttribute('data-campaign')
+                })
+                })
+                // Retrieve its body as ReadableStream
+                .then(async (response) => {
+                    const reader = response.body.getReader();
+                    let count = 0
+                    while (true) {
+
+                        count += 1
+
+                        const {value, done} = await reader.read()
+                        if (done) {
+                            console.log('Stream closed')
+                            break
+                        }
+
+                        let newValue = ''
+                        for (let i = 0; i < value.length; i++) {
+                            newValue += String.fromCharCode(value[i])
+                        }
+                        try {
+                            newValue = JSON.parse(newValue)
+                            create_new_html_object(newValue)
+                        } catch(SyntaxError) {
+                        }
+                    }
+                })
+
+            function create_new_html_object(tweet) {
+
+                console.log(tweet)
+
+                let mediaType = undefined
+                let mediaUrl = undefined
+
+                try {
+                    mediaType = tweet['extended_tweet']['entities']['media'][0]['type']
+                    mediaUrl = tweet['extended_tweet']['entities']['media'][0]['media_url']
+                } catch(TypeError) {
+                    mediaType = null
+                    mediaUrl = null
+                }
+
+
+                let authorProfileImage = tweet['user']['profile_image_url']
+                let authorDisplayName = tweet['user']['name']
+                let authorHandle = tweet['user']['screen_name']
+
+                let tweetText = tweet['text']
+                let tweetHashtags = tweet['entities']['hashtags']
+                let tweetLink = tweet['entities']['urls']
+
+                let tweetReplyCount = tweet['reply_count']
+                let tweetRetweetCount = tweet['retweet_count']
+                let tweetLikeCount = tweet['favorite_count']
+                let tweetScore = 200
+
+
+                let html = `
+
+                    <div class="tweet-container">
+
+                        ${mediaType === 'photo' ? `<img class="tweet-media" src="${mediaUrl}" alt="The image attached to the tweet.">` : ''}
+
+                        <div class="tweet-content">
+
+                            <div class="columns is-multiline is-vcentered mb-0">
+
+                                <div class="tweet-profile-pic column is-narrow pr-1">
+                                    <img src="${authorProfileImage}" alt="Profile picture for tweet author.">
+                                </div>
+
+                                <div class="tweet-user-details column is-narrow pl-1">
+                                    <div>${authorDisplayName}</div>
+                                    <div>${authorHandle}</div>
+                                </div>
+
+                                <div class="column is-narrow">
+                                    <span class="icon-text tweet-track-button">
+                                        <span class="icon">
+                                            <img src="{{ url_for('static', filename='images/icons/Plus-Icon.png') }}" alt="Button to track this handle.">
+                                        </span>
+                                        <span>TRACK</span>
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            <p class="tweet-text">
+                                ${tweetText}
+                            </p>
+
+                            ${tweetHashtags}
+
+                            ${tweetLink}
+
+                            <div class="columns mt-1">
+                                <div class="tweet-twitter-metrics column">
+                                    <span class="icon-text">
+                                        <span class="icon">
+                                            <img src="{{ url_for('static', filename='/images/icons/Plus-Icon.png') }}" alt="">
+                                        </span>
+                                        <span>${tweetReplyCount}</span>
+                                    </span>
+                                    <span class="icon-text">
+                                        <span class="icon">
+                                            <img src="{{ url_for('static', filename='/images/icons/Plus-Icon.png') }}" alt="">
+                                        </span>
+                                        <span>${tweetRetweetCount}</span>
+                                    </span>
+                                    <span class="icon-text">
+                                        <span class="icon">
+                                            <img src="{{ url_for('static', filename='/images/icons/Plus-Icon.png') }}" alt="">
+                                        </span>
+                                        <span>${tweetLikeCount}</span>
+                                    </span>
+                                </div>
+                                <div class="tweet-score column is-4 has-text-right">
+                                    <span>TS</span>
+                                    <span>${tweetScore}</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <hr class="tweet-horizontal-line" />
+
+                        <div class="tweet-filter-controls columns is-multiline is-vcentered has-text-left m-1">
+                            <div class="column is-narrow">
+                                <span class="icon-text" onclick="{# Add a function here that uses fetch to communicate with our api, then flash the response from the api on screen #}">
+                                    <span class="icon">
+                                        <img src="{{ url_for('static', filename='images/icons/Plus-Icon.png') }}" alt="">
+                                    </span>
+                                    <span>LOCKER</span>
+                                </span>
+                            </div>
+
+                            <div class="column is-narrow">
+                                <span class="icon-text" onclick="{# Add a function here that uses fetch to communicate with our api, then flash the response from the api on screen #}">
+                                    <span class="icon">
+                                        <img src="{{ url_for('static', filename='images/icons/Plus-Icon.png') }}" alt="">
+                                    </span>
+                                    <span>KEYWORDS</span>
+                                </span>
+                            </div>
+
+                            <div class="column is-narrow">
+                                <span class="icon-text" onclick="{# Add a function here that uses fetch to communicate with our api, then flash the response from the api on screen #}">
+                                    <span class="icon">
+                                        <img src="{{ url_for('static', filename='images/icons/Plus-Icon.png') }}" alt="">
+                                    </span>
+                                    <span>HASHTAGS</span>
+                                </span>
+                            </div>
+                        </div>
+                        {##}
+
+                    </div>
+
+                `
+
+                let newElement = document.createElement('div')
+                newElement.innerHTML = html
+                document.getElementById('tweet-wall').insertBefore(newElement, document.querySelector('#tweet-wall > div'))
+            }
+        }
+    </script>
+
+{% endmacro %}
