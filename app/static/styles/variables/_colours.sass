@@ -1,5 +1,7 @@
+@use "sass:color"
+
 $white: #fff
-$black: #black
+$black: black
 $deep-purple: #290A5A
 $electric-blue: #1BA2F3
 $light-grey: #E1E6EC
@@ -8,3 +10,28 @@ $hot-pink: rgba(224, 24, 105, 0.73)
 $mid-grey: #8E8E8E
 $background-grey: #EFF0F2
 $lilac: #485fc7
+
+.is-white
+    background-color: $white
+    color: $black
+
+.is-electric-blue
+    color: $electric-blue
+
+.bg-is-electric-blue
+    background-color: $electric-blue
+
+.button.is-electric-blue
+    background-color: $electric-blue
+    color: $white
+    border-color: color.adjust($electric-blue, $saturation: 100%, $lightness: 10%)
+
+    &.is-light
+        color: color.adjust($electric-blue, $saturation: 100%, $lightness: 20%)
+        background-color: color.adjust($electric-blue, $saturation: 100%, $lightness: 40%)
+        border-color: color.adjust($electric-blue, $saturation: 100%, $lightness: 10%)
+
+    &:hover
+        color: color.adjust($electric-blue, $saturation: 100%, $lightness: 20%)
+        background-color: color.adjust($electric-blue, $saturation: 100%, $lightness: 40%)
+        border-color: color.adjust($electric-blue, $saturation: 100%, $lightness: 10%)
