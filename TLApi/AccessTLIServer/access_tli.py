@@ -29,22 +29,18 @@ def test_login_conn():
         data = ret_dict.get('data', {})
         pprint.pprint(data, indent=4)
 
-        # get tweets
-        id = 0
-        for cnt in range(10):
-            data = wc.get_page_tweets(campaign_id,tweet_id=id,page_len=5)
-            tweets = data.get('data',[])
-            if len(tweets) > 0:
-                id = tweets[0]['id']
-            for tweet in tweets:
-                print_basic(tweet)
-            time.sleep(5)
-
 
 def print_basic(tweet):
+    tw = {'id': tweet['id'],
+          'twitter_score': tweet['twitter_score'],
+          'word_tokens': tweet['word_tokens'],
+          'user_handle': tweet['user_handle'],
+          'user_id': tweet['user_id']}
+    pprint.pprint(tw, indent=4)
+
+
+def print_more_basic(tweet):
     tw={'id':tweet['id'],
-        'twitter_score':tweet['twitter_score'],
-        'word_tokens':tweet['word_tokens'],
         'user_handle':tweet['user_handle'],
         'user_id':tweet['user_id']}
     pprint.pprint(tw, indent=4)
@@ -84,6 +80,58 @@ def authenticate_user():
     pass
 
 
+def get_page_tweets(campaign_id):
+    id = 0
+    wc = web_conn()
+    for cnt in range(10):
+        data = wc.get_page_tweets(campaign_id, tweet_id=id, page_len=5)
+        tweets = data.get('data', [])
+        if len(tweets) > 0:
+            id = tweets[0]['id']
+        for tweet in tweets:
+            print_basic(tweet)
+        time.sleep(5)
+
+
+def get_campaign_tweet_pages(campaign_id,page_len=1000):
+    next_id = 0
+    tweets = []
+    wc = web_conn()
+    while True:
+        data = wc.get_tweets_for_campaign(campaign_id, next_id=next_id,page_len=page_len)
+        status = data.get('status', 404)
+        dta = data.get('data', {})
+        if status == 404:
+            break
+
+        next_id = dta.get('next_id', 0)
+        part_tweets = dta.get('tweets', [])
+        tweets.extend(part_tweets)
+        if next_id == 0:
+            break
+    log.info(f'{len(tweets)} returned')
+
+
+def get_campaign_tweets(campaign_id):
+    next_id = 0
+    tweets = []
+    wc = web_conn()
+    data = wc.get_tweets_for_campaign(campaign_id, next_id=0, page_len=0)
+    status = data.get('status', 404)
+    dta = data.get('data', {})
+    tweets = dta.get('tweets', [])
+    log.info(f'{len(tweets)} returned')
+    pass
+
+
+def get_twitter_app():
+    wc = web_conn()
+    data = wc.get_twitter_app()
+    status = data.get('status', 404)
+    dta = data.get('data', {})
+    pprint.pprint(dta, indent=4)
+
+
 def web_conn(usr=None, pwd=None, url=None, sessionid=None):
     wc = WebConnection(
         userid=usr,
@@ -97,4 +145,13 @@ def web_conn(usr=None, pwd=None, url=None, sessionid=None):
 if __name__ == '__main__':
 
     authenticate_user()
-    test_login_conn()
+    #test_login_conn()
+    #get_campaign_tweet_pages(6)
+    #get_campaign_tweets(6)
+    get_twitter_app()
+
+
+
+
+
+
