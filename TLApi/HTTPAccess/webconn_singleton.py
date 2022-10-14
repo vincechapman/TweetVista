@@ -216,6 +216,14 @@ class WebConnection:
             dta['status'] = r.status_code
         return dta
 
+    def get_tweets_for_campaign(self, campaign_id, page_len=0, next_id=0):
+        values = {'campaign_id': campaign_id,'page_len': page_len,'next_id':next_id}
+        r = self._session.post(self.url + 'client/campaign_tweets/', values)
+        dta = json.loads(r.text)
+        if isinstance(dta, dict):
+            dta['status'] = r.status_code
+        return dta
+
     def get_keyword_literals(self):
         r = self._session.post(self.url + 'common/keyword_lits/')
         dta = json.loads(r.text)
@@ -224,6 +232,20 @@ class WebConnection:
         if status != 200:
             data = {}
         return data
+
+    def get_twitter_app(self):
+        r = self._session.post(self.url + 'common/twitter_app/')
+        dta = json.loads(r.text)
+        return dta
+
+    def store_user_twitter_account(self, only_tokens):
+        with open('token_file', 'w') as of:
+            json.dump(only_tokens, of)
+        only_tokens = json.dumps(only_tokens)
+        values = {'oauth_tokens': only_tokens}
+        r = self._session.post(self.url + 'common/store_twitter_tokens/', values)
+        dta = json.loads(r.text)
+        return dta
 
     def close_stream(self, campaign_id):
         self.streams[campaign_id] = True
