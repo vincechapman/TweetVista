@@ -208,8 +208,8 @@ class WebConnection:
                 if line:
                     yield line
 
-    def get_page_tweets(self, campaign_id, page_len):
-        values = {'campaign_id': campaign_id, 'page_len': page_len}
+    def get_page_tweets(self, campaign_id, page_len=10,tweet_id=None):
+        values = {'campaign_id': campaign_id, 'page_len': page_len,'tweet_id':tweet_id}
         r = self._session.post(self.url + 'client/latest_tweets/', values)
         dta = json.loads(r.text)
         if isinstance(dta, dict):
@@ -241,4 +241,3 @@ class WebConnection:
         if self._session is not None:
             return self._session.cookies
         return None
-
