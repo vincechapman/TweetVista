@@ -3,7 +3,7 @@ import json
 from flask import Blueprint, render_template, request, jsonify, current_app, Response
 from flask_login import login_required, current_user
 
-api = Blueprint('api', __name__, url_prefix='/api')
+feed = Blueprint('api_feed', __name__, url_prefix='/api/feed')
 
 """
 - People trying to gain unauthorised access to stream (POSSIBLE SOLUTION: require login before accessing stream. Then on server check login details before calling backend api.)
@@ -18,14 +18,16 @@ def check_authorisation(client, campaign):
     Currently I've set this up assuming that it'd be possible for a user to have access to a client, but not necessarily all of its campaigns and so it checks if they have access to both.
     """
 
+    return True  # temporary until this has been set up on db side
+
     if (client in current_user.clients) and (campaign in current_user.campaigns):
         return True
     else:
         return False
 
 
-@api.route('/getStream', methods=['GET', 'POST'])
-def get_stream():
+@feed.route('/connect', methods=['POST'])
+def connect():
 
     print('api/getStream called!')
 
@@ -39,11 +41,16 @@ def get_stream():
         client = request_body['client']
         campaign = request_body['campaign']
 
-        # if not check_authorisation(client, campaign):
-        #     return False
+        if not check_authorisation(client, campaign):
+            return False
 
-        from TLApi.AccessTLIServer.access_tli import authenticate_user, run_stream
+        from TLInterface.get_tweet_feed import get_tweet_stream
 
-        authenticate_user()
+        tweet_stream = get_tweet_stream(campaign_id=campaign)
 
-        return run_stream(campaign)
+        # # Note that the front end stream won't run it this for loop is uncommented
+        # if tweet_stream:
+        #     for t in tweet_stream:
+        #         print(t)
+
+        return tweet_stream
