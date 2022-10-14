@@ -10,6 +10,17 @@
 
 {% block body %}
 
+    {% if not current_user.is_authenticated %}
+        {% include 'objects/auth/signup_modal.html' %}
+    {% elif not current_user.onboarded %}
+        {% if not current_user.twitter_connected %}
+            <input type="hidden" value="signup-step-2" id="start-step">
+        {% elif not current_user.business_information_provided %}
+            <input type="hidden" value="signup-step-3" id="start-step">
+        {% endif %}
+        {% include 'objects/auth/signup_modal.html' %}
+    {% endif %}
+
     <div class="columns is-desktop">
 
         <nav id="side-menu" class="column is-3">
