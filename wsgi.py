@@ -26,7 +26,7 @@ with tweet_vista.app_context():
             password=generate_password_hash(os.environ['ADMIN_PASSWORD']),
             first_name=os.environ['ADMIN_FIRST_NAME'],
             last_name=os.environ['ADMIN_LAST_NAME'],
-            role='super_admin'
+            role='Super Admin'
         )
         models.db.session.add(new_user)
         models.db.session.commit()

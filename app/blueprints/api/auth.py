@@ -1,9 +1,10 @@
 import json
 import models
+import logging
 
 from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, login_required, current_user
 
 auth = Blueprint('api_auth', __name__, url_prefix='/api/auth')
 
@@ -80,3 +81,28 @@ def login():
         return jsonify({
             'success': True,
             'message': "Account logged in."})
+
+
+@auth.route('/businessDetails', methods=['POST'])
+def store_business_details():
+
+    try:
+        request_body = json.loads(request.data)
+        current_user.company_name = request_body['company_name']
+        current_user.company_size = request_body['company_size']
+        current_user.role_in_company = request_body['role_in_company']
+        current_user.business_information_provided = True
+        current_user.onboarded = True
+        models.db.session.commit()
+
+    except Exception as e:
+        logging.error(e)
+        models.db.session.rollback()
+        return jsonify({
+            'success': False,
+            'message': "Failed to save business details to database."})
+
+    else:
+        return jsonify({
+            'success': True,
+            'message': "Saved business details for current user."})

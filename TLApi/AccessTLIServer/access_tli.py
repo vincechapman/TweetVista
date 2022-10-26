@@ -145,9 +145,6 @@ def web_conn(usr=None, pwd=None, url=None, sessionid=None):
 if __name__ == '__main__':
 
     authenticate_user()
-    #test_login_conn()
-    #get_campaign_tweet_pages(6)
-    #get_campaign_tweets(6)
     get_twitter_app()
 
 

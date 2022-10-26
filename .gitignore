@@ -15,5 +15,4 @@ twitter_api/
 *.css
 *.css.map
 
-TLApi/
 /app/db.sqlite

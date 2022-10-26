@@ -2,7 +2,7 @@
 {#<link rel="stylesheet" href="https://bulma.io/vendor/fontawesome-free-5.15.2-web/css/all.min.css">#}
 {#<link rel="stylesheet" href="/app/static/styles/layouts/base.css">#}
 
-<div class="modal is-active signup-step">
+<div id="signup-modal" class="modal is-active">
 
     <div class="modal-background"></div>
 
@@ -238,13 +238,13 @@
             <!-- Part 1 - Connect account -->
             <div id="connect-twitter-account">
 
-                <div class="has-text-centered mt-4 mb-3">
+                <div class="has-text-centered mt-6 mb-3">
                     <h2 class="title is-size-3 has-text-weight-medium mb-2">Connect Your Twitter Account</h2>
                     <span style="font-weight: lighter;">To get started using Tweet Vista simply connect your Twitter Profile</span>
                 </div>
 
-                <div class="has-text-centered mb-4 mt-4">
-                    <button type="submit" class="button is-electric-blue" onClick="authoriseTwitterAccount(this);">
+                <div class="has-text-centered mb-4 mt-5">
+                    <button type="submit" class="button is-electric-blue" onClick="this.classList.add('is-loading', 'is-light'); authoriseTwitterAccount(this);">
                         <span class="icon">
                             <i class="fab fa-twitter"></i>
                         </span>
@@ -261,18 +261,21 @@
                     <h2 class="title is-size-3 has-text-weight-medium mb-2">Great you are now connected</h2>
                 </div>
 
-                <div id="connected-account" class="columns mt-5 is-vcentered is-gapless">
-                    <div class="column is-narrow mr-2">
-                        <img src="https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwcm9maWxlLXBhZ2V8N3x8fGVufDB8fHx8&w=1000&q=80" alt="Profile picture">
+                <div id="connected-account" class="mb-4 columns is-gapless is-vcentered">
+                    <div class="column is-narrow">
+                        <img class="mr-2" src="" alt="Profile picture">
                     </div>
-                    <div class="column subtitle">
-                        James Love
+                    <div class="column">
+                        <span class="is-size-4">No user</span>
                     </div>
                 </div>
 
                 <span style="font-weight: lighter;">Your Twitter Profile is now connected, you are now ready to finish setting up your Tweet Vista account.</span>
 
                 <style>
+                    #connected-account > div {
+                        max-height: 40px;
+                    }
                     #connected-account > div > img {
                         margin: 0;
                         object-fit: cover;
@@ -289,16 +292,53 @@
             </div>
 
             <script>
+                function displayConnectedProfile(data) {
+
+                    let profileImage = document.querySelector('#connected-account > div:nth-child(1) > img')
+                    profileImage.src = data['profileImage']
+
+                    let profileName = document.querySelector('#connected-account > div:nth-child(2) > span')
+                    profileName.innerHTML = '@' + data['handle']
+
+                    document.getElementById('connect-twitter-account').hidden = true
+                    document.getElementById('you-are-now-connected').hidden = false
+                }
+            </script>
+
+            <script>
                     function authoriseTwitterAccount(elem) {
-                        document.getElementById('connect-twitter-account').hidden = true
-                        document.getElementById('you-are-now-connected').hidden = false
+                        fetch('{{ url_for('authorise_account') }}')
+                            .then((response) => response.json())
+                            .then((data) => {
+
+                                window.name = "tweetVistaMainWindow";
+                                const popup = window.open(data, "twitterAuthPopup", "popup=true, width=1000, height=500, top=100, left=100")
+
+                                let interval = 1000
+                                let checkPopupSuccess = setInterval(function () {
+                                    fetch('{{ url_for('check_if_twitter_authorised') }}')
+                                        .then((response) => response.json())
+                                        .then(async (data) => {
+                                            if (data) {
+                                                clearInterval(checkPopupSuccess)
+                                                console.log('Popup closed by user.')
+                                                popup.close()
+                                                displayConnectedProfile(data)
+                                            } else if (popup.closed) {
+                                                clearInterval(checkPopupSuccess)
+                                                console.log('Popup closed by user.')
+                                                elem.classList.remove('is-loading', 'is-light')
+                                            }
+                                        })
+                                }, interval)
+                            })
                     }
             </script>
 
         </section>
 
         <!-- Step 3 -->
-        <section id="signup-step-3" class="modal-card-body signup-step hidden" data-next-step="signup-step-4">
+        <section id="signup-step-3" class="modal-card-body signup-step hidden" data-next-step="none">
 
             <!-- These block displays the current progress -->
             <div class="mb-2 is-size-7"><span class="is-electric-blue has-text-weight-bold">Step 3</span> Customize your platform</div>
@@ -325,58 +365,103 @@
             </style>
 
             <!-- Customise your platform -->
-            <div class="has-text-left mt-4 mb-5">
-                <h2 class="title is-size-3 has-text-weight-medium mb-2">You are almost ready to get started!</h2>
-                <span style="font-weight: lighter;">The details below allow us to customize the platform for you and once you click complete setup you will have the full Tweet Vista Platform at your fingertips</span>
-            </div>
+            <form method="post" action="#">
 
-            <div class="columns is-multiline">
-                <div class="column is-half">
-                    <div class="control has-icons-left has-icons-right">
-                        <input class="input" type="text" name="first-name" placeholder="I will use as..." required>
-                        <span class="icon is-small is-left">
-                            <i class="fa fa-user"></i>
-                        </span>
-                        <span class="icon is-small is-right check">
-                            <i class="fa fa-check"></i>
-                        </span>
-                    </div>
+                <div class="has-text-left mt-4 mb-5">
+                    <h2 class="title is-size-3 has-text-weight-medium mb-2">You are almost ready to get started!</h2>
+                    <span style="font-weight: lighter;">The details below allow us to customize the platform for you and once you click complete setup you will have the full Tweet Vista Platform at your fingertips</span>
                 </div>
-                <div class="column is-half">
-                    <div class="control has-icons-left has-icons-right">
-                        <input class="input" type="number" name="last-name" placeholder="Aprox. no. users" required>
-                        <span class="icon is-small is-left">
-                            <i class="fa fa-users"></i>
-                        </span>
-                        <span class="icon is-small is-right check">
-                            <i class="fa fa-check"></i>
-                        </span>
-                    </div>
-                </div>
-                <div class="column is-full">
-                    <div class="control has-icons-left has-icons-right">
-                        <input class="input" type="number" name="company-name" placeholder="Company name">
-                        <span class="icon is-small is-left">
-                            <i class="fa fa-phone"></i>
-                        </span>
-                        <span class="icon is-small is-right check">
-                            <i class="fa fa-check"></i>
-                        </span>
-                    </div>
-                </div>
-            </div>
 
-            <div class="has-text-right mt-4">
-                <button type="submit" class="button is-electric-blue">Get Started</button>
-            </div>
+                <div class="columns is-multiline">
+                    <div class="column is-half">
+                        <div class="control has-icons-left has-icons-right">
+                            <input class="input" type="text" name="role_in_company" placeholder="I will use as...">
+                            <span class="icon is-small is-left">
+                                <i class="fa fa-user"></i>
+                            </span>
+                            <span class="icon is-small is-right check">
+                                <i class="fa fa-check"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="column is-half">
+                        <div class="control has-icons-left has-icons-right">
+                            <input class="input" type="number" name="company_size" placeholder="Aprox. no. users">
+                            <span class="icon is-small is-left">
+                                <i class="fa fa-users"></i>
+                            </span>
+                            <span class="icon is-small is-right check">
+                                <i class="fa fa-check"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="column is-full">
+                        <div class="control has-icons-left has-icons-right">
+                            <input class="input" type="text" name="company_name" placeholder="Company name">
+                            <span class="icon is-small is-left">
+                                <i class="fa fa-building"></i>
+                            </span>
+                            <span class="icon is-small is-right check">
+                                <i class="fa fa-check"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="has-text-right mt-4">
+                    <button type="button" class="button is-electric-blue" onclick="submitBusinessDetails(this)">Get Started</button>
+                </div>
+
+                <script>
+                    function submitBusinessDetails(elem) {
+                        let formFields = elem.form.elements
+                        if (checkFormValidity(formFields)) {
+                            elem.classList.add('is-loading', 'is-light');  // Button loading formatting
+                            fetch('{{ url_for('api_auth.store_business_details') }}', {
+                                method: 'POST',
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    'company_name': formFields["company_name"].value,
+                                    'company_size': formFields["company_size"].value,
+                                    'role_in_company': formFields["role_in_company"].value
+                                })
+                            })
+                                .then((response) => response.json())
+                                .then((data) => {
+                                    if (data['success']) {
+                                        console.log(data['message'])
+                                        stepTransition(elem)
+                                    } else {
+                                        alert(data['message'])
+                                        elem.classList.remove('is-loading', 'is-light');  // Button formatting
+                                    }
+                                })
+                    }
+
+                    function checkFormValidity(formFields) {
+                        let formValid = true
+                        for (let field = 0; field < formFields.length; field++) {
+                            if (formFields[field].tagName === 'INPUT' && formFields[field].checkValidity() === false) {
+                                formValid = false
+                                alert('Please complete all required fields.')
+                                break
+                            }
+                        }
+                        return formValid
+                    }
+                    }
+                </script>
+
+            </form>
 
         </section>
 
     </div>
 
-    <button class="modal-close is-large" aria-label="close"></button>
-
-</div>
+</div id>
 
 <style>
 
@@ -450,6 +535,11 @@
             if (nextStepId === undefined) {
                 nextStepId = elem.getAttribute('data-next-step')
             }
+        }
+
+        if (nextStepId === 'none') {
+            document.getElementById('signup-modal').classList.remove('is-active')
+            window.location.href = '{{ url_for('index') }}'
         }
 
         let nextStepElem = document.getElementById(nextStepId)

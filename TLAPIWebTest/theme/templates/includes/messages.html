@@ -1,0 +1,28 @@
+{%  for msg in messages %}
+
+        {% if msg.msg_level == 'error' %}
+        <div id="msg-{{ forloop.counter }}" class=" d-flex alert alert-danger" role="alert">
+       <div class="col d-flex align-self-start">{{ msg.msg }}</div>
+        <div class="d-flex align-self-end"><i class="fa fa-times" onclick="$('#msg-{{ forloop.counter }}').remove()"></i></div>
+        </div>
+        {% endif %}
+        {% if msg.msg_level == 'info' %}
+       <div id="msg-{{ forloop.counter }}" class="d-flex alert alert-info" role="alert">
+        <div class="col d-flex align-self-start">{{ msg.msg }}</div>
+        <div class="d-flex align-self-end"><i class="fa fa-times"  onclick="$('#msg-{{ forloop.counter }}').remove()"></i></div>
+
+        </div>
+        {% endif %}
+         {% if msg.msg_level == 'debug' %}
+       <div id="msg-{{ forloop.counter }}" class="d-flex alert alert-dark" role="alert">
+        <div class="col d-flex align-self-start">{{ msg.msg }}</div>
+        <div class="d-flex align-self-end"><i class="fa fa-times" onclick="$('#msg-{{ forloop.counter }}').remove()"></i></div>
+        </div>
+        {% endif %}
+         {% if msg.msg_level == 'warn' %}
+       <div id="msg-{{ forloop.counter }}" class="d-flex alert alert-warning" role="alert">
+        <div class="col d-flex align-self-start">{{ msg.msg }}</div>
+        <div class="d-flex align-self-end"><i class="fa fa-times" onclick="$('#msg-{{ forloop.counter }}').remove()"></i></div>
+        </div>
+        {% endif %}
+    {% endfor %}

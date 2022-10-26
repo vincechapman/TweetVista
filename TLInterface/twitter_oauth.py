@@ -3,7 +3,9 @@ from pprint import pprint
 
 import requests
 from requests_oauthlib import OAuth1Session
-from flask import request, Flask, redirect, url_for, session, Response
+from flask import request, Flask, redirect, url_for, session, Response, jsonify
+from flask_login import current_user
+import models
 
 
 def get_app_credentials() -> dict or {}:
@@ -141,9 +143,21 @@ def build_routes(app: Flask) -> None:
 
             from TLInterface import get_web_connection
             wc = get_web_connection()
-            wc.store_user_twitter_account(only_tokens)
+            data = wc.store_user_twitter_account(only_tokens)
             logging.info(f"{only_tokens['app_name']} authorised {only_tokens['handle']}")
-            return redirect(url_for('index'))
+
+            print(only_tokens)
+
+            current_user.twitter_handle = only_tokens.get('handle')
+            current_user.twitter_screen_name = only_tokens.get('user_data').get('screen_name')
+            current_user.twitter_profile_image = only_tokens.get('user_data').get('profile_image_url')
+            models.db.session.commit()
+
+            session['twitter_connected'] = only_tokens['handle']
+
+            return """
+                This popup should close itself
+            """
 
         logging.info('Successfully created twitter callback route.')
 
@@ -152,7 +166,7 @@ def build_routes(app: Flask) -> None:
 
     # User authorisation route
 
-    @app.route('/twitter/auth', methods=['GET', 'POST'])
+    @app.route('/twitter/auth')
     def authorise_account() -> Response or bool:
 
         try:
@@ -170,7 +184,7 @@ def build_routes(app: Flask) -> None:
                     callback=callback)
 
                 if '' in [oauth_token, oauth_token_secret]:
-                    return 'Outcome 3'
+                    return jsonify(False)
 
                 twitter_app = {
                     'app_name': name,
@@ -183,7 +197,7 @@ def build_routes(app: Flask) -> None:
 
                 url = 'https://api.twitter.com/oauth/authorize?oauth_token=' + oauth_token + '&force_login=true'
 
-                return redirect(url)
+                return jsonify(url)
 
             else:
                 raise Exception('get_app_credentials returned empty dictionary.')
@@ -191,5 +205,17 @@ def build_routes(app: Flask) -> None:
         except Exception as e:
             print(e)
 
-        return 'Outcome 2'
-        return False
+        return jsonify(False)
+
+    @app.route('/twitter/auth/check')
+    def check_if_twitter_authorised():
+
+        twitter_connected = session.get('twitter_connected')
+        if twitter_connected and twitter_connected == current_user.twitter_handle:  # TODO need to check the twitter in session matches the account logging in
+            twitter_user = {
+                'handle': current_user.twitter_handle,
+                'screenName': current_user.twitter_screen_name,
+                'profileImage': current_user.twitter_profile_image}
+            return jsonify(twitter_user)
+        else:
+            return jsonify(False)

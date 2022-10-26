@@ -1,7 +1,8 @@
 @use '../variables/colours'
+@use 'sass:color'
 
 #side-menu-container
-    background-color: colours.$deep-purple
+    background: linear-gradient(90deg, colours.$deep-purple, color.adjust(colours.$deep-purple, $lightness: 10%, $hue: -5deg)), colours.$deep-purple
     width: 100%
     height: 100%
     padding: 10px 0

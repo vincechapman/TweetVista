@@ -1,6 +1,7 @@
+import logging
 import os
 from dotenv import load_dotenv
-from flask import Flask
+from flask import Flask, session
 from flask_login import LoginManager
 
 
@@ -55,5 +56,9 @@ def create_app():
 
     from . blueprints.auth import auth as auth_bp
     app.register_blueprint(auth_bp)
+
+    # Add twitter authorisation routes
+    from TLInterface.twitter_oauth import build_routes
+    build_routes(app)
 
     return app
