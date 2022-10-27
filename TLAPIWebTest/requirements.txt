@@ -1,5 +1,0 @@
-django
-psycopg2-binary
-python-twitter
-redis
-requests_oauthlib
