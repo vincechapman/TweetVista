@@ -12,7 +12,9 @@ $background-grey: #EFF0F2
 $lilac: #485fc7
 
 .is-white
-    background-color: $white
+    color: $white
+
+.is-black
     color: $black
 
 .is-electric-blue
@@ -20,21 +22,48 @@ $lilac: #485fc7
     &:hover
         color: color.adjust($electric-blue, $lightness: 20%)
 
+.is-deep-purple
+    color: $deep-purple !important
+    &:hover
+        color: color.adjust($deep-purple, $lightness: 20%) !important
+
+.is-hot-pink
+    color: $hot-pink
+
+
+// Border colours
+
+.border-is-electric-blue
+    border: 2px solid $electric-blue
+    border-radius: 10px
+
+// Background colours
+
+.bg-is-white
+    background-color: $white
 
 .bg-is-electric-blue
     background-color: $electric-blue
 
-.button.is-electric-blue
-    background-color: $electric-blue
-    color: $white
-    border-color: color.adjust($electric-blue, $saturation: 100%, $lightness: 10%)
+.bg-is-light-grey
+    background-color: $light-grey
 
-    &.is-light
-        color: color.adjust($electric-blue, $saturation: 100%, $lightness: 20%)
-        background-color: color.adjust($electric-blue, $saturation: 100%, $lightness: 40%)
+// Button colours
+
+.button
+
+    &.is-electric-blue
+        background-color: $electric-blue
+        color: $white
         border-color: color.adjust($electric-blue, $saturation: 100%, $lightness: 10%)
 
-    &:hover
-        color: color.adjust($electric-blue, $saturation: 100%, $lightness: 20%)
-        background-color: color.adjust($electric-blue, $saturation: 100%, $lightness: 40%)
-        border-color: color.adjust($electric-blue, $saturation: 100%, $lightness: 10%)
+        &.is-light
+            color: color.adjust($electric-blue, $saturation: 100%, $lightness: 20%)
+            background-color: color.adjust($electric-blue, $saturation: 100%, $lightness: 40%)
+            border-color: color.adjust($electric-blue, $saturation: 100%, $lightness: 10%)
+
+        &:hover
+            color: color.adjust($electric-blue, $saturation: 100%, $lightness: 20%)
+            background-color: color.adjust($electric-blue, $saturation: 100%, $lightness: 40%)
+            border-color: color.adjust($electric-blue, $saturation: 100%, $lightness: 10%)
+

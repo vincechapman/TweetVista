@@ -1,51 +1,66 @@
-{% macro campaign_selection_macro(campaigns) %}
+{% macro campaign_selection(campaigns) %}
 
-    <div class="dropdown" id="client-selection-dropdown" style="display: none;">
-        <div class="dropdown-trigger">
-            <button class="input" aria-haspopup="true" aria-controls="dropdown-menu">
-                <span id="client-dropdown-placeholder">Client</span>
-                <span class="icon is-small">
-            <i class="fas fa-angle-down" aria-hidden="true"></i>
-          </span>
-            </button>
-        </div>
-        <div class="dropdown-menu" role="menu">
-            <div class="dropdown-content">
-                {% if campaigns %}
-                    {% for campaign in campaigns %}
-                        <a class="dropdown-item">
-                            {{ campaign['name'] }}
-                        </a>
-                    {% endfor %}
-                {% endif %}
-            </div>
-        </div>
-    </div>
-
-    <div class="dropdown" id="campaign-selection-dropdown">
-        <div class="dropdown-trigger">
-            <button class="input" aria-haspopup="true" aria-controls="dropdown-menu">
-                <span id="campaign-dropdown-placeholder">Campaign</span>
-                <span class="icon is-small">
-            <i class="fas fa-angle-down" aria-hidden="true"></i>
-          </span>
-            </button>
-        </div>
-        <div class="dropdown-menu" role="menu">
-            <div class="dropdown-content">
-                <div class="dropdown-item has-text-info" id="campaign-filter-message">
-                    Showing campaigns for all clients
+    <div class="columns is-vcentered is-gapless mb-0">
+        <div class="column is-narrow">
+            <div class="dropdown" id="client-selection-dropdown" style="display: none;">
+                <div class="dropdown-trigger">
+                    <button class="input border-is-electric-blue is-hot-pink" style="border-radius: 10px;" aria-haspopup="true" aria-controls="dropdown-menu">
+                        <span id="client-dropdown-placeholder">Client</span>
+                        <span class="icon is-small">
+                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                </span>
+                    </button>
                 </div>
-                <hr class="dropdown-divider">
-                {% if campaigns %}
-                    {% for campaign in campaigns %}
-                        <a class="dropdown-item campaign" data-client="{{ campaign['name'] }}" data-campaign="{{ campaign['id'] }}">
-                            {{ campaign['id'] }}
-                        </a>
-                    {% endfor %}
-                {% endif %}
+                <div class="dropdown-menu" role="menu">
+                    <div class="dropdown-content">
+                        {% if campaigns %}
+                            {% for campaign in campaigns %}
+                                <a class="dropdown-item">
+                                    {{ campaign['name'] }}
+                                </a>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         </div>
+
+        <div class="column is-narrow ml-3 mr-3 is-electric-blue">
+            <i class="fas fa-angle-double-right"></i>
+        </div>
+
+        <div class="column is-narrow mr-3">
+            <div class="dropdown" id="campaign-selection-dropdown">
+                <div class="dropdown-trigger">
+                    <button class="input border-is-electric-blue is-hot-pink" style="border-radius: 10px;" aria-haspopup="true" aria-controls="dropdown-menu">
+                        <span id="campaign-dropdown-placeholder">Campaign</span>
+                        <span class="icon is-small">
+                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                    </button>
+                </div>
+                <div class="dropdown-menu" role="menu">
+                    <div class="dropdown-content">
+                        <div class="dropdown-item has-text-info" id="campaign-filter-message">
+                            Showing campaigns for all clients
+                        </div>
+                        <hr class="dropdown-divider">
+                        {% if campaigns %}
+                            {% for campaign in campaigns %}
+                                <a class="dropdown-item campaign" data-client="{{ campaign['name'] }}" data-campaign="{{ campaign['id'] }}">
+                                    {{ campaign['id'] }}
+                                </a>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+            <button class="button is-electric-blue has-text-weight-bold" style="border-radius: 10px; border-width: 2px;">GO</button>
+        </div>
+
     </div>
 
     <script>

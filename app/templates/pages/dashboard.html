@@ -28,18 +28,28 @@
             {% include 'layouts/side_menu.html' %}
         </nav>
 
-        <main class="column">
+        <main class="column p-6">
 
-            <header class="columns is-vcentered">
+            <header class="columns is-gapless is-multiline">
 
-                <div id="tweet-wall-controls" class="column">
+                <div id="tweet-wall-controls" class="column is-narrow">
                     {# include 'layouts/filter_control.html' #}
-                    {% from 'objects/campaign_selection.html' import campaign_selection_macro %}
-                    {{ campaign_selection_macro(campaigns) }}
+                    {% from 'objects/campaign_selection.html' import campaign_selection %}
+                    {{ campaign_selection(campaigns) }}
                 </div>
 
-                <div id="account" class="column is-narrow">
+                <div class="column">
+                    {% from 'objects/campaign_filters.html' import campaign_filters %}
+                    {{ campaign_filters() }}
+                </div>
+
+                <div id="account" class="column">
                     {% include 'layouts/account.html' %}
+                </div>
+
+                <div class="column is-full">
+                    {% from 'objects/keyword_selection.html' import keyword_filters %}
+                    {{ keyword_filters(['one', 'two', 'three']) }}
                 </div>
 
             </header>
