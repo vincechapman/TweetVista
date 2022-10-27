@@ -34,6 +34,12 @@ class User(UserMixin, db.Model):
         return self.name
 
 
+class SavedTweets(db.Model):
+    """This model holds all the tweetIds for all tweets that have been saved to Locker, as well as the Ids of the users that saved them. This is a many-to-many relationship, so we'll need to use a link table."""
+
+    tweetId = db.Column(db.Text, primary_key=True)  # Our internal tweet ID, not Twitter's one.
+
+
 class Campaigns(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     is_live = db.Column(db.Boolean, nullable=False, default=False)
