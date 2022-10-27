@@ -148,6 +148,8 @@
                 }
             }
 
+            document.getElementById('loading-dots').hidden = false
+
             // Call api
             fetch('{{ url_for('api_feed.connect') }}', {
                 method: 'POST',

@@ -43,7 +43,7 @@
                     {{ campaign_filters() }}
                 </div>
 
-                <div id="account" class="column">
+                <div id="account" class="column" style="margin-top: -7px;">
                     {% include 'layouts/account.html' %}
                 </div>
 
@@ -53,6 +53,10 @@
                 </div>
 
             </header>
+
+            <div id="loading-dots" class="container is-fluid has-text-centered" style="margin-top: -1.0rem;" hidden>
+                <img src="{{ url_for('static', filename='/images/icons/loader-three-dots.gif') }}" style="height: 30px; opacity: 0.5;">
+            </div>
 
             <div id="tweet-wall-results">
                 {% include 'layouts/tweet_masonry_display.html' %}
