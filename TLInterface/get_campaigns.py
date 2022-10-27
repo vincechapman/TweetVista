@@ -1,6 +1,5 @@
 import logging
 from pprint import pprint
-from TLApi.AccessTLIServer.access_tli import web_conn, WebConnection
 from TLInterface import get_web_connection
 
 
