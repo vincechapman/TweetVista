@@ -1,0 +1,31 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+<link rel="stylesheet" href="https://bulma.io/vendor/fontawesome-free-5.15.2-web/css/all.min.css">
+<link rel="stylesheet" href="/app/static/styles/layouts/base.css">
+
+{% macro keyword_filters(keywords) %}
+    <div class="container is-fluid bg-is-white border-is-electric-blue" style="border-radius: 20px; padding: 20px;">
+        <div class="columns">
+            <div class="column is-narrow" style="max-width: 300px;">
+                <h4 class="subtitle mb-1 is-deep-purple has-text-weight-bold">Filter Options</h4>
+                <p>You are currently filtered by ALL keywords, select individual keywords to filter down your results</p>
+                <div class="columns is-gapless mt-3">
+                    <div class="column is-narrow">
+                        <button class="button is-small is-rounded mr-2">All Keywords</button>
+                    </div>
+                    <div class="column is-narrow">
+                        <button class="button is-small is-rounded">All Hashtags</button>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="p-3 bg-is-light-grey" style="height: 100%; border-radius: 20px">
+                    <div class="tags">
+                        {% for kw in keywords %}
+                            <span class="tag">{{ kw }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
