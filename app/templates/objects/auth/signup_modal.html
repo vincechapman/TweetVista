@@ -311,26 +311,33 @@
                             .then((response) => response.json())
                             .then((data) => {
 
-                                window.name = "tweetVistaMainWindow";
-                                const popup = window.open(data, "twitterAuthPopup", "popup=true, width=1000, height=500, top=100, left=100")
+                                if (data) {
 
-                                let interval = 1000
-                                let checkPopupSuccess = setInterval(function () {
-                                    fetch('{{ url_for('check_if_twitter_authorised') }}')
-                                        .then((response) => response.json())
-                                        .then(async (data) => {
-                                            if (data) {
-                                                clearInterval(checkPopupSuccess)
-                                                console.log('Popup closed by user.')
-                                                popup.close()
-                                                displayConnectedProfile(data)
-                                            } else if (popup.closed) {
-                                                clearInterval(checkPopupSuccess)
-                                                console.log('Popup closed by user.')
-                                                elem.classList.remove('is-loading', 'is-light')
-                                            }
-                                        })
-                                }, interval)
+                                    window.name = "tweetVistaMainWindow";
+                                    const popup = window.open(data, "twitterAuthPopup", "popup=true, width=1000, height=500, top=100, left=100")
+
+                                    let interval = 1000
+                                    let checkPopupSuccess = setInterval(function () {
+                                        fetch('{{ url_for('check_if_twitter_authorised') }}')
+                                            .then((response) => response.json())
+                                            .then(async (data) => {
+                                                if (data) {
+                                                    clearInterval(checkPopupSuccess)
+                                                    console.log('Popup closed by user.')
+                                                    popup.close()
+                                                    displayConnectedProfile(data)
+                                                } else if (popup.closed) {
+                                                    clearInterval(checkPopupSuccess)
+                                                    console.log('Popup closed by user.')
+                                                    elem.classList.remove('is-loading', 'is-light')
+                                                }
+                                            })
+                                    }, interval)
+
+                                } else {
+                                    alert('Failed to connect to twitter. Please try again later.')
+                                }
+
                             })
                     }
             </script>
