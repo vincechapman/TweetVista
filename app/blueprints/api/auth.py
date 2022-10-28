@@ -31,7 +31,7 @@ def signup():
 
     except Exception as e:
         print(e)
-        if 'UNIQUE constraint failed: user.email_address' in str(e):
+        if 'unique' in str(e) and 'user_email_address_key' in str(e):
             return jsonify({
                 'success': False,
                 'message': "An account is already registered with this email address. Would you like to login instead?"})
