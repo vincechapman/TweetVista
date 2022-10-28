@@ -11,18 +11,6 @@
 
 {% block body %}
 
-    {% if not current_user.is_authenticated %}
-        <input type="hidden" value="signup-step-1" id="start-step">
-        {% include 'objects/auth/signup_modal.html' %}
-    {% elif not current_user.onboarded %}
-        {% if not session['twitter_connected'] %} <!-- TODO currently checking if connected twitter is in session. Really should be checking if the we have a VALID oauth token on api side. Maybe ask for an endpoint that check if a users tokens are valid -->
-            <input type="hidden" value="signup-step-2" id="start-step">
-        {% elif not current_user.business_information_provided %}
-            <input type="hidden" value="signup-step-3" id="start-step">
-        {% endif %}
-        {% include 'objects/auth/signup_modal.html' %}
-    {% endif %}
-
     <div class="columns is-desktop">
 
         <nav id="side-menu" class="column is-3">
