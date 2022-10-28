@@ -139,6 +139,8 @@
 
             document.getElementById('campaign-dropdown-placeholder').innerHTML = this.innerHTML
 
+            let campaignId = this.getAttribute('data-campaign')
+
             // Setting chosen client to active styling
             for (let i = 0; i < campaigns.length; i++) {
                 if (campaigns[i] === this) {
@@ -148,7 +150,57 @@
                 }
             }
 
-            document.getElementById('loading-dots').hidden = false
+            // Get campaign data
+            fetch('{{ url_for('api_campaigns.get_campaign_data') }}', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'campaign': campaignId
+                })
+                })
+                .then((response) => response.json())
+                .then((value) => {
+                    console.log(value)
+                    displayCampaignKeywords(value)
+                })
+
+            function removeOldKeywords() {
+                let keywords = document.querySelectorAll('.campaign-keyword.button')
+                for (let i = 0; i < keywords.length; i++) {
+                    keywords[i].remove()
+                }
+            }
+
+            function displayCampaignKeywords(data) {
+
+                removeOldKeywords()
+
+                let keywords = data['keywords']
+
+                for (let i = 0; i < keywords.length; i++) {
+
+                    let kw = keywords[i]['text']
+
+                    let newElement = document.createElement('button')
+                    newElement.classList.add('button', 'is-small', 'bg-is-light-grey', 'campaign-keyword')
+                    newElement.style.borderRadius = '10px'
+                    newElement.style.borderColor = 'white'
+                    newElement.style.boxShadow = '1px 2px 3px rgba(0,0,0,0.16)'
+                    newElement.innerText = kw
+                    document.getElementById('campaign-keyword-buttons').appendChild(newElement)
+                }
+
+            }
+
+            document.getElementById('loading-dots').hidden = false // Showing loading dots
+
+            let oldTweets = document.querySelectorAll('.tweet-container')
+            for (let i = 0; i < oldTweets.length; i++) {
+                oldTweets[i].remove()
+            }
 
             // Call api
             fetch('{{ url_for('api_feed.connect') }}', {
@@ -159,7 +211,7 @@
                 },
                 body: JSON.stringify({
                     'client': this.getAttribute('data-client'),
-                    'campaign': this.getAttribute('data-campaign')
+                    'campaign': campaignId
                 })
                 })
                 // Retrieve its body as ReadableStream
@@ -191,6 +243,8 @@
             function create_new_html_object(tweet) {
 
                 console.log(tweet)
+
+                let tweetId = tweet['id']
 
                 let mediaType = undefined
                 let mediaUrl = undefined
@@ -263,88 +317,124 @@
 
                 // HTML Tweet Template
                 let html = `
+                    ${mediaType === 'photo' ? `<img class="tweet-media" src="${mediaUrl}" alt="The image attached to the tweet.">` : ''}
 
-                    <div class="tweet-container">
+                    <div class="tweet-content">
 
-                        ${mediaType === 'photo' ? `<img class="tweet-media" src="${mediaUrl}" alt="The image attached to the tweet.">` : ''}
+                        <div class="columns is-multiline is-vcentered mb-0">
 
-                        <div class="tweet-content">
+                            <a class="tweet-profile-pic column is-narrow pr-1 is-black" href="https://twitter.com/${authorHandle}" target="_blank">
+                                <img src="${authorProfileImage}" alt="Profile picture for tweet author.">
+                            </a>
 
-                            <div class="columns is-multiline is-vcentered mb-0">
+                            <a class="tweet-user-details column is-narrow pl-1 is-black" href="https://twitter.com/${authorHandle}" target="_blank">
+                                <div>${authorDisplayName}</div>
+                                <div>${authorHandle}</div>
+                            </a>
 
-                                <a class="tweet-profile-pic column is-narrow pr-1 is-black" href="https://twitter.com/${authorHandle}" target="_blank">
-                                    <img src="${authorProfileImage}" alt="Profile picture for tweet author.">
-                                </a>
-
-                                <a class="tweet-user-details column is-narrow pl-1 is-black" href="https://twitter.com/${authorHandle}" target="_blank">
-                                    <div>${authorDisplayName}</div>
-                                    <div>${authorHandle}</div>
-                                </a>
-
-                                <div class="column is-narrow">
-                                    <span class="icon-text tweet-track-button">
-                                        <span class="icon">
-                                            <img src="{{ url_for('static', filename='images/icons/Plus-Icon.png') }}" alt="Button to track this handle.">
-                                        </span>
-                                        <span>TRACK</span>
+                            <div class="column is-narrow">
+                                <span class="icon-text tweet-track-button">
+                                    <span class="icon">
+                                        <img src="{{ url_for('static', filename='images/icons/Plus-Icon.png') }}" alt="Button to track this handle.">
                                     </span>
-                                </div>
-
-                            </div>
-
-                            <p class="tweet-text">
-                                ${tweetText}
-                            </p>
-
-                            <div class="columns mt-1">
-                                <div class="tweet-score column has-text-right">
-                                    <span>TS</span>
-                                    <span>${twitterScore}</span>
-                                </div>
+                                    <span>TRACK</span>
+                                </span>
                             </div>
 
                         </div>
 
-                        <hr class="tweet-horizontal-line" />
+                        <p class="tweet-text">
+                            ${tweetText}
+                        </p>
 
-                        <div class="tweet-filter-controls columns is-multiline is-vcentered has-text-left m-1">
-                            <div class="column is-narrow">
-                                <span class="icon-text" onclick="{# Add a function here that uses fetch to communicate with our api, then flash the response from the api on screen #}">
-                                    <span class="icon">
-                                        <img src="{{ url_for('static', filename='images/icons/Plus-Icon.png') }}" alt="">
-                                    </span>
-                                    <span>LOCKER</span>
+                        <div class="columns mt-1">
+
+                            <div class="column">
+                                <span class="icon" data-tweet="${tweetId}" data-campaign="${campaignId}" onclick="likeTweet(this);">
+                                    <i class="far fa-heart"></i>
                                 </span>
                             </div>
 
-                            <div class="column is-narrow">
-                                <span class="icon-text" onclick="{# Add a function here that uses fetch to communicate with our api, then flash the response from the api on screen #}">
-                                    <span class="icon">
-                                        <img src="{{ url_for('static', filename='images/icons/Plus-Icon.png') }}" alt="">
-                                    </span>
-                                    <span>KEYWORDS</span>
-                                </span>
-                            </div>
-
-                            <div class="column is-narrow">
-                                <span class="icon-text" onclick="{# Add a function here that uses fetch to communicate with our api, then flash the response from the api on screen #}">
-                                    <span class="icon">
-                                        <img src="{{ url_for('static', filename='images/icons/Plus-Icon.png') }}" alt="">
-                                    </span>
-                                    <span>HASHTAGS</span>
-                                </span>
+                            <div class="tweet-score column has-text-right">
+                                <span>TS</span>
+                                <span>${twitterScore}</span>
                             </div>
                         </div>
-                        {##}
 
                     </div>
 
+                    <hr class="tweet-horizontal-line" />
+
+                    <div class="tweet-filter-controls columns is-multiline is-vcentered has-text-left m-1">
+                        <div class="column is-narrow">
+                            <span class="icon-text" onclick="{# Add a function here that uses fetch to communicate with our api, then flash the response from the api on screen #}">
+                                <span class="icon">
+                                    <img src="{{ url_for('static', filename='images/icons/Plus-Icon.png') }}" alt="">
+                                </span>
+                                <span>LOCKER</span>
+                            </span>
+                        </div>
+
+                        <div class="column is-narrow">
+                            <span class="icon-text" onclick="{# Add a function here that uses fetch to communicate with our api, then flash the response from the api on screen #}">
+                                <span class="icon">
+                                    <img src="{{ url_for('static', filename='images/icons/Plus-Icon.png') }}" alt="">
+                                </span>
+                                <span>KEYWORDS</span>
+                            </span>
+                        </div>
+
+                        <div class="column is-narrow">
+                            <span class="icon-text" onclick="{# Add a function here that uses fetch to communicate with our api, then flash the response from the api on screen #}">
+                                <span class="icon">
+                                    <img src="{{ url_for('static', filename='images/icons/Plus-Icon.png') }}" alt="">
+                                </span>
+                                <span>HASHTAGS</span>
+                            </span>
+                        </div>
+                    </div>
+                    {##}
                 `
 
                 let newElement = document.createElement('div')
+                newElement.classList.add('tweet-container')
                 newElement.innerHTML = html
                 document.getElementById('tweet-wall').insertBefore(newElement, document.querySelector('#tweet-wall > div'))
             }
+        }
+    </script>
+
+    <script>
+        function likeTweet(elem) {
+
+            let like_or_unlike = ''
+
+            if (elem.childNodes[1].classList.contains('far')) {
+                elem.childNodes[1].classList.remove('far')
+                elem.childNodes[1].classList.add('fas', 'is-hot-pink')
+                like_or_unlike = 'like'
+            } else if (elem.childNodes[1].classList.contains('fas')) {
+                elem.childNodes[1].classList.remove('fas', 'is-hot-pink')
+                elem.childNodes[1].classList.add('far')
+                like_or_unlike = 'unlike'
+            }
+
+            fetch('{{ url_for('api_feed.like_tweet') }}', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'campaign': elem.getAttribute('data-campaign'),
+                    'tweet': elem.getAttribute('data-tweet'),
+                    'like_or_unlike': like_or_unlike
+                })
+            })
+                .then((response) => response.json())
+                .then((value) => {
+                    console.log(value)
+                })
         }
     </script>
 
