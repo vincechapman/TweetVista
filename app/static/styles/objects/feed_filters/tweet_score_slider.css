@@ -5,16 +5,16 @@
   align-items: center;
 }
 
-form {
+#tweet-slider-form {
   width: 90%;
   max-width: 500px;
 }
-form #form-title {
+#tweet-slider-form #form-title {
   margin-top: 0;
   font-weight: 400;
   text-align: center;
 }
-form #debt-amount-slider {
+#tweet-slider-form #debt-amount-slider {
   display: flex;
   flex-direction: row;
   align-content: stretch;
@@ -23,7 +23,7 @@ form #debt-amount-slider {
   height: 50px;
   user-select: none;
 }
-form #debt-amount-slider::before {
+#tweet-slider-form #debt-amount-slider::before {
   content: " ";
   position: absolute;
   height: 2px;
@@ -33,20 +33,20 @@ form #debt-amount-slider::before {
   transform: translate(-50%, -50%);
   background: #000;
 }
-form #debt-amount-slider input, form #debt-amount-slider label {
+#tweet-slider-form #debt-amount-slider input, #tweet-slider-form #debt-amount-slider label {
   box-sizing: border-box;
   flex: 1;
   user-select: none;
   cursor: pointer;
 }
-form #debt-amount-slider label {
+#tweet-slider-form #debt-amount-slider label {
   display: inline-block;
   position: relative;
   width: 20%;
   height: 100%;
   user-select: none;
 }
-form #debt-amount-slider label::before {
+#tweet-slider-form #debt-amount-slider label::before {
   content: attr(data-debt-amount);
   position: absolute;
   left: 50%;
@@ -59,7 +59,7 @@ form #debt-amount-slider label::before {
   opacity: 0.85;
   transition: all 0.15s ease-in-out;
 }
-form #debt-amount-slider label::after {
+#tweet-slider-form #debt-amount-slider label::after {
   content: " ";
   position: absolute;
   left: 50%;
@@ -76,39 +76,39 @@ form #debt-amount-slider label::after {
   cursor: pointer;
   transition: all 0.15s ease-in-out;
 }
-form #debt-amount-slider label:hover::after {
+#tweet-slider-form #debt-amount-slider label:hover::after {
   transform: translate(-50%, -50%) scale(1.25);
 }
-form #debt-amount-slider input {
+#tweet-slider-form #debt-amount-slider input {
   display: none;
 }
-form #debt-amount-slider input:checked + label::before {
+#tweet-slider-form #debt-amount-slider input:checked + label::before {
   font-weight: 800;
   opacity: 1;
 }
-form #debt-amount-slider input:checked + label::after {
+#tweet-slider-form #debt-amount-slider input:checked + label::after {
   border-width: 4px;
   transform: translate(-50%, -50%) scale(0.75);
 }
-form #debt-amount-slider input:checked ~ #debt-amount-pos {
+#tweet-slider-form #debt-amount-slider input:checked ~ #debt-amount-pos {
   opacity: 1;
 }
-form #debt-amount-slider input:checked:nth-child(1) ~ #debt-amount-pos {
+#tweet-slider-form #debt-amount-slider input:checked:nth-child(1) ~ #debt-amount-pos {
   left: 10%;
 }
-form #debt-amount-slider input:checked:nth-child(3) ~ #debt-amount-pos {
+#tweet-slider-form #debt-amount-slider input:checked:nth-child(3) ~ #debt-amount-pos {
   left: 30%;
 }
-form #debt-amount-slider input:checked:nth-child(5) ~ #debt-amount-pos {
+#tweet-slider-form #debt-amount-slider input:checked:nth-child(5) ~ #debt-amount-pos {
   left: 50%;
 }
-form #debt-amount-slider input:checked:nth-child(7) ~ #debt-amount-pos {
+#tweet-slider-form #debt-amount-slider input:checked:nth-child(7) ~ #debt-amount-pos {
   left: 70%;
 }
-form #debt-amount-slider input:checked:nth-child(9) ~ #debt-amount-pos {
+#tweet-slider-form #debt-amount-slider input:checked:nth-child(9) ~ #debt-amount-pos {
   left: 90%;
 }
-form #debt-amount-slider #debt-amount-pos {
+#tweet-slider-form #debt-amount-slider #debt-amount-pos {
   display: block;
   position: absolute;
   top: 50%;
@@ -122,15 +122,15 @@ form #debt-amount-slider #debt-amount-pos {
   opacity: 0;
   z-index: 2;
 }
-form:valid #debt-amount-slider input + label::before {
+#tweet-slider-form:valid #debt-amount-slider input + label::before {
   transform: translate(-50%, 45px) scale(0.9);
   transition: all 0.15s linear;
 }
-form:valid #debt-amount-slider input:checked + label::before {
+#tweet-slider-form:valid #debt-amount-slider input:checked + label::before {
   transform: translate(-50%, 45px) scale(1.1);
   transition: all 0.15s linear;
 }
-form + button {
+#tweet-slider-form + button {
   display: block;
   position: relative;
   margin: 56px auto 0;
@@ -144,10 +144,10 @@ form + button {
   user-select: none;
   cursor: pointer;
 }
-form + button:hover:active {
+#tweet-slider-form + button:hover:active {
   transform: scale(0.9);
 }
-form:invalid + button {
+#tweet-slider-form:invalid + button {
   pointer-events: none;
   opacity: 0.25;
 }
