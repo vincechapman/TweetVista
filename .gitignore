@@ -11,9 +11,5 @@ Tweet-Vista-Wall.jpg
 # Ignore temporary twitter api module. This will eventually be removed from the project once I've integrated with tweet_locator system.
 twitter_api/
 
-# Ignores css files created by the sass compiler.
-*.css
-*.css.map
-
 /app/db.sqlite
 /token_file
