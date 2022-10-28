@@ -32,7 +32,7 @@ def get_app_credentials() -> dict or {}:
         return {}
 
 
-def get_resource_owner_credentials(consumer_key, consumer_secret, callback) -> list[str, str]:
+def get_resource_owner_credentials(consumer_key, consumer_secret, callback) -> tuple[str, str]:
     """This function returns resource owner key and secret"""
 
     oauth_request = OAuth1Session(client_key=consumer_key, client_secret=consumer_secret, callback_uri=callback)
@@ -169,6 +169,8 @@ def build_routes(app: Flask) -> None:
     @app.route('/twitter/auth')
     def authorise_account() -> Response or bool:
 
+        logging.info('Started twitter oauth process.')
+
         try:
             twitter_app = get_app_credentials()
 
@@ -184,6 +186,7 @@ def build_routes(app: Flask) -> None:
                     callback=callback)
 
                 if '' in [oauth_token, oauth_token_secret]:
+                    logging.error('Failed to get resource owner credentials.')
                     return jsonify(False)
 
                 twitter_app = {
@@ -196,7 +199,6 @@ def build_routes(app: Flask) -> None:
                 session['twitter_app'] = twitter_app
 
                 url = 'https://api.twitter.com/oauth/authorize?oauth_token=' + oauth_token + '&force_login=true'
-
                 return jsonify(url)
 
             else:
@@ -216,6 +218,8 @@ def build_routes(app: Flask) -> None:
                 'handle': current_user.twitter_handle,
                 'screenName': current_user.twitter_screen_name,
                 'profileImage': current_user.twitter_profile_image}
+            logging.info('Twitter account is already authorised.')
             return jsonify(twitter_user)
         else:
+            logging.warning('Twitter account not currently authorised. Authorise via Twitter Oauth.')
             return jsonify(False)
