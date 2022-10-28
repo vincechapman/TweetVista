@@ -35,11 +35,14 @@ def get_app_credentials() -> dict or {}:
 def get_resource_owner_credentials(consumer_key, consumer_secret, callback) -> tuple[str, str]:
     """This function returns resource owner key and secret"""
 
+    logging.info('Getting resource owner credentials:')
+
     oauth_request = OAuth1Session(client_key=consumer_key, client_secret=consumer_secret, callback_uri=callback)
     request_token = oauth_request.get('https://api.twitter.com/oauth/request_token')
 
     if request_token.status_code != 200:
         # "Any value other than 200 indicates a failure."
+        logging.error('No resource owner credentials found')
         return '', ''
 
     request_token = str.split(request_token.text, '&')
@@ -49,8 +52,10 @@ def get_resource_owner_credentials(consumer_key, consumer_secret, callback) -> t
     oauth_callback_confirmed = str.split(request_token[2], '=')[1]
 
     if oauth_callback_confirmed != 'true':
+        logging.error('Callback was not confirmed')
         return '', ''
 
+    logging.info('Success - Managed to get resource owner credentials')
     return oauth_token, oauth_token_secret
 
 
@@ -173,6 +178,8 @@ def build_routes(app: Flask) -> None:
 
         try:
             twitter_app = get_app_credentials()
+
+            logging.debug(f'Twitter app: {twitter_app}')
 
             if twitter_app:
                 name = twitter_app['name']

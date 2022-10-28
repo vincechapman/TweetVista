@@ -224,7 +224,8 @@
 
                         const {value, done} = await reader.read()
                         if (done) {
-                            console.log('Stream closed')
+                            alert('Stream closed.')
+                            document.getElementById('loading-dots').hidden = true // Showing loading dots
                             break
                         }
 
