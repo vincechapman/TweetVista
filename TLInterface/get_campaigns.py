@@ -36,10 +36,7 @@ def get_campaign_data(campaign_id: int) -> dict:
 
     campaign_data = ret_dict.get('data', {})
 
-    if campaign_data:
-        print(f'Campaign data for {campaign_id}')
-        pprint(campaign_data, indent=4)
-    else:
+    if not campaign_data:
         logging.error(f'No data found for campaign with id: {campaign_id}')
 
     return campaign_data
