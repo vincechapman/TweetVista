@@ -1,0 +1,80 @@
+.is-white {
+  color: #fff;
+}
+
+.is-black {
+  color: black;
+}
+
+.is-electric-blue {
+  color: #1BA2F3;
+}
+.is-electric-blue:hover {
+  color: #7ccaf8;
+}
+
+.is-deep-purple {
+  color: #290A5A !important;
+}
+.is-deep-purple:hover {
+  color: #5314b6 !important;
+}
+
+.is-hot-pink {
+  color: rgba(224, 24, 105, 0.73);
+}
+
+.border-is-electric-blue {
+  border: 2px solid #1BA2F3;
+  border-radius: 10px;
+}
+
+.bg-is-white {
+  background-color: #fff;
+}
+
+.bg-is-electric-blue {
+  background-color: #1BA2F3;
+}
+
+.bg-is-light-grey {
+  background-color: #E1E6EC;
+}
+
+.button.is-electric-blue {
+  background-color: #1BA2F3;
+  color: #fff;
+  border-color: #42b8ff;
+}
+.button.is-electric-blue.is-light {
+  color: #75cbff;
+  background-color: #dbf2ff;
+  border-color: #42b8ff;
+}
+.button.is-electric-blue:hover {
+  color: #75cbff;
+  background-color: #dbf2ff;
+  border-color: #42b8ff;
+}
+
+.dropdown-trigger button {
+  min-width: 200px;
+}
+
+.dropdown-menu {
+  min-width: 200px;
+}
+
+.dropdown-item:not(#campaign-filter-message) {
+  cursor: pointer;
+}
+
+#remove-filter-button {
+  cursor: pointer;
+  color: #8E8E8E;
+}
+#remove-filter-button:hover {
+  color: red;
+}
+
+/*# sourceMappingURL=campaign_dropdowns.css.map */

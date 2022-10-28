@@ -1,0 +1,87 @@
+@import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
+.is-white {
+  color: #fff;
+}
+
+.is-black {
+  color: black;
+}
+
+.is-electric-blue {
+  color: #1BA2F3;
+}
+.is-electric-blue:hover {
+  color: #7ccaf8;
+}
+
+.is-deep-purple {
+  color: #290A5A !important;
+}
+.is-deep-purple:hover {
+  color: #5314b6 !important;
+}
+
+.is-hot-pink {
+  color: rgba(224, 24, 105, 0.73);
+}
+
+.border-is-electric-blue {
+  border: 2px solid #1BA2F3;
+  border-radius: 10px;
+}
+
+.bg-is-white {
+  background-color: #fff;
+}
+
+.bg-is-electric-blue {
+  background-color: #1BA2F3;
+}
+
+.bg-is-light-grey {
+  background-color: #E1E6EC;
+}
+
+.button.is-electric-blue {
+  background-color: #1BA2F3;
+  color: #fff;
+  border-color: #42b8ff;
+}
+.button.is-electric-blue.is-light {
+  color: #75cbff;
+  background-color: #dbf2ff;
+  border-color: #42b8ff;
+}
+.button.is-electric-blue:hover {
+  color: #75cbff;
+  background-color: #dbf2ff;
+  border-color: #42b8ff;
+}
+
+#account-container {
+  text-align: right;
+}
+
+.account-user-details {
+  padding-right: 0;
+}
+
+.account-user-details > div:nth-child(1) {
+  font-weight: 500;
+}
+
+.account-user-details > div:nth-child(2) {
+  font-size: 0.8em;
+  font-weight: 300;
+  color: #8E8E8E;
+}
+
+.account-profile-picture > img {
+  margin: 0;
+  object-fit: cover;
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+}
+
+/*# sourceMappingURL=account.css.map */

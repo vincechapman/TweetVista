@@ -1,0 +1,122 @@
+.is-white {
+  color: #fff;
+}
+
+.is-black {
+  color: black;
+}
+
+.is-electric-blue {
+  color: #1BA2F3;
+}
+.is-electric-blue:hover {
+  color: #7ccaf8;
+}
+
+.is-deep-purple {
+  color: #290A5A !important;
+}
+.is-deep-purple:hover {
+  color: #5314b6 !important;
+}
+
+.is-hot-pink {
+  color: rgba(224, 24, 105, 0.73);
+}
+
+.border-is-electric-blue {
+  border: 2px solid #1BA2F3;
+  border-radius: 10px;
+}
+
+.bg-is-white {
+  background-color: #fff;
+}
+
+.bg-is-electric-blue {
+  background-color: #1BA2F3;
+}
+
+.bg-is-light-grey {
+  background-color: #E1E6EC;
+}
+
+.button.is-electric-blue {
+  background-color: #1BA2F3;
+  color: #fff;
+  border-color: #42b8ff;
+}
+.button.is-electric-blue.is-light {
+  color: #75cbff;
+  background-color: #dbf2ff;
+  border-color: #42b8ff;
+}
+.button.is-electric-blue:hover {
+  color: #75cbff;
+  background-color: #dbf2ff;
+  border-color: #42b8ff;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("../../fonts/Poppins-Font-2/Poppins-Regular.ttf");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("../../fonts/Poppins-Font-2/Poppins-Bold.ttf");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("../../fonts/Poppins-Font-2/Poppins-Light.ttf");
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("../../fonts/Poppins-Font-2/Poppins-Medium.ttf");
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("../../fonts/Poppins-Font-2/Poppins-SemiBold.ttf");
+  font-weight: 600;
+  font-style: normal;
+}
+* {
+  font-family: "Poppins", sans-serif;
+}
+
+a {
+  color: #1BA2F3;
+}
+
+.title {
+  color: black;
+}
+
+.subtitle {
+  color: #8E8E8E;
+}
+
+#tweet-wall {
+  columns: 300px;
+  column-gap: 0.5rem;
+}
+
+#side-menu {
+  max-width: 200px;
+  min-height: 100vh;
+  padding-right: 0;
+  padding-bottom: 0;
+}
+
+main {
+  background-color: #EFF0F2;
+}
+
+/*# sourceMappingURL=dashboard.css.map */
