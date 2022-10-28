@@ -51,6 +51,9 @@ def create_app():
     from . blueprints.api.feed import feed as api_feed_bp
     app.register_blueprint(api_feed_bp)
 
+    from . blueprints.api.campaigns import campaigns as api_campaign_bp
+    app.register_blueprint(api_campaign_bp)
+
     from . blueprints.api.auth import auth as api_auth_bp
     app.register_blueprint(api_auth_bp)
 
