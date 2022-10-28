@@ -1,0 +1,67 @@
+{% extends 'layouts/base.html' %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/pages/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/layouts/side_menu.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/layouts/account.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/objects/tweet.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/objects/campaign_dropdowns.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/styles/objects/feed_filters/tweet_score_slider.css') }}">
+{% endblock %}
+
+{% block body %}
+
+    <div class="columns is-desktop">
+
+        <nav id="side-menu" class="column is-3">
+            {% include 'layouts/side_menu.html' %}
+        </nav>
+
+        <main class="column p-6">
+
+            <header class="columns is-gapless is-multiline">
+
+                <div id="tweet-wall-controls" class="column is-narrow">
+                    {# include 'layouts/filter_control.html' #}
+                    {% from 'objects/campaign_selection.html' import campaign_selection %}
+                    {{ campaign_selection(campaigns) }}
+                </div>
+
+                <div class="column">
+                    {% from 'objects/campaign_filters.html' import campaign_filters %}
+                    {{ campaign_filters() }}
+                </div>
+
+                <div id="account" class="column" style="margin-top: -7px;">
+                    {% include 'layouts/account.html' %}
+                </div>
+
+                <div class="column is-full">
+
+                    {% from 'objects/keyword_selection.html' import keyword_filters %}
+                    {{ keyword_filters() }}
+
+                    {% from 'objects/feed_filters/tweet_score_slider.html' import tweet_score_slider %}
+                    {{ tweet_score_slider() }}
+
+                </div>
+
+                <script>
+                    {% include 'js/feed_filters/show_hide_filters.js' %}
+                </script>
+
+            </header>
+
+            <div id="loading-dots" class="container is-fluid has-text-centered" style="margin-top: -1.0rem;" hidden>
+                <img src="{{ url_for('static', filename='/images/icons/loader-three-dots.gif') }}" style="height: 30px; opacity: 0.5;">
+            </div>
+
+            <div id="tweet-wall-results">
+                {% include 'layouts/tweet_masonry_display.html' %}
+            </div>
+
+        </main>
+
+    </div>
+
+{% endblock %}

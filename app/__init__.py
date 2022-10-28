@@ -48,10 +48,13 @@ def create_app():
     from . blueprints.dashboard import dashboard as dashboard_bp
     app.register_blueprint(dashboard_bp)
 
+    from . blueprints.campaigns import campaigns as campaigns_bp
+    app.register_blueprint(campaigns_bp)
+
     from . blueprints.api.feed import feed as api_feed_bp
     app.register_blueprint(api_feed_bp)
 
-    from . blueprints.api.campaigns import campaigns as api_campaign_bp
+    from . blueprints.api.campaigns import api_campaigns as api_campaign_bp
     app.register_blueprint(api_campaign_bp)
 
     from . blueprints.api.auth import auth as api_auth_bp
