@@ -1,0 +1,37 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+<link rel="stylesheet" href="/app/static/styles/objects/feed_filters/tweet_score_slider.css">
+<link rel="stylesheet" href="/app/static/styles/layouts/base.css">
+
+{% macro tweet_score_slider() %}
+    <div id="tweet-score-slider" class="container is-fluid bg-is-white border-is-electric-blue campaign-filter-field" style="border-radius: 10px; padding: 20px;" hidden>
+        <div class="columns is-desktop">
+            <div class="column is-narrow" style="max-width: 300px;">
+                <h4 class="subtitle mb-1 is-deep-purple has-text-weight-bold">Twitter Score Filter</h4>
+                <p>Our proprietary algorithm scores each Twitter account based on dozens of factors. This score provides an indication of the kind of impact the tweet is likely to have.</p>
+            </div>
+            <div class="column">
+                <div class="p-3 bg-is-light-grey" style="height: 100%; border-radius: 10px; overflow: clip;">
+                    <div id="form-wrapper">
+                        <form action="/p/quote.php" method="GET">
+                            <p id="form-title">What's the minimum Twitter account score you'd like to see?</p>
+                            <div id="debt-amount-slider">
+                                <input type="radio" name="debt-amount" id="1" value="1" required>
+                                <label for="1" data-debt-amount="Show all"></label>
+                                <input type="radio" name="debt-amount" id="2" value="2" required>
+                                <label for="2" data-debt-amount="< 250"></label>
+                                <input type="radio" name="debt-amount" id="3" value="3" required>
+                                <label for="3" data-debt-amount="< 500"></label>
+                                <input type="radio" name="debt-amount" id="4" value="4" required>
+                                <label for="4" data-debt-amount="< 750"></label>
+                                <input type="radio" name="debt-amount" id="5" value="5" required>
+                                <label for="5" data-debt-amount="< 1000"></label>
+                                <div id="debt-amount-pos"></div>
+                            </div>
+                        </form>
+                        <button class="button is-small is-rounded is-electric-blue" type="submit">Apply filter</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}

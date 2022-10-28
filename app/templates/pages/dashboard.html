@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/layouts/account.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/objects/tweet.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/objects/campaign_dropdowns.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/styles/objects/feed_filters/tweet_score_slider.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -48,9 +49,18 @@
                 </div>
 
                 <div class="column is-full">
+
                     {% from 'objects/keyword_selection.html' import keyword_filters %}
                     {{ keyword_filters() }}
+
+                    {% from 'objects/feed_filters/tweet_score_slider.html' import tweet_score_slider %}
+                    {{ tweet_score_slider() }}
+
                 </div>
+
+                <script>
+                    {% include 'js/feed_filters/show_hide_filters.js' %}
+                </script>
 
             </header>
 
