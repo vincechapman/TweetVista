@@ -42,7 +42,7 @@ def get_resource_owner_credentials(consumer_key, consumer_secret, callback) -> t
 
     if request_token.status_code != 200:
         # "Any value other than 200 indicates a failure."
-        logging.error('No resource owner credentials found')
+        logging.error(f'No resource owner credentials found. \nSTATUS CODE: {request_token.status_code} \nMESSAGE: {request_token.reason}')
         return '', ''
 
     request_token = str.split(request_token.text, '&')
