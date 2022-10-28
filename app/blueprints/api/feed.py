@@ -1,4 +1,5 @@
 import json
+import logging
 
 from flask import Blueprint, render_template, request, jsonify, current_app, Response
 from flask_login import login_required, current_user
@@ -54,3 +55,39 @@ def connect():
         #         print(t)
 
         return tweet_stream
+
+
+@feed.route('/likeTweet', methods=['POST'])
+# @login_required
+def like_tweet():
+
+    print('api/likeTweet called!')
+
+    try:
+        request_body = json.loads(request.data)
+    except json.decoder.JSONDecodeError as e:
+        print('FAILED: request_body = json.loads(request.data)')
+        print(e)
+        return 'Failed to get stream.', 404
+    else:
+        tweet = request_body['tweet']
+        campaign = request_body['campaign']
+        like_or_unlike = request_body['like_or_unlike']
+
+    from TLInterface import get_web_connection
+
+    wc = get_web_connection()
+
+    try:
+        if like_or_unlike == 'like':
+            response = wc.like_tweet(campaign, tweet)
+        elif like_or_unlike == 'unlike':
+            response = wc.unlike_tweet(campaign, tweet)
+        else:
+            response = 'Choose either like or unlike tweet.'
+
+        print(response)
+        return jsonify(True)
+    except Exception as e:
+        logging.error(e)
+        return jsonify(False)
