@@ -16,3 +16,4 @@ twitter_api/
 *.css.map
 
 /app/db.sqlite
+/token_file
