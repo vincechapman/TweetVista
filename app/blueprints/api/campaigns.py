@@ -2,10 +2,10 @@ import json
 
 from flask import Blueprint, request, jsonify
 
-campaigns = Blueprint('api_campaigns', __name__, url_prefix='/api/campaigns')
+api_campaigns = Blueprint('api_campaigns', __name__, url_prefix='/api/campaigns')
 
 
-@campaigns.route('/getCampaignData', methods=['POST'])
+@api_campaigns.route('/getCampaignData', methods=['POST'])
 def get_campaign_data():
 
     print('api/getCampaignData called!')
