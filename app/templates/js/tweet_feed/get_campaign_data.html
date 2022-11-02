@@ -1,0 +1,54 @@
+{% macro get_campaign_data_macro(campaignId) %}
+    <script>
+        // Get campaign data
+        fetch('{{ url_for('api_campaigns.get_campaign_data') }}', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'campaign': {{ campaignId }}
+            })
+            })
+            .then((response) => response.json())
+            .then((value) => {
+                console.log(value)
+                displayCampaignKeywords(value)
+            })
+
+        function displayCampaignKeywords(data) {
+
+            {# removeOldKeywords() #}
+
+            let keywords = data['keywords']
+
+            for (let i = 0; i < keywords.length; i++) {
+
+                let kw = keywords[i]['text']
+
+                let newElement = document.createElement('button')
+                newElement.classList.add('button', 'is-small', 'bg-is-light-grey', 'campaign-keyword')
+                newElement.style.borderRadius = '10px'
+                newElement.style.borderColor = 'white'
+                newElement.style.boxShadow = '1px 2px 3px rgba(0,0,0,0.16)'
+                newElement.innerText = kw
+                document.getElementById('campaign-keyword-buttons').appendChild(newElement)
+            }
+
+        }
+
+        document.getElementById('loading-dots').hidden = false // Showing loading dots
+
+        {#
+        function removeOldTweets() {
+            let oldTweets = document.querySelectorAll('.tweet-container')
+            for (let i = 0; i < oldTweets.length; i++) {
+                oldTweets[i].remove()
+            }
+        }
+        removeOldTweets()
+        #}
+
+    </script>
+{% endmacro %}

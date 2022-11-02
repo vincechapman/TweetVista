@@ -1,0 +1,87 @@
+<script>
+    // Displays client dropdown only if JS is available
+    document.getElementById('client-selection-dropdown').style.display = 'inline-flex'
+
+    // Adding toggle for dropdown menus
+    const dropDowns = document.getElementsByClassName('dropdown')
+    function toggleDropdown() {
+        this.classList.toggle('is-active')
+    }
+    for (let i = 0; i < dropDowns.length; i++) {
+        dropDowns[i].addEventListener('click', toggleDropdown, false);
+    }
+
+    // Adding ability to filter campaigns by client
+    const clients = document.querySelectorAll('#client-selection-dropdown > .dropdown-menu > .dropdown-content > .dropdown-item')
+    const campaigns = document.querySelectorAll('#campaign-selection-dropdown > .dropdown-menu > .dropdown-content > .dropdown-item.campaign')
+    const originalCampaignFilterMessage = document.getElementById('campaign-filter-message').innerHTML
+
+    function removeClientFilter() {
+        for (let i = 0; i < campaigns.length; i++) {
+            campaigns[i].style.display = 'block'
+        }
+        for (let i = 0; i < clients.length; i++) {
+            clients[i].classList.remove('is-active')
+        }
+
+        // Set text back to default
+        document.getElementById('campaign-filter-message').innerHTML = originalCampaignFilterMessage
+        document.getElementById('client-dropdown-placeholder').innerText = 'Client'
+
+    }
+
+    function selectClientFilter() {
+
+        let chosen_client = this.innerText
+
+        // Sets dropdown placeholder to chosen client
+        document.getElementById('client-dropdown-placeholder').innerText = chosen_client
+
+        // Setting chosen client to active styling
+        for (let i = 0; i < clients.length; i++) {
+            if (clients[i] === this) {
+                clients[i].classList.add('is-active')
+            } else {
+                clients[i].classList.remove('is-active')
+            }
+        }
+
+        // Hides all but selected client campaigns, plus changes message at the top.
+        document.getElementById('campaign-filter-message').innerHTML = `Only showing campaigns for ${chosen_client} <div id="remove-filter-button" onclick="removeClientFilter()">Remove filter?</div>`
+        for (let i = 0; i < campaigns.length; i++) {
+            if (campaigns[i].getAttribute('data-client') === chosen_client) {
+                campaigns[i].style.display = 'block'
+            } else {
+                campaigns[i].style.display = 'none'
+            }
+        }
+    }
+
+    // Event listener to check if a client has been clicked
+    for (let i = 0; i < clients.length; i++) {
+        clients[i].addEventListener('click', selectClientFilter, false);
+    }
+
+
+
+    // Event listener to check if a campaign has been clicked
+    for (let i = 0; i < campaigns.length; i++) {
+        campaigns[i].addEventListener('click', campaignClick, false);
+    }
+
+    function campaignClick() {
+
+        document.getElementById('campaign-dropdown-placeholder').innerHTML = this.innerHTML
+
+        let campaignId = this.getAttribute('data-campaign')
+
+        // Setting chosen client to active styling
+        for (let i = 0; i < campaigns.length; i++) {
+            if (campaigns[i] === this) {
+                campaigns[i].classList.add('is-active')
+            } else {
+                campaigns[i].classList.remove('is-active')
+            }
+        }
+    }
+</script>
