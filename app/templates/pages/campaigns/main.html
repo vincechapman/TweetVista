@@ -1,0 +1,38 @@
+{% extends 'layouts/base.html' %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/pages/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/layouts/side_menu.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/layouts/account.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/objects/tweet.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/objects/campaign_dropdowns.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/objects/feed_filters/tweet_score_slider.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/pages/campaigns.css') }}">
+{% endblock %}
+
+{% block body %}
+
+    <form action="#" method="post">
+
+        <div class="columns is-desktop">
+
+            <nav id="side-menu" class="column is-3 is-hidden-touch">
+                {% include 'layouts/side_menu.html' %}
+            </nav>
+
+            <main class="column">
+                <section class="section pb-1">
+                    <div class="columns is-desktop is-multiline">
+                        {% from 'pages/campaigns/campaigns_table.html' import campaigns_table_macro %}
+                        {{ campaigns_table_macro(campaigns) }}
+                        {% from 'pages/campaigns/create_new_campaign.html' import create_new_campaign_macro %}
+                        {{ create_new_campaign_macro(countries_list) }}
+                    </div>
+                </section>
+            </main>
+
+        </div>
+
+    </form>
+
+{% endblock %}

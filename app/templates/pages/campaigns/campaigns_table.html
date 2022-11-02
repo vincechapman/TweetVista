@@ -1,0 +1,72 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+<link rel="stylesheet" href="https://bulma.io/vendor/fontawesome-free-5.15.2-web/css/all.min.css">
+<link rel="stylesheet" href="/app/static/styles/layouts/base.css">
+<link rel="stylesheet" href="/app/static/styles/pages/campaigns.css">
+
+{% macro campaigns_table_macro(campaigns) %}
+    <div class="column is-full">
+        <div class="container is-fluid campaign-section">
+            <h1 class="title is-deep-purple">Campaigns</h1>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Campaign Name</th>
+                    <th>Type</th>
+                    <th>Active</th>
+                    <th>Tweets</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Pause/Run</th>
+                    <th>View Campaign</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for cmp in campaigns %}
+                    <tr data-campaign-id="{{ cmp['id'] }}" data-campaign-name="{{ cmp['name'] }}">
+                        <td>{{ cmp['name'] }}</td>
+                        <td>{{ cmp['type'] }}</td>
+                        <td>
+                            {% if cmp['is_active'] %}
+                                <img class="campaign-table-icon" src="{{ url_for('static', filename='images/icons/Tick-Icon.jpg') }}" alt="Campaign is active">
+                            {% else %}
+                                <img class="campaign-table-icon" src="{{ url_for('static', filename='images/icons/X-Icon.jpg') }}" alt="Campaign is not active">
+                            {% endif %}
+                        </td>
+                        <td>{{ cmp['tweet_count'] }}</td>
+                        <td>{{ cmp['start_at'] }}</td>
+                        <td>{{ cmp['end_at'] }}</td>
+                        <td>
+                            {% if cmp['is_active'] %}
+                                <img class="campaign-table-icon" src="{{ url_for('static', filename='images/icons/Pause-Icon.jpg') }}" alt="Campaign is active" onclick="startStopCampaign(this, 'stop');">
+                            {% else %}
+                                <img class="campaign-table-icon" src="{{ url_for('static', filename='images/icons/Play-Icon.jpg') }}" alt="Campaign is not active" onclick="startStopCampaign(this, 'start');">
+                            {% endif %}
+                        </td>
+                        <td><a href="{{ url_for('campaigns.view_campaign', campaign_id=cmp['id']) }}">View {{ cmp['name'] }}</a></td>
+                        <td><img class="campaign-table-icon" src="{{ url_for('static', filename='images/icons/Bin-Icon.jpg') }}" alt="Campaign is not active" onclick="deleteCampaign(this);"></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <style>
+        .campaign-table-icon {
+            height: 25px;
+        }
+    </style>
+
+    <script>
+        {% include 'js/campaigns/start_pause_campaigns.js' %}
+        {% include 'js/campaigns/delete_campaign.js' %}
+    </script>
+
+{% endmacro %}
+
+<style>
+    body {
+        background-color: #e8e8e8;
+    }
+</style>

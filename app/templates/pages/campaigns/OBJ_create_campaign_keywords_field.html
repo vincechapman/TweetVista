@@ -1,0 +1,23 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+<link rel="stylesheet" href="https://bulma.io/vendor/fontawesome-free-5.15.2-web/css/all.min.css">
+<link rel="stylesheet" href="/app/static/styles/layouts/base.css">
+<link rel="stylesheet" href="/app/static/styles/pages/campaigns.css">
+
+{% macro keywords_field(parent) %}
+    <div id="{{ parent }}" class="border-is-light-grey p-4 mt-3 keyword-fields-container"></div>
+{% endmacro %}
+
+
+<style>
+    @media only screen and (max-width: 1023px) {
+        .keyword-fields-container > div.columns:not(:first-child) {
+            margin-top: 30px;
+        }
+    }
+</style>
+
+
+<script src="/app/templates/js/create_campaign_form/add_remove_keywords.js">
+    addKeyword(1, 'positive')
+</script>
+
