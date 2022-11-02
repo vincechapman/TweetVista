@@ -30,7 +30,6 @@ def signup():
         login_user(new_user_obj, remember=True)
 
     except Exception as e:
-        print(e)
         if 'unique' in str(e) and 'user_email_address_key' in str(e):
             return jsonify({
                 'success': False,
@@ -40,6 +39,7 @@ def signup():
                 'success': False,
                 'message': "Please check you have provided all required details."})
         else:
+            print(e)
             return jsonify({
                 'success': False,
                 'message': "Account not created. Server side error."})
