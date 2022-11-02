@@ -22,12 +22,17 @@
 }
 
 .is-hot-pink {
-  color: rgba(224, 24, 105, 0.73);
+  color: rgba(224, 24, 105, 0.73) !important;
 }
 
 .border-is-electric-blue {
-  border: 2px solid #1BA2F3;
-  border-radius: 10px;
+  border: 2px solid #1BA2F3 !important;
+  border-radius: 10px !important;
+}
+
+.border-is-light-grey {
+  border: 2px solid #E1E6EC !important;
+  border-radius: 10px !important;
 }
 
 .bg-is-white {
