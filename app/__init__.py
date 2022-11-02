@@ -35,7 +35,7 @@ def create_app():
         return User.query.get(int(user_id))
 
     # Setting up homepage
-    homepage = 'dashboard.main'
+    homepage = 'campaigns.main'
 
     app.add_url_rule('/', endpoint=homepage, methods=['GET', 'POST'])
 
