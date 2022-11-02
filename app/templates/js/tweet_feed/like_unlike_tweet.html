@@ -1,0 +1,33 @@
+<script>
+    function likeTweet(elem) {
+
+        let like_or_unlike = ''
+
+        if (elem.childNodes[1].classList.contains('far')) {
+            elem.childNodes[1].classList.remove('far')
+            elem.childNodes[1].classList.add('fas', 'is-hot-pink')
+            like_or_unlike = 'like'
+        } else if (elem.childNodes[1].classList.contains('fas')) {
+            elem.childNodes[1].classList.remove('fas', 'is-hot-pink')
+            elem.childNodes[1].classList.add('far')
+            like_or_unlike = 'unlike'
+        }
+
+        fetch('{{ url_for('api_feed.like_tweet') }}', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'campaign': elem.getAttribute('data-campaign'),
+                'tweet': elem.getAttribute('data-tweet'),
+                'like_or_unlike': like_or_unlike
+            })
+        })
+            .then((response) => response.json())
+            .then((value) => {
+                console.log(value)
+            })
+    }
+</script>
