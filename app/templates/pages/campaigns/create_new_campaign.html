@@ -1,0 +1,172 @@
+<link rel="stylesheet" href="https://bulma.io/vendor/fontawesome-free-5.15.2-web/css/all.min.css">
+<link rel="stylesheet" href="/app/static/styles/pages/campaigns.css">
+<link rel="stylesheet" href="/app/static/styles/layouts/base.css">
+
+<div class="columns is-desktop">
+
+    {% macro create_new_campaign_macro(countries_list) %}
+        <div class="column is-half-desktop">
+            <div class="container is-fluid campaign-section">
+                <h2 class="title is-deep-purple">Create a New Campaign</h2>
+
+                <div class="field">
+                    <label class="label" for="campaign-name">To get started name your Campaign</label>
+                    <div class="control">
+                        <input id="campaign-name" class="input" name="campaign-name" type="text" placeholder="Campaign Name" required>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label" for="campaign-description">Campaign Description</label>
+                    <div class="control">
+                        <textarea id="campaign-description" class="textarea" name="campaign-description" placeholder="Add a brief description of your Campaign"></textarea>
+                    </div>
+                </div>
+
+                <!-- date range TODO: Add date range here -->
+
+
+                <!-- Campaign type -->
+                <div class="field">
+                    <label class="label" for="campaign-type">Select Type of Campaign</label>
+                    <div class="control">
+                        <div class="select">
+                            <select id="campaign-type" name="campaign-type" required onchange="showHideAffiliateField(this);">
+                                <option value="" disabled selected hidden>Select Type</option>
+                                <option value="affiliate">Affiliate Campaign</option>
+                                <option value="brand-protection">Brand Protection</option>
+                                <option value="trending">Trending</option>
+                                <option value="profile">Profile</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    function showHideAffiliateField(elem) {
+                        document.getElementById('affiliate-details-field').hidden = elem.value !== 'affiliate'
+                        document.getElementById('affiliate-name').required = elem.value === 'affiliate'
+                        document.getElementById('affiliate-url').required = elem.value === 'affiliate'
+                    }
+                </script>
+
+
+                <!-- Affiliate Link Details -->
+                <div id="affiliate-details-field" class="field" hidden>
+                    <h3 class="subtitle is-deep-purple mb-1 is-size-4 has-text-weight-bold">Affiliate Link Details</h3>
+                    <p>You selected an Affiliate Campaign which needs link info.</p>
+                    <div class="border-is-electric-blue p-4 mt-3">
+
+                        <div class="field">
+                            <label class="label" for="affiliate-name" >Affiliate Name</label>
+                            <div class="control">
+                                <input id="affiliate-name" name="affiliate-name" class="input" type="text">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="affiliate-url" >Destination URL</label>
+                            <div class="control">
+                                <input id="affiliate-url" name="affiliate-url" class="input" type="text">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="affiliate-short-url" >Enter shortcode to appear as link url</label>
+                            <div class="control">
+                                <input id="affiliate-short-url" name="affiliate-short-url" class="input" type="text">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                {% from 'pages/campaigns/OBJ_create_campaign_keywords_field.html' import keywords_field %}
+
+                <!-- Positive keywords -->
+                <div class="field">
+                    <h3 class="subtitle is-deep-purple mb-1 is-size-4 has-text-weight-bold">Keywords</h3>
+                    <p>Add Keywords to be included in your Campaign.</p>
+
+                    {{ keywords_field('positive-keywords-field') }}
+                </div>
+
+                <!-- Negative keywords -->
+                <div class="field">
+                    <h3 class="subtitle is-deep-purple mb-1 is-size-4 has-text-weight-bold">Negative Keywords</h3>
+                    <p>Exclude Keywords, Phrases, Hashtags or Handles</p>
+                    {{ keywords_field('negative-keywords-field') }}
+                </div>
+
+                <script>
+                    {% include 'js/create_campaign_form/add_remove_keywords.js' %}
+                    addKeyword(1, 'positive-keywords-field')
+                    addKeyword(1, 'negative-keywords-field')
+                </script>
+
+            </div>
+        </div>
+
+        <div class="column is-half-desktop">
+            <div class="container is-fluid campaign-section">
+
+                <h2 class="title is-deep-purple">Campaign location</h2>
+
+                <div class="field">
+                    <label class="label" for="campaign-location-country">Country Location - Country location of the Tweet</label>
+                    <div class="control">
+                        <div class="select">
+                            <select id="campaign-location-country" name="campaign-location-country">
+                                <option value="" disabled selected hidden>Any Country</option>
+                                {% for country_code in countries_list %}
+                                    <option value="{{ country_code }}">{{ countries_list[country_code] }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label" for="campaign-location-city">City/Town Location - Optional</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Enter Town or City" name="campaign-location-city" id="campaign-location-city">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label" for="campaign-location-radius" >Location Radius - Optional</label>
+                    <div class="control">
+                        <div class="select">
+                            <select id="campaign-location-radius" name="campaign-location-radius">
+                                <option value="10">10 Miles</option>
+                                <option value="25">25 Miles</option>
+                                <option value="50">50 Miles</option>
+                                <option value="100">100 Miles</option>
+                                <option value="200">200 Miles</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="has-text-right is-fullwidth mt-6">
+                    <button class="button is-electric-blue" type="submit" name="submit" value="create-campaign">Create and launch</button>
+                </div>
+
+            </div>
+        </div>
+
+        <style>
+            #campaign-creation-form > div > div > div > .field {
+                margin: 20px auto;
+            }
+
+        </style>
+
+    {% endmacro %}
+
+</div>
+
+<style>
+    body {
+        background-color: lightgray;
+    }
+</style>
