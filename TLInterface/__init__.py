@@ -31,8 +31,6 @@ def web_conn(usr=None, pwd=None, url=None, sessionid=None):
 
 def get_web_connection(user: str = 'd.hagan', password: str = 'changeme') -> WebConnection or bool:
 
-    # Line here that checks if there is already a wc saved in session object, if so return that, else return below code.
-
     try:
         authenticate_user(user, password)
     except Exception as e:
@@ -44,6 +42,5 @@ def get_web_connection(user: str = 'd.hagan', password: str = 'changeme') -> Web
     except Exception as e:
         logging.error(f'Failed to create web connection, due to following error:\n\n{e}')
         return False
-    else:
-        # Add an option here for saving wc to a session object if it doesn't already exist
-        return wc
+
+    return wc
