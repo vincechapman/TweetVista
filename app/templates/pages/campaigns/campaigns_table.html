@@ -22,31 +22,33 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for cmp in campaigns %}
-                    <tr data-campaign-id="{{ cmp['id'] }}" data-campaign-name="{{ cmp['name'] }}">
-                        <td>{{ cmp['name'] }}</td>
-                        <td>{{ cmp['type'] }}</td>
-                        <td>
-                            {% if cmp['is_active'] %}
-                                <img class="campaign-table-icon" src="{{ url_for('static', filename='images/icons/Tick-Icon.jpg') }}" alt="Campaign is active">
-                            {% else %}
-                                <img class="campaign-table-icon" src="{{ url_for('static', filename='images/icons/X-Icon.jpg') }}" alt="Campaign is not active">
-                            {% endif %}
-                        </td>
-                        <td>{{ cmp['tweet_count'] }}</td>
-                        <td>{{ cmp['start_at'] }}</td>
-                        <td>{{ cmp['end_at'] }}</td>
-                        <td>
-                            {% if cmp['is_active'] %}
-                                <img class="campaign-table-icon" src="{{ url_for('static', filename='images/icons/Pause-Icon.jpg') }}" alt="Campaign is active" onclick="startStopCampaign(this, 'stop');">
-                            {% else %}
-                                <img class="campaign-table-icon" src="{{ url_for('static', filename='images/icons/Play-Icon.jpg') }}" alt="Campaign is not active" onclick="startStopCampaign(this, 'start');">
-                            {% endif %}
-                        </td>
-                        <td><a href="{{ url_for('campaigns.view_campaign', campaign_id=cmp['id']) }}">View {{ cmp['name'] }}</a></td>
-                        <td><img class="campaign-table-icon" src="{{ url_for('static', filename='images/icons/Bin-Icon.jpg') }}" alt="Campaign is not active" onclick="deleteCampaign(this);"></td>
-                    </tr>
-                {% endfor %}
+                {% if campaigns %}
+                    {% for cmp in campaigns %}
+                        <tr data-campaign-id="{{ cmp['id'] }}" data-campaign-name="{{ cmp['name'] }}">
+                            <td>{{ cmp['name'] }}</td>
+                            <td>{{ cmp['type'] }}</td>
+                            <td>
+                                {% if cmp['is_active'] %}
+                                    <img class="campaign-table-icon" src="{{ url_for('static', filename='images/icons/Tick-Icon.jpg') }}" alt="Campaign is active">
+                                {% else %}
+                                    <img class="campaign-table-icon" src="{{ url_for('static', filename='images/icons/X-Icon.jpg') }}" alt="Campaign is not active">
+                                {% endif %}
+                            </td>
+                            <td>{{ cmp['tweet_count'] }}</td>
+                            <td>{{ cmp['start_at'] }}</td>
+                            <td>{{ cmp['end_at'] }}</td>
+                            <td>
+                                {% if cmp['is_active'] %}
+                                    <img class="campaign-table-icon" src="{{ url_for('static', filename='images/icons/Pause-Icon.jpg') }}" alt="Campaign is active" onclick="startStopCampaign(this, 'stop');">
+                                {% else %}
+                                    <img class="campaign-table-icon" src="{{ url_for('static', filename='images/icons/Play-Icon.jpg') }}" alt="Campaign is not active" onclick="startStopCampaign(this, 'start');">
+                                {% endif %}
+                            </td>
+                            <td><a href="{{ url_for('campaigns.view_campaign', campaign_id=cmp['id']) }}">View {{ cmp['name'] }}</a></td>
+                            <td><img class="campaign-table-icon" src="{{ url_for('static', filename='images/icons/Bin-Icon.jpg') }}" alt="Campaign is not active" onclick="deleteCampaign(this);"></td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
                 </tbody>
             </table>
         </div>
