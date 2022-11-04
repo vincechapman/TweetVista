@@ -12,7 +12,7 @@ feed = Blueprint('api_feed', __name__, url_prefix='/api/feed')
 """
 
 
-def check_authorisation(client, campaign):
+def check_authorisation(campaign):
 
     """
     Checks if the user is authorised to view the selected client and campaign
@@ -21,7 +21,7 @@ def check_authorisation(client, campaign):
 
     return True  # temporary until this has been set up on db side
 
-    if (client in current_user.clients) and (campaign in current_user.campaigns):
+    if ('client' in current_user.clients) and (campaign in current_user.campaigns):
         return True
     else:
         return False
@@ -42,7 +42,7 @@ def connect():
         client = request_body['client']
         campaign = request_body['campaign']
 
-        if not check_authorisation(client, campaign):
+        if not check_authorisation(campaign):
             return False
 
         from TLInterface.get_tweet_feed import get_tweet_stream
@@ -68,7 +68,7 @@ def like_tweet():
     except json.decoder.JSONDecodeError as e:
         print('FAILED: request_body = json.loads(request.data)')
         print(e)
-        return 'Failed to get stream.', 404
+        return jsonify(False)
     else:
         tweet = request_body['tweet']
         campaign = request_body['campaign']
