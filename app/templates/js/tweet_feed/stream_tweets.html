@@ -34,6 +34,8 @@
                         newValue = JSON.parse(newValue)
                         create_new_html_object(newValue)
                     } catch (SyntaxError) {
+                        console.error(SyntaxError, SyntaxError.message)  // TODO: Not all tweets are printing to console. Some are being caught by this error: SyntaxError: Unexpected non-whitespace character after JSON at position 2974at JSON.parse (<anonymous>) at 37:559:41 'Unexpected non-whitespace character after JSON at position 2974'
+                        console.log(newValue)
                     }
                 }
             })
@@ -169,7 +171,7 @@
 
                 <div class="tweet-filter-controls columns is-multiline is-vcentered has-text-left m-1">
                     <div class="column is-narrow">
-                        <span class="icon-text" onclick="{# Add a function here that uses fetch to communicate with our api, then flash the response from the api on screen #}">
+                        <span class="icon-text" style="cursor: pointer;" data-tweet="${tweetId}" data-campaign="${campaignId}" onclick="saveTweet(this);">
                             <span class="icon">
                                 <img src="{{ url_for('static', filename='images/icons/Plus-Icon.png') }}" alt="">
                             </span>
