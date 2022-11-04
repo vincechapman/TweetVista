@@ -39,7 +39,6 @@ def connect():
         print(e)
         return 'Failed to get stream.', 404
     else:
-        client = request_body['client']
         campaign = request_body['campaign']
 
         if not check_authorisation(campaign):
@@ -48,11 +47,6 @@ def connect():
         from TLInterface.get_tweet_feed import get_tweet_stream
 
         tweet_stream = get_tweet_stream(campaign_id=campaign)
-
-        # # Note that the front end stream won't run it this for loop is uncommented
-        # if tweet_stream:
-        #     for t in tweet_stream:
-        #         print(t)
 
         return tweet_stream
 
@@ -91,3 +85,28 @@ def like_tweet():
     except Exception as e:
         logging.error(e)
         return jsonify(False)
+
+
+@feed.route('/saveTweet', methods=['POST'])
+def save_tweet():
+
+    print('api/feed/saveTweet called!')
+
+    try:
+        request_body = json.loads(request.data)
+        tweet_id = request_body['tweetId']
+        campaign_id = request_body['campaignId']
+    except json.decoder.JSONDecodeError as e:
+        print('FAILED: request_body = json.loads(request.data)')
+        print(e)
+        return jsonify('Failed to get stream.', 404)
+    except KeyError as e:
+        logging.error(e)
+        return ''
+    else:
+        from TLInterface import get_web_connection
+        wc = get_web_connection()
+        wc.save_to_locker(
+            campaign_id=campaign_id,
+            tweet_id=tweet_id
+        )
