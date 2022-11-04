@@ -18,6 +18,7 @@ def main():
 
             form_data = request.form.to_dict()
 
+            # ----------------------------------------------------------------
             # Creating a new campaign
 
             if form_data['campaign-type'] != 'affiliate':
@@ -35,11 +36,12 @@ def main():
 
             print('Create client campaign response: ', response)
 
-            if response['status'] == 200:
+            # ----------------------------------------------------------------
+            # Adding keywords for new campaign
+
+            if response['status'] == 200 and (form_data['campaign-type'] != 'profile'):
 
                 new_campaign_id = response['data']['campaign_id']
-
-                # Adding keywords for new campaign
 
                 keywords = {
                     'positive': {},
