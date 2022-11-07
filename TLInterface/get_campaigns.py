@@ -11,11 +11,14 @@ def get_all_campaigns() -> list:
     campaigns = []
 
     try:
-        all_campaigns = wc.get_client_campaigns()
+        response = wc.get_client_campaigns()
     except Exception as e:
         logging.error(f'Failed to get client campaigns, due to following error:\n\n{e}')
     else:
-        campaigns = all_campaigns.get('data', [])
+        if response['status'] == 200:
+            campaigns = response.get('data', [])
+        else:
+            logging.error(response)
 
     return campaigns
 
@@ -52,3 +55,7 @@ def get_first_campaign_id() -> int:
         return first_campaign_id
     else:
         return False
+
+
+if __name__ == '__main__':
+    print(get_all_campaigns())
