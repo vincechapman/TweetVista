@@ -1,5 +1,5 @@
 function callApi(endpoint, method, body) {
-    fetch(endpoint, {
+    return fetch(endpoint, {
         method: method,
         headers: {
             'Accept': 'application/json',
@@ -8,9 +8,12 @@ function callApi(endpoint, method, body) {
         body: JSON.stringify(body)
     })
         .then((response) => {
-            return response.json()
+            return response.json().then((data) => {
+                console.log(data)
+                return data
+            })
         })
-    return false;  // If this runs, then fetch failed.
+    // return false;  // If this runs, then fetch failed.
 }
 
 function saveTweet(elem) {
@@ -18,7 +21,7 @@ function saveTweet(elem) {
     let tweetId = elem.getAttribute('data-tweet')
     let campaignId = elem.getAttribute('data-campaign')
 
-    let response = callApi(
+    callApi(
         '{{ url_for("api_feed.save_tweet") }}',
         'POST',
         {
@@ -26,5 +29,10 @@ function saveTweet(elem) {
             'tweetId': tweetId
         }
     )
-    alert(response)
+        .then((response) => {
+            response.json().then((data) => {
+                console.log(data)
+                alert(data)
+            })
+        })
 }
