@@ -102,7 +102,7 @@ def save_tweet():
         return jsonify('Failed to get stream.', 404)
     except KeyError as e:
         logging.error(e)
-        return ''
+        return jsonify('Failed to get stream.', 404)
     else:
         from TLInterface import get_web_connection
         wc = get_web_connection()
@@ -110,3 +110,45 @@ def save_tweet():
             campaign_id=campaign_id,
             tweet_id=tweet_id
         )
+        return jsonify('Success', 200)
+
+
+@feed.route('/getOldTweets', methods=['POST'])
+def get_old_tweets():
+
+    try:
+        request_body = json.loads(request.data)
+        next_id = request_body['nextId']
+        campaign_id = request_body['campaignId']
+
+        from TLInterface.get_tweet_feed import get_historic_tweets
+        response = get_historic_tweets(campaign_id=campaign_id, next_id=next_id)
+
+        if response:
+            tweets, next_id = response
+
+        return jsonify({
+            'status': 200,
+            'message': 'Success',
+            'data': {
+                'tweets': tweets,
+                'next_id': next_id
+            }
+        })
+
+    except json.decoder.JSONDecodeError as e:
+        print('FAILED: request_body = json.loads(request.data)')
+        print(e)
+        return jsonify({
+            'status': 400,
+            'message': e,
+            'data': None
+        })
+
+    except Exception as e:
+        logging.error(e)
+        return jsonify({
+            'status': 400,
+            'message': e,
+            'data': None
+        })
