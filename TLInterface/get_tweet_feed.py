@@ -1,3 +1,6 @@
+import logging
+
+
 def print_tweet(tweet: dict) -> None:
 
     from pprint import pprint
@@ -41,6 +44,9 @@ def get_tweet_stream(campaign_id: int, refresh_rate: int = 5):
 
                 if tweets:
                     start_id = tweets[0]['id']
+                    print(f'NEW TWEETS: {tweets}')
+                else:
+                    print(f'NO TWEETS CAPTURED.')
 
                 for tweet in tweets:
                     yield json.dumps(tweet)
@@ -55,18 +61,34 @@ def get_tweet_stream(campaign_id: int, refresh_rate: int = 5):
         return jsonify(False)
 
 
+def get_historic_tweets(campaign_id: int, next_id: int = 0, page_len: int = 10) -> (dict, int) or False:
+
+    try:
+        from TLInterface import get_web_connection
+        wc = get_web_connection(username='test10@gmail.com', password='test10')
+
+        response = wc.get_tweets_for_campaign(
+            campaign_id=campaign_id,
+            page_len=page_len,
+            next_id=next_id
+        )
+
+        if response['status'] == 200:
+            return response['data']['tweets'], response['data']['next_id']
+        else:
+            print(response['status'])
+            return False
+
+    except Exception as e:
+        logging.error(e)
+        return False
+
+
 if __name__ == '__main__':
-    from TLInterface.get_campaigns import get_first_campaign_id
 
-    first_campaign_id = get_first_campaign_id()  # For testing purposes just using the first available campaign id
+    from pprint import pprint
 
-    tweet_stream = get_tweet_stream(
-        campaign_id=first_campaign_id,
-        refresh_rate=10
-    )
-
-    print(tweet_stream)
-
-    if tweet_stream:
-        for tw in tweet_stream:
-            print_tweet(tw)
+    pprint(get_historic_tweets(
+        campaign_id=47,
+        next_id=8752389
+    ))
