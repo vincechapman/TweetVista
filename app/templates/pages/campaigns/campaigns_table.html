@@ -7,26 +7,26 @@
     <div class="column is-full">
         <div class="container is-fluid campaign-section">
             <h1 class="title is-deep-purple">Campaigns</h1>
-            <table class="table">
+            <table class="table is-size-7 has-text-centered">
                 <thead>
                 <tr>
-                    <th>Campaign Name</th>
-                    <th>Type</th>
-                    <th>Active</th>
-                    <th>Tweets</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Pause/Run</th>
-                    <th>View Campaign</th>
-                    <th>Delete</th>
+                    <th class="has-text-left">Campaign Name</th>
+                    <th class="has-text-left">Type</th>
+                    <th class="has-text-centered">Active</th>
+                    <th class="has-text-left">Tweets</th>
+                    <th class="has-text-centered">Start Date</th>
+                    <th class="has-text-centered">End Date</th>
+                    <th class="has-text-centered">Pause/Run</th>
+                    <th class="has-text-left">View Campaign</th>
+                    <th class="has-text-centered">Delete</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% if campaigns %}
                     {% for cmp in campaigns %}
                         <tr data-campaign-id="{{ cmp['id'] }}" data-campaign-name="{{ cmp['name'] }}">
-                            <td>{{ cmp['name'] }}</td>
-                            <td>{{ cmp['type'] }}</td>
+                            <td class="has-text-left">{{ cmp['name'] }}</td>
+                            <td class="has-text-left">{{ cmp['type'] }}</td>
                             <td>
                                 {% if cmp['is_active'] %}
                                     <img class="campaign-table-icon" src="{{ url_for('static', filename='images/icons/Tick-Icon.jpg') }}" alt="Campaign is active">
@@ -34,7 +34,7 @@
                                     <img class="campaign-table-icon" src="{{ url_for('static', filename='images/icons/X-Icon.jpg') }}" alt="Campaign is not active">
                                 {% endif %}
                             </td>
-                            <td>{{ cmp['tweet_count'] }}</td>
+                            <td class="has-text-left">{{ cmp['tweet_count'] }}</td>
                             <td>{{ cmp['start_at'] }}</td>
                             <td>{{ cmp['end_at'] }}</td>
                             <td>
@@ -44,7 +44,7 @@
                                     <img class="campaign-table-icon" src="{{ url_for('static', filename='images/icons/Play-Icon.jpg') }}" alt="Campaign is not active" onclick="startStopCampaign(this, 'start');">
                                 {% endif %}
                             </td>
-                            <td><a href="{{ url_for('campaigns.view_campaign', campaign_id=cmp['id']) }}">View {{ cmp['name'] }}</a></td>
+                            <td class="has-text-left"><a href="{{ url_for('campaigns.view_campaign', campaign_id=cmp['id']) }}">View {{ cmp['name'] }}</a></td>
                             <td><img class="campaign-table-icon" src="{{ url_for('static', filename='images/icons/Bin-Icon.jpg') }}" alt="Campaign is not active" onclick="deleteCampaign(this);"></td>
                         </tr>
                     {% endfor %}
@@ -57,6 +57,12 @@
     <style>
         .campaign-table-icon {
             height: 25px;
+        }
+        table, td, th {
+            border: none !important;
+        }
+        th  {
+            padding-bottom: 20px !important;
         }
     </style>
 
