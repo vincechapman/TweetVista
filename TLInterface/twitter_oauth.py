@@ -18,15 +18,19 @@ def get_app_credentials() -> dict or {}:
 
     from TLInterface import get_web_connection
     wc = get_web_connection()
+
     try:
         response = wc.get_twitter_app()
         status = response.get('status', 404)
+
         if status == 200:
             data = response.get('data', {})
             return data
+
         else:
             logging.error(f'Status code: {status}')
             return {}
+
     except Exception as e:
         logging.error(e)
         return {}
@@ -119,55 +123,45 @@ def verify_twitter_credentials(access_tokens):
 
 def build_routes(app: Flask) -> None:
 
-    """Builds Flask callback route using route provided by get_app_credentials()"""
+    """Builds authorisation routes"""
 
     # Callback Route
 
-    app_data = get_app_credentials()
+    @app.route('/twitter/login/callback/', methods=['GET', 'POST'])  # TODO is the callback request POST or GET, for now allow both.
+    def twitter_oauth_callback():
+        query_params = request.args
+        oauth_token = query_params['oauth_token']
+        oauth_verifier = query_params['oauth_verifier']
 
-    if app_data:
-        callback_route = app_data['callback']
+        twitter_app = session.pop('twitter_app', default=None)
+        if twitter_app is None:
+            logging.error('Cannot get twitter app data from session')
+            return redirect(url_for('index'))
 
-        @app.route(callback_route, methods=['GET', 'POST'])  # TODO is the callback request POST or GET, for now allow both.
-        def twitter_oauth_callback():
-            query_params = request.args
-            oauth_token = query_params['oauth_token']
-            oauth_verifier = query_params['oauth_verifier']
+        access_tokens = get_access_tokens(oauth_token, oauth_verifier, twitter_app)
 
-            twitter_app = session.pop('twitter_app', default=None)
-            if twitter_app is None:
-                logging.error('Cannot get twitter app data from session')
-                return redirect(url_for('index'))
+        only_tokens = {i: access_tokens[i] for i in access_tokens}
+        only_tokens['user_data'] = verify_twitter_credentials(access_tokens)
+        only_tokens['app_name'] = twitter_app.get('app_name', None)
+        only_tokens['target_id'] = None
 
-            access_tokens = get_access_tokens(oauth_token, oauth_verifier, twitter_app)
+        from TLInterface import get_web_connection
+        wc = get_web_connection()
+        data = wc.store_user_twitter_account(only_tokens)
+        logging.info(f"{only_tokens['app_name']} authorised {only_tokens['handle']}")
 
-            only_tokens = {i: access_tokens[i] for i in access_tokens}
-            only_tokens['user_data'] = verify_twitter_credentials(access_tokens)
-            only_tokens['app_name'] = twitter_app.get('app_name', None)
-            only_tokens['target_id'] = None
+        print(only_tokens)
 
-            from TLInterface import get_web_connection
-            wc = get_web_connection()
-            data = wc.store_user_twitter_account(only_tokens)
-            logging.info(f"{only_tokens['app_name']} authorised {only_tokens['handle']}")
+        session['twitter_handle'] = only_tokens.get('handle')
+        session['twitter_screen_name'] = only_tokens.get('user_data').get('screen_name')
+        session['twitter_profile_image'] = only_tokens.get('user_data').get('profile_image_url')
+        session['twitter_connected'] = only_tokens['handle']
 
-            print(only_tokens)
+        return """
+            This popup should close automatically after a few seconds.
+        """
 
-            current_user.twitter_handle = only_tokens.get('handle')
-            current_user.twitter_screen_name = only_tokens.get('user_data').get('screen_name')
-            current_user.twitter_profile_image = only_tokens.get('user_data').get('profile_image_url')
-            models.db.session.commit()
-
-            session['twitter_connected'] = only_tokens['handle']
-
-            return """
-                This popup should close itself
-            """
-
-        logging.info('Successfully created twitter callback route.')
-
-    else:
-        logging.error('Failed to create twitter callback route.')
+    logging.info('Successfully created twitter callback route.')
 
     # User authorisation route
 
@@ -220,11 +214,15 @@ def build_routes(app: Flask) -> None:
     def check_if_twitter_authorised():
 
         twitter_connected = session.get('twitter_connected')
-        if twitter_connected and twitter_connected == current_user.twitter_handle:  # TODO need to check the twitter in session matches the account logging in
+        twitter_handle = session.get('twitter_handle')
+        twitter_screen_name = session.get('twitter_screen_name')
+        twitter_profile_image = session.get('twitter_profile_image')
+
+        if twitter_connected and twitter_connected == twitter_handle:  # TODO need to check the twitter in session matches the account logging in
             twitter_user = {
-                'handle': current_user.twitter_handle,
-                'screenName': current_user.twitter_screen_name,
-                'profileImage': current_user.twitter_profile_image}
+                'handle': twitter_handle,
+                'screenName': twitter_screen_name,
+                'profileImage': twitter_profile_image}
             logging.info('Twitter account is already authorised.')
             return jsonify(twitter_user)
         else:
