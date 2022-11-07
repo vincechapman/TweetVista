@@ -70,14 +70,16 @@
 
     <script>
         {% include 'js/tweet_feed/tweet_locker.js' %}
+        {% include 'js/tweet_feed/get_old_tweets.js' %}
+        {#This script initiates the tweet stream on load#}
+        getTweets({{ selected_campaign }})
     </script>
 
     {% from 'js/tweet_feed/get_campaign_data.html' import get_campaign_data_macro %}
     {{ get_campaign_data_macro(selected_campaign) }}
 
     <script>
-        {#This script initiates the tweet stream on load#}
-        getTweets({{ selected_campaign }})
+
     </script>
 
 {% endblock %}
