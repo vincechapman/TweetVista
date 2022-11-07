@@ -3,7 +3,6 @@ import models
 import logging
 
 from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify
-from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, current_user
 
 auth = Blueprint('api_auth', __name__, url_prefix='/api/auth')
@@ -15,29 +14,56 @@ def signup():
     """The client sends signup details to this route and this function creates an account for them."""
 
     request_body = json.loads(request.data)
-
-    new_user_obj = models.User(
-        first_name=request_body['first_name'],
-        last_name=request_body['last_name'],
-        company_name=request_body['company_name'],
-        email_address=request_body['email_address'],
-        password=generate_password_hash(request_body['password'])
-    )
+    email_address = request_body['email_address']
+    first_name = request_body['first_name']
+    last_name = request_body['last_name']
+    password = request_body['password']
 
     try:
-        models.db.session.add(new_user_obj)
-        models.db.session.commit()
-        login_user(new_user_obj, remember=True)
+        from TLInterface import get_web_connection
+        wc = get_web_connection()
+        data = wc.create_client_account(
+            username=email_address,
+            firstname=first_name,
+            lastname=last_name,
+            email=email_address,
+            password=password)
+        print(data)
+        status = data.get('status', 404)
+
+        if status == 200:
+            from TLInterface.auth import login_to_account
+            response = login_to_account(email_address, password)
+            if response.get('status') == 200:
+                return jsonify({
+                    'success': True,
+                    'message': "Account created and logged in."})
+            else:
+                return jsonify({
+                    'success': False,
+                    'message': "Account created but not logged in."})
+        elif status == 404 and 'Exists' in data.get('msg'):
+            return jsonify({
+                'success': False,
+                'message': "Account already exists. Please log in instead."})
+        else:
+            return jsonify({
+                'success': False,
+                'message': "Unknown error."
+            })
 
     except Exception as e:
+
         if 'unique' in str(e) and 'user_email_address_key' in str(e):
             return jsonify({
                 'success': False,
                 'message': "An account is already registered with this email address. Would you like to login instead?"})
+
         elif 'NOT NULL constraint failed' in str(e):
             return jsonify({
                 'success': False,
                 'message': "Please check you have provided all required details."})
+
         else:
             print(e)
             return jsonify({
@@ -46,8 +72,8 @@ def signup():
 
     else:
         return jsonify({
-            'success': True,
-            'message': "Account created"})
+            'success': False,
+            'message': "Account not created. Unknown error."})
 
 
 @auth.route('/login', methods=['POST'])
@@ -56,31 +82,33 @@ def login():
     """The client sends login details to this route and this function signs them in"""
 
     request_body = json.loads(request.data)
-
-    user_obj = models.User.query.filter_by(email_address=request_body['email_address']).first()
-
-    if not user_obj:
-        return jsonify({
-            'success': False,
-            'message': "No account registered with this email address."})
-    elif not check_password_hash(user_obj.password, request_body['password']):
-        return jsonify({
-            'success': False,
-            'message': "Password incorrect."})
+    email_address = request_body['email_address']
+    password = request_body['password']
 
     try:
-        login_user(user_obj, remember=True)
+        from TLInterface.auth import login_to_account
+        response = login_to_account(
+            username=email_address,
+            password=password)  # TODO: Eventually implement password hashing/encryption
+        print(response)
+
+        if response['status'] == 200:
+            print('Success!')
+            return jsonify({
+                'success': True,
+                'message': "Successfully logged in to account."
+            })
+
+        else:
+            return jsonify({
+                'success': False,
+                'message': "Account details not recognised."})
 
     except Exception as e:
         print(e)
         return jsonify({
             'success': False,
             'message': "Account not logged in. Server side error."})
-
-    else:
-        return jsonify({
-            'success': True,
-            'message': "Account logged in."})
 
 
 @auth.route('/businessDetails', methods=['POST'])
