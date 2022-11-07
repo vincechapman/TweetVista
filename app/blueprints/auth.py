@@ -64,7 +64,8 @@ def signup_post():
 
 
 @auth.route('/logout')
-@login_required
 def logout():
-    logout_user()
+    from TLInterface.auth import logout_of_account
+    response = logout_of_account()
+    print(response)
     return redirect(url_for('index'))
