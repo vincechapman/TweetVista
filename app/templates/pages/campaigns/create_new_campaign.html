@@ -46,15 +46,20 @@
                         document.getElementById('affiliate-details-field').hidden = elem.value !== 'affiliate'
                         document.getElementById('affiliate-name').required = elem.value === 'affiliate'
                         document.getElementById('affiliate-url').required = elem.value === 'affiliate'
+
+                        let keywordFields = document.getElementsByClassName('keyword-fields')
+                        for (let i = 0; i < keywordFields.length; i++) {
+                            keywordFields[i].hidden = elem.value === 'profile'
+                        }
                     }
                 </script>
 
 
                 <!-- Affiliate Link Details -->
-                <div id="affiliate-details-field" class="field" hidden>
+                <div id="affiliate-details-field" class="field mt-6" hidden>
                     <h3 class="subtitle is-deep-purple mb-1 is-size-4 has-text-weight-bold">Affiliate Link Details</h3>
                     <p>You selected an Affiliate Campaign which needs link info.</p>
-                    <div class="border-is-electric-blue p-4 mt-3">
+                    <div class="border-is-light-grey p-4 mt-3">
 
                         <div class="field">
                             <label class="label" for="affiliate-name" >Affiliate Name</label>
@@ -83,17 +88,17 @@
                 {% from 'pages/campaigns/OBJ_create_campaign_keywords_field.html' import keywords_field %}
 
                 <!-- Positive keywords -->
-                <div class="field">
+                <div class="field keyword-fields mt-6">
                     <h3 class="subtitle is-deep-purple mb-1 is-size-4 has-text-weight-bold">Keywords</h3>
-                    <p>Add Keywords to be included in your Campaign.</p>
+                    <label class="label">Add Keywords to be included in your Campaign.</label>
 
                     {{ keywords_field('positive-keywords-field') }}
                 </div>
 
                 <!-- Negative keywords -->
-                <div class="field">
+                <div class="field keyword-fields mt-6">
                     <h3 class="subtitle is-deep-purple mb-1 is-size-4 has-text-weight-bold">Negative Keywords</h3>
-                    <p>Exclude Keywords, Phrases, Hashtags or Handles</p>
+                    <label class="label">Exclude Keywords, Phrases, Hashtags or Handles</label>
                     {{ keywords_field('negative-keywords-field') }}
                 </div>
 
@@ -158,7 +163,9 @@
             #campaign-creation-form > div > div > div > .field {
                 margin: 20px auto;
             }
-
+            label {
+                font-weight: normal !important;
+            }
         </style>
 
     {% endmacro %}
