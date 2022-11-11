@@ -2,7 +2,7 @@
 {#<link rel="stylesheet" href="https://bulma.io/vendor/fontawesome-free-5.15.2-web/css/all.min.css">#}
 {#<link rel="stylesheet" href="/app/static/styles/layouts/base.css">#}
 
-<div id="signup-modal" class="modal is-active">
+<div id="signup-modal" class="modal">
 
     <div class="modal-background"></div>
 
@@ -530,32 +530,5 @@
 </script>
 
 <script>
-    // This script handles the transitioning between each step of the signup sequence
-    function stepTransition(elem = undefined, nextStepId = undefined) {
-        if (elem != undefined) {
-            while (elem.classList.contains('signup-step') !== true) {
-                elem = elem.parentNode
-            }
-
-            elem.classList.add('hidden')  // Hiding the old step
-
-            if (nextStepId === undefined) {
-                nextStepId = elem.getAttribute('data-next-step')
-            }
-        }
-
-        if (nextStepId === 'none') {
-            document.getElementById('signup-modal').classList.remove('is-active')
-            window.location.href = '{{ url_for('index') }}'
-        }
-
-        let nextStepElem = document.getElementById(nextStepId)
-        nextStepElem.classList.remove('hidden')  // Revealing the next step
-    }
-</script>
-
-<script>
-    // This script loads the first step
-    let startStep = document.getElementById('start-step').value
-    stepTransition(undefined, startStep)
+    {% include 'js/step_transition.js' %}
 </script>
