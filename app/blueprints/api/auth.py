@@ -141,3 +141,32 @@ def store_business_details():
         return jsonify({
             'success': True,
             'message': "Saved business details for current user."})
+
+
+@auth.route('/getSessionLogin', methods=['POST'])
+def check_if_logged_in():
+    try:
+        from TLInterface import get_web_connection
+        wc = get_web_connection()
+        if wc.userid and wc.password:
+            print(f'Username: {wc.userid}\nPassword: {wc.password}')
+            return jsonify({
+                'status': 200,
+                'message': 'Login credentials retrieved from session',
+                'data': wc.userid
+            })
+        else:
+            message = 'No login credentials found in session'
+            print(message)
+            return jsonify({
+                'status': 404,
+                'message': message,
+                'data': None
+            })
+    except Exception as e:
+        logging.error(e)
+        return jsonify({
+            'status': 404,
+            'message': e,
+            'data': None
+        })
