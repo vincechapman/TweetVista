@@ -32,6 +32,11 @@
                     {{ campaign_filters() }}
                 </div>
 
+                <div class="column">
+                    {% from 'objects/campaigns/live_mode_toggle.html' import live_toggle %}
+                    {{ live_toggle(is_live) }}
+                </div>
+
                 <div id="account" class="column" style="margin-top: -7px;">
                     {% include 'layouts/account.html' %}
                 </div>
@@ -52,9 +57,11 @@
 
             </header>
 
-            <div id="loading-dots" class="container is-fluid has-text-centered" style="margin-top: -1.0rem;" hidden>
-                <img src="{{ url_for('static', filename='/images/icons/loader-three-dots.gif') }}" style="height: 30px; opacity: 0.5;">
-            </div>
+            {% if is_live %}
+                <div id="loading-dots" class="container is-fluid has-text-centered" style="margin-top: -1.0rem;" hidden>
+                    <img src="{{ url_for('static', filename='/images/icons/loader-three-dots.gif') }}" style="height: 30px; opacity: 0.5;">
+                </div>
+            {% endif %}
 
             <div id="tweet-wall-results">
                 {% include 'layouts/tweet_masonry_display.html' %}
@@ -66,20 +73,18 @@
 
     {% include 'js/tweet_feed/campaign_selection_dropdowns.html' %}
     {% include 'js/tweet_feed/like_unlike_tweet.html' %}
-    {% include 'js/tweet_feed/stream_tweets.html' %}
 
     <script>
+        let campaignId = {{ selected_campaign }}
         {% include 'js/tweet_feed/tweet_locker.js' %}
-        {% include 'js/tweet_feed/get_old_tweets.js' %}
-        {#This script initiates the tweet stream on load#}
-        getTweets({{ selected_campaign }})
+        {% if is_live %}
+            {% include 'js/tweet_feed/get_new_tweets.js' %}
+        {% else %}
+            {% include 'js/tweet_feed/get_old_tweets.js' %}
+        {% endif %}
     </script>
 
     {% from 'js/tweet_feed/get_campaign_data.html' import get_campaign_data_macro %}
     {{ get_campaign_data_macro(selected_campaign) }}
-
-    <script>
-
-    </script>
 
 {% endblock %}
