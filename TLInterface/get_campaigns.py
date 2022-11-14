@@ -57,5 +57,8 @@ def get_first_campaign_id() -> int:
         return False
 
 
+# TODO Create a function here that checks if a campaign is active. We'll call this method before starting a stream
+
+
 if __name__ == '__main__':
     print(get_all_campaigns())
