@@ -21,7 +21,10 @@
             </nav>
 
             <main class="column">
-                <section class="section pb-1">
+                <div id="account"class="section pt-4 pb-0">
+                    {% include 'layouts/account.html' %}
+                </div>
+                <section class="section pb-1 pt-0">
                     <div class="columns is-desktop is-multiline">
                         {% from 'pages/campaigns/campaigns_table.html' import campaigns_table_macro %}
                         {{ campaigns_table_macro(campaigns) }}
