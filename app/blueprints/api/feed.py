@@ -1,8 +1,8 @@
 import json
 import logging
 
-from flask import Blueprint, render_template, request, jsonify, current_app, Response
-from flask_login import login_required, current_user
+from flask import Blueprint, request, jsonify
+from flask_login import current_user
 
 feed = Blueprint('api_feed', __name__, url_prefix='/api/feed')
 
@@ -12,7 +12,7 @@ feed = Blueprint('api_feed', __name__, url_prefix='/api/feed')
 """
 
 
-def check_authorisation(campaign):
+def check_authorisation(campaign):   # TODO This has not been implemented yet. Although this may end up being something that Dave implements on the backend
 
     """
     Checks if the user is authorised to view the selected client and campaign
@@ -111,6 +111,49 @@ def save_tweet():
             tweet_id=tweet_id
         )
         return jsonify('Success', 200)
+
+
+@feed.route('/getNewTweets', methods=['POST'])
+def get_new_tweets():
+
+    """Api route that fetches the latest tweets and returns them in json format (so the client-side js scripts can understand it)"""
+
+    try:
+        request_body = json.loads(request.data)
+        next_id = request_body['nextId']
+        campaign_id = request_body['campaignId']
+
+        from TLInterface.get_tweet_feed import get_latest_tweets
+        response = get_latest_tweets(campaign_id=campaign_id, tweet_id=next_id)
+
+        if response is not False:
+            tweets, next_id = response
+
+        return jsonify({
+            'status': 200,
+            'message': 'Success',
+            'data': {
+                'tweets': tweets,
+                'next_id': next_id
+            }
+        })
+
+    except json.decoder.JSONDecodeError as e:
+        print('FAILED: request_body = json.loads(request.data)')
+        print(e)
+        return jsonify({
+            'status': 400,
+            'message': e,
+            'data': None
+        })
+
+    except Exception as e:
+        logging.error(e)
+        return jsonify({
+            'status': 400,
+            'message': e,
+            'data': None
+        })
 
 
 @feed.route('/getOldTweets', methods=['POST'])
