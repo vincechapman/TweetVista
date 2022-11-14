@@ -61,11 +61,39 @@ def get_tweet_stream(campaign_id: int, refresh_rate: int = 5):
         return jsonify(False)
 
 
+def get_latest_tweets(campaign_id: int, tweet_id: int = 0) -> (list, int) or False:
+
+    """This function fetches the latest page of tweets since the specified tweet_id. Returns the ID of the last tweet that was captured"""
+
+    try:
+        from TLInterface import get_web_connection
+        wc = get_web_connection()
+
+        response = wc.get_page_tweets(campaign_id, tweet_id=tweet_id, page_len=10)
+
+        if response.get('status') == 200:
+
+            tweets = response.get('data', [])
+
+            if tweets:
+                tweet_id = tweets[0]['id']
+
+            return tweets, tweet_id
+
+        else:
+            logging.error(f'Status code: {response.get("status")}\nMessage: {response.get("msg")}')
+            return False
+
+    except Exception as e:
+        logging.error(e)
+        return False
+
+
 def get_historic_tweets(campaign_id: int, next_id: int = 0, page_len: int = 10) -> (dict, int) or False:
 
     try:
         from TLInterface import get_web_connection
-        wc = get_web_connection(username='test10@gmail.com', password='test10')
+        wc = get_web_connection()
 
         response = wc.get_tweets_for_campaign(
             campaign_id=campaign_id,
@@ -82,13 +110,3 @@ def get_historic_tweets(campaign_id: int, next_id: int = 0, page_len: int = 10) 
     except Exception as e:
         logging.error(e)
         return False
-
-
-if __name__ == '__main__':
-
-    from pprint import pprint
-
-    pprint(get_historic_tweets(
-        campaign_id=47,
-        next_id=8752389
-    ))
