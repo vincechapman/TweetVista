@@ -145,17 +145,22 @@ def build_routes(app: Flask) -> None:
         only_tokens['app_name'] = twitter_app.get('app_name', None)
         only_tokens['target_id'] = None
 
-        from TLInterface import get_web_connection
+        from TLInterface import get_web_connection, save_web_connection
         wc = get_web_connection()
         data = wc.store_user_twitter_account(only_tokens)
         logging.info(f"{only_tokens['app_name']} authorised {only_tokens['handle']}")
 
         print(only_tokens)
 
+        wc.twitter_handle = only_tokens.get('handle')
+        wc.twitter_screen_name = only_tokens.get('user_data').get('screen_name')
+        wc.twitter_profile_image = only_tokens.get('user_data').get('profile_image_url')
+
         session['twitter_handle'] = only_tokens.get('handle')
         session['twitter_screen_name'] = only_tokens.get('user_data').get('screen_name')
         session['twitter_profile_image'] = only_tokens.get('user_data').get('profile_image_url')
-        session['twitter_connected'] = only_tokens['handle']
+
+        save_web_connection(wc)
 
         return """
             This popup should close automatically after a few seconds.
