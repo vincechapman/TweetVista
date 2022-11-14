@@ -1,4 +1,4 @@
-{% if current_user.is_authenticated %}
+{% if session.get('twitter_handle') and session.get('twitter_profile_image') %}
 
     <div id="account-container" class="columns is-vcentered mb-0">
         <div class="column">
@@ -10,11 +10,11 @@
             </span>
         </div>
         <div class="column is-narrow account-user-details">
-            <div>Hello, <span style="font-weight: 700">{{ current_user.first_name }}</span></div>
-            <div>{{ current_user.role }}</div>
+            <div>Hello, <span style="font-weight: 700">{{ session.get('twitter_handle') }}</span></div>
+            <div>Super Admin</div>
         </div>
         <div class="column is-narrow account-profile-picture">
-            <img src="{{ current_user.twitter_profile_image }}" alt="Profile picture">
+            <img src="{{ session.get('twitter_profile_image') }}" alt="Profile picture">
         </div>
     </div>
 
