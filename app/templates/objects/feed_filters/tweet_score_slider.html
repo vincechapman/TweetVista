@@ -15,20 +15,25 @@
                         <form id="tweet-slider-form" action="/p/quote.php" method="GET">
                             <p id="form-title">What's the minimum Twitter account score you'd like to see?</p>
                             <div id="debt-amount-slider">
-                                <input type="radio" name="debt-amount" id="1" value="1" required>
+                                <input type="radio" name="debt-amount" id="1" value="0" required>
                                 <label for="1" data-debt-amount="Show all"></label>
-                                <input type="radio" name="debt-amount" id="2" value="2" required>
-                                <label for="2" data-debt-amount="< 250"></label>
-                                <input type="radio" name="debt-amount" id="3" value="3" required>
-                                <label for="3" data-debt-amount="< 500"></label>
-                                <input type="radio" name="debt-amount" id="4" value="4" required>
-                                <label for="4" data-debt-amount="< 750"></label>
-                                <input type="radio" name="debt-amount" id="5" value="5" required>
-                                <label for="5" data-debt-amount="< 1000"></label>
+
+                                <input type="radio" name="debt-amount" id="2" value="100" required>
+                                <label for="2" data-debt-amount="100+"></label>
+
+                                <input type="radio" name="debt-amount" id="3" value="200" required>
+                                <label for="3" data-debt-amount="200+"></label>
+
+                                <input type="radio" name="debt-amount" id="4" value="400" required>
+                                <label for="4" data-debt-amount="400+"></label>
+
+                                <input type="radio" name="debt-amount" id="5" value="700" required>
+                                <label for="5" data-debt-amount="700"></label>
+
                                 <div id="debt-amount-pos"></div>
                             </div>
                         </form>
-                        <button class="button is-rounded is-electric-blue" type="submit">Apply filter</button>
+                        <button class="button is-rounded is-electric-blue" onclick="applyFilters()">Apply filter</button>
                     </div>
                 </div>
             </div>
