@@ -9,7 +9,6 @@ window.onclick = function(event) {
     let clickedElem = event.target
     let dropDown = clickedElem.closest('.dropdown-trigger')
     dropDown ||= clickedElem.closest('.campaign-filter-field')
-    console.log('DROPDOWN', dropDown)
     if (!dropDown) {
         hideCampaignFilterFields()  // TODO Update this so that the popups themselves don't disappear when user clicks on them
     }
@@ -47,7 +46,6 @@ function showCampaignFilterField(elem) {
     showArrow(elem)
     let fieldId = elem.getAttribute('data-field')
     let fieldElem = document.getElementById(fieldId)
-    console.log(fieldElem.hidden)
     if (fieldElem.hidden === false) {
         hideCampaignFilterFields()
     } else {
