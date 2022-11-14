@@ -13,7 +13,6 @@
             })
             .then((response) => response.json())
             .then((value) => {
-                console.log(value)
                 displayCampaignKeywords(value)
             })
 
@@ -38,7 +37,10 @@
 
         }
 
-        document.getElementById('loading-dots').hidden = false // Showing loading dots
+        let loadingDots = document.getElementById('loading-dots')
+        if (loadingDots) {
+            loadingDots.hidden = false // Showing loading dots
+        }
 
         {#
         function removeOldTweets() {
