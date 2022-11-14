@@ -213,6 +213,6 @@ function append_new_html_object(tweet) {
     let newElement = document.createElement('div')
     newElement.classList.add('tweet-container')
     newElement.innerHTML = html
-    // document.getElementById('tweet-wall').insertBefore(newElement, document.querySelector('#tweet-wall > div'))
+    applyFilters([newElement])
     document.getElementById('tweet-wall').appendChild(newElement)
 }
