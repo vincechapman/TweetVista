@@ -113,9 +113,20 @@ def view_campaign(campaign_id):
 
     all_campaigns = get_all_campaigns()
 
-    if request.method == 'POST':
-        selected_campaign = request.form['campaign-selection']
-        print('SELECTED CAMPAIGN:', selected_campaign)
-        return redirect(url_for('campaigns.view_campaign', campaign_id=selected_campaign))
+    is_live = False
 
-    return render_template('pages/campaigns/view_campaign.html', all_campaigns=all_campaigns, selected_campaign=campaign_id)
+    if request.method == 'POST':
+        live_button = request.form.get('live-button')
+        if live_button:
+            if live_button == 'make-live':
+                is_live = True
+            elif live_button == 'make-not-live':
+                is_live = False
+            else:
+                print('Invalid live button value')
+        else:
+            selected_campaign = request.form['campaign-selection']
+            print('SELECTED CAMPAIGN:', selected_campaign)
+            return redirect(url_for('campaigns.view_campaign', campaign_id=selected_campaign))
+
+    return render_template('pages/campaigns/view_campaign.html', all_campaigns=all_campaigns, selected_campaign=campaign_id, is_live=is_live)
