@@ -1,15 +1,27 @@
+/*
+TODO Some profile images aren't loading properly - the link is not working. But when you click to their profile, there is an image. So look into how we can solve this.
+ Even if we just use a default image in the meantime.
+
+TODO Look into combining the html tweet objects for the getOldTweets and getNewTweets function so we don't have to manage two different versions of this.
+*/
+
 let nextOldId = 0
 
+let fetchedPageIds = []  // A temporary measure to stop multiple requests for one page of old tweets
 
-let fetchedPageIds = []  // TODO A temporary measure to stop multiple requests for one page of old tweets
+const loadOffset = 5000 // When we scroll to this distance from the bottom, a new page of tweets will be fetched
 
 
 // Event listener: Checks if scrolled near bottom of page
 window.onscroll = function(ev) {
-    if ((window.innerHeight + Math.ceil(window.pageYOffset + 1)) >= document.body.offsetHeight - 100) {
-        getOldTweets()
-    }
-};
+    let loop = setInterval(function () {
+        if ((window.innerHeight + Math.ceil(window.pageYOffset + 1)) >= document.body.offsetHeight - loadOffset) {
+            getOldTweets()
+        } else {
+            clearInterval(loop)
+        }
+    }, 100)
+}
 
 
 getOldTweets()
@@ -36,7 +48,6 @@ function getOldTweets() {
             })
             .then((response) => response.json())
             .then((data) => {
-                console.log(data)
                 if (data['status'] === 200) {
                     nextOldId = data['data']['next_id']
                     let tweets = data['data']['tweets']
@@ -45,14 +56,10 @@ function getOldTweets() {
                     }
                 }
             })
-    } else {
-        console.log('This page of tweets has already been requested.')
     }
 }
 
 function append_new_html_object(tweet) {
-
-    console.log(tweet)
 
     let tweetId = tweet['id']
 
