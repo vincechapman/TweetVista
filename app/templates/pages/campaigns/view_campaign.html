@@ -76,7 +76,11 @@
 
     <script>
         let campaignId = {{ selected_campaign }}
+
         {% include 'js/tweet_feed/tweet_locker.js' %}
+
+        {% include 'js/tweet_feed/tweet_filter.js' %}
+
         {% if is_live %}
             {% include 'js/tweet_feed/get_new_tweets.js' %}
         {% else %}
