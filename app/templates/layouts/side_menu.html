@@ -27,7 +27,7 @@
         <div class="side-menu-item">
             <div><a>Reports</a></div>
         </div><div class="side-menu-item">
-            <div><a>Tweet Locator</a></div>
+            <div><a href="{{ url_for('tweet_locker.main') }}" >Tweet Locker</a></div>
         </div>
     </div>
 </div>
@@ -38,6 +38,8 @@
     for (let i = 0; i < menuItems.length; i++) {
         if (menuItems[i].children[0].children[0]['href'] === window.location.href) {
             menuItems[i].classList.add('is-active')
+            if (i > 0) menuItems[i - 1].classList.add('is-above-active')
+            if (i < menuItems.length) menuItems[i + 1].classList.add('is-below-active')
         }
         menuItems[i].addEventListener("click", function() {
             let active = document.getElementsByClassName('is-active')
