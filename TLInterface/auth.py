@@ -62,6 +62,9 @@ def logout_of_account():
     if wc:
         response = wc.logout()
         session.pop('wc')
+        session.pop('twitter_handle')
+        session.pop('twitter_screen_name')
+        session.pop('twitter_profile_image')
         return response
     else:
         print('No WebConnection object found in session.')
