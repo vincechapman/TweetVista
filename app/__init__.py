@@ -63,6 +63,9 @@ def create_app():
     from . blueprints.auth import auth as auth_bp
     app.register_blueprint(auth_bp)
 
+    from . blueprints.tweet_locker import locker as locker_bp
+    app.register_blueprint(locker_bp)
+
     # Add twitter authorisation routes
     from TLInterface.twitter_oauth import build_routes
     build_routes(app)
