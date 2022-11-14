@@ -1,0 +1,30 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+<link rel="stylesheet" href="https://bulma.io/vendor/fontawesome-free-5.15.2-web/css/all.min.css">
+<link rel="stylesheet" href="/app/static/styles/layouts/base.css">
+
+{% macro live_toggle(is_live) %}
+    <form action="#" method="post">
+        <div class="field has-addons is-justify-content-center mt-1">
+            <p class="control">
+                <button type="submit" name="live-button" value="make-not-live" class="button is-danger is-small is-rounded {% if is_live %}is-light{% endif %}" title="This mode displays all tweets that have been captured so far.">
+                    {% if not is_live %}
+                        <span class="icon is-small">
+                            <i class="fas fa-circle"></i>
+                        </span>
+                    {% endif %}
+                    <span>Captured</span>
+                </button>
+            </p>
+            <p class="control">
+                <button type="submit" name="live-button" value="make-live" class="button is-success is-small is-rounded {% if not is_live %}is-light{% endif %}" title="This mode displays new tweets for your campaign in realtime.">
+                    {% if is_live %}
+                        <span class="icon is-small">
+                            <i class="fas fa-circle"></i>
+                        </span>
+                    {% endif %}
+                    <span>Live Mode</span>
+                </button>
+            </p>
+        </div>
+    </form>
+{% endmacro %}
