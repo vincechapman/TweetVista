@@ -1,5 +1,5 @@
-let nextId = 0
-let campaignId = {{ selected_campaign }}  // Ignore typo hinting here
+let nextOldId = 0
+
 
 let fetchedPageIds = []  // TODO A temporary measure to stop multiple requests for one page of old tweets
 
@@ -17,11 +17,11 @@ getOldTweets()
 
 function getOldTweets() {
 
-    if (fetchedPageIds.includes(nextId) === false) {
+    if (fetchedPageIds.includes(nextOldId) === false) {
 
-        console.log('Fetching page beginning with tweet', nextId)
+        console.log('Fetching page beginning with tweet', nextOldId)
 
-        fetchedPageIds.push(nextId)
+        fetchedPageIds.push(nextOldId)
 
         fetch('{{ url_for("api_feed.get_old_tweets") }}', {
                 method: 'POST',
@@ -31,14 +31,14 @@ function getOldTweets() {
                 },
                 body: JSON.stringify({
                     'campaignId': campaignId,
-                    'nextId': nextId
+                    'nextId': nextOldId
                 })
             })
             .then((response) => response.json())
             .then((data) => {
                 console.log(data)
                 if (data['status'] === 200) {
-                    nextId = data['data']['next_id']
+                    nextOldId = data['data']['next_id']
                     let tweets = data['data']['tweets']
                     for (let i = 0; i < tweets.length; i++) {
                         append_new_html_object(tweets[i])
