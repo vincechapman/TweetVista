@@ -69,7 +69,7 @@ def get_latest_tweets(campaign_id: int, tweet_id: int = 0) -> (list, int) or Fal
         from TLInterface import get_web_connection
         wc = get_web_connection()
 
-        response = wc.get_page_tweets(campaign_id, tweet_id=tweet_id, page_len=10)
+        response = wc.get_page_tweets(campaign_id, tweet_id=tweet_id, page_len=100)
 
         if response.get('status') == 200:
 
@@ -89,7 +89,7 @@ def get_latest_tweets(campaign_id: int, tweet_id: int = 0) -> (list, int) or Fal
         return False
 
 
-def get_historic_tweets(campaign_id: int, next_id: int = 0, page_len: int = 10) -> (dict, int) or False:
+def get_historic_tweets(campaign_id: int, next_id: int = 0, page_len: int = 100) -> (dict, int) or False:
 
     try:
         from TLInterface import get_web_connection
