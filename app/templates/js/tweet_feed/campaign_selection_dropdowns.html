@@ -11,7 +11,7 @@
     // Adding ability to filter campaigns by client
     const clients = document.querySelectorAll('#client-selection-dropdown > .dropdown-menu > .dropdown-content > .dropdown-item')
     const campaigns = document.querySelectorAll('#campaign-selection-dropdown > .dropdown-menu > .dropdown-content > .dropdown-item.campaign')
-    const originalCampaignFilterMessage = document.getElementById('campaign-filter-message').innerHTML
+    {#const originalCampaignFilterMessage = document.getElementById('campaign-filter-message').innerHTML#}
 
     function removeClientFilter() {
         for (let i = 0; i < campaigns.length; i++) {
