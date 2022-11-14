@@ -131,18 +131,7 @@
   transition: all 0.15s linear;
 }
 #tweet-slider-form + button {
-  display: block;
-  position: relative;
   margin: 56px auto 0;
-  padding: 10px 20px;
-  appearance: none;
-  transition: all 0.15s ease-in-out;
-  font-family: inherit;
-  font-size: 24px;
-  font-weight: 600;
-  outline: 0;
-  user-select: none;
-  cursor: pointer;
 }
 #tweet-slider-form + button:hover:active {
   transform: scale(0.9);
