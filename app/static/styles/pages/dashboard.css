@@ -10395,11 +10395,6 @@ a {
   color: #8E8E8E;
 }
 
-#tweet-wall {
-  columns: 300px;
-  column-gap: 0.5rem;
-}
-
 #side-menu {
   max-width: 200px;
   min-height: 100vh;
