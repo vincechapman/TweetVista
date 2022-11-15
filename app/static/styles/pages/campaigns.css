@@ -74,4 +74,8 @@
   color: #1BA2F3;
 }
 
+.campaign-filter-field {
+  box-shadow: rgba(135, 135, 135, 0.1294117647) 0 10px 5px 2px;
+}
+
 /*# sourceMappingURL=campaigns.css.map */
