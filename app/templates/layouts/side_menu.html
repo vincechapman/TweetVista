@@ -34,9 +34,13 @@
 
 <script>
     const menuItems = document.querySelectorAll(".side-menu-item");
+    const currentPage = window.location.href
+
+    console.log('Current page:', currentPage)
 
     for (let i = 0; i < menuItems.length; i++) {
-        if (menuItems[i].children[0].children[0]['href'] === window.location.href) {
+        let pageLink = menuItems[i].children[0].children[0]['href']
+        if (pageLink && currentPage.includes(pageLink)) {
             menuItems[i].classList.add('is-active')
             if (i > 0) menuItems[i - 1].classList.add('is-above-active')
             if (i < menuItems.length) menuItems[i + 1].classList.add('is-below-active')
