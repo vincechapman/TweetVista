@@ -62,6 +62,19 @@
   border-color: #42b8ff;
 }
 
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
 #side-menu-container {
   background: linear-gradient(90deg, #290A5A, #340f88), #290A5A;
   width: 100%;
@@ -71,6 +84,8 @@
   text-align: center;
   font-size: 1.1em;
   font-weight: 500;
+  box-shadow: rgba(23, 6, 54, 0.47) inset -30px 0px 10px -24px;
+  z-index: -100;
 }
 
 #side-menu-items-container {
@@ -84,26 +99,27 @@
 
 .side-menu-item {
   display: block;
+  animation: 0.3s ease-out 0s 1 slideInFromLeft;
+  white-space: nowrap;
+  border-radius: 70px 0 0 70px;
 }
 .side-menu-item.is-active {
   background-color: #EFF0F2;
-  border-radius: 70px 0 0 70px;
 }
 .side-menu-item.is-active > div > a {
   color: rgba(224, 24, 105, 0.73);
 }
-.side-menu-item.is-above-active {
+.side-menu-item.is-above-active, .side-menu-item.is-below-active {
   background-color: #EFF0F2;
 }
 .side-menu-item.is-above-active > div {
   background: linear-gradient(90deg, #290A5A, #340f88), #290A5A;
+  box-shadow: rgba(23, 6, 54, 0.47) inset -30px 0px 10px -24px;
   border-radius: 0 0 15px 0;
-}
-.side-menu-item.is-below-active {
-  background-color: #EFF0F2;
 }
 .side-menu-item.is-below-active > div {
   background: linear-gradient(90deg, #290A5A, #340f88), #290A5A;
+  box-shadow: rgba(23, 6, 54, 0.47) inset -30px 0px 10px -24px;
   border-radius: 0 15px 0 0;
 }
 .side-menu-item div {
