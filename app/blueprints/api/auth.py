@@ -167,6 +167,6 @@ def check_if_logged_in():
         logging.error(e)
         return jsonify({
             'status': 404,
-            'message': e,
+            'message': 'Check error logs',
             'data': None
         })
