@@ -109,19 +109,39 @@ def main():
 @campaigns.route('/<int:campaign_id>', methods=['GET', 'POST'])
 def view_campaign(campaign_id):
 
-    from TLInterface.get_campaigns import get_all_campaigns
+    from TLInterface.get_campaigns import get_all_campaigns, get_campaign_data
 
+    # Basic data for all campaigns
     all_campaigns = get_all_campaigns()
+
+    # Data for this campaign
+    campaign_data = get_campaign_data(campaign_id)
+    campaign_is_active = campaign_data['is_active']
 
     is_live = False
 
     if request.method == 'POST':
-        live_button = request.form.get('live-button')
-        if live_button:
-            if live_button == 'make-live':
+        submit_button = request.form.get('submit')
+        if submit_button:
+            if submit_button == 'make-live':
                 is_live = True
-            elif live_button == 'make-not-live':
+            elif submit_button == 'make-not-live':
                 is_live = False
+            elif submit_button == 'reactivate-campaign':
+                print('Reactivating campaign!')
+
+                from TLInterface import get_web_connection
+                wc = get_web_connection()
+
+                response = wc.start_campaign_feed(
+                    campaign_id=campaign_id)
+
+                if response.get('status'):
+                    logging.info(f'Campaign {campaign_id} started.')
+                    campaign_is_active = True
+
+                is_live = True
+
             else:
                 print('Invalid live button value')
         else:
@@ -129,4 +149,4 @@ def view_campaign(campaign_id):
             print('SELECTED CAMPAIGN:', selected_campaign)
             return redirect(url_for('campaigns.view_campaign', campaign_id=selected_campaign))
 
-    return render_template('pages/campaigns/view_campaign.html', all_campaigns=all_campaigns, selected_campaign=campaign_id, is_live=is_live)
+    return render_template('pages/campaigns/view_campaign.html', all_campaigns=all_campaigns, selected_campaign=campaign_id, is_live=is_live, campaign_is_active=campaign_is_active)
