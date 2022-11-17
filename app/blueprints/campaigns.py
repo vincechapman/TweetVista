@@ -116,7 +116,7 @@ def view_campaign(campaign_id):
 
     # Data for this campaign
     campaign_data = get_campaign_data(campaign_id)
-    campaign_is_active = campaign_data['is_active']
+    campaign_is_active = campaign_data['is_active'] if campaign_data else False
 
     is_live = False
 
