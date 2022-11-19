@@ -160,24 +160,64 @@ def get_new_tweets():
 def get_old_tweets():
 
     try:
+
+        print('api/feed/getOldTweets called!')
+
         request_body = json.loads(request.data)
-        next_id = request_body['nextId']
-        campaign_id = request_body['campaignId']
+
+        campaign_id = request_body.get('campaignId')
+        page_num = request_body.get('nextPage')
+        tweet_cutoff = request_body.get('tweetCutoff')
+        num_tweets = request_body.get('numTweets')
+        num_pages = request_body.get('numPages')
+        ascending = request_body.get('ascending')
+
+        print()
+        print('Campaign_id:', campaign_id)
+        print('Page num:', page_num)
+        print('Tweet cutoff:', tweet_cutoff)
+        print('Num tweets:', num_tweets)
+        print('Num pages:', num_pages)
+        print('Ascending:', ascending)
+        print()
 
         from TLInterface.get_tweet_feed import get_historic_tweets
-        response = get_historic_tweets(campaign_id=campaign_id, next_id=next_id)
+
+        response = get_historic_tweets(
+            campaign_id=campaign_id,
+            ascending=ascending,
+            page_num=page_num,
+            num_pages=num_pages,
+            num_tweets=num_tweets,
+            tweet_cutoff=tweet_cutoff)
 
         if response:
-            tweets, next_id = response
+            tweets, next_page, num_pages, num_tweets = response
+            if tweet_cutoff is None and not ascending:
+                tweet_cutoff = tweets[0]['id']
+            return jsonify({
+                'status': 200,
+                'message': 'Success',
+                'data': {
+                    'tweets': tweets,
+                    'nextPage': next_page,
+                    'numPages': num_pages,
+                    'numTweets': num_tweets,
+                    'tweetCutoff': tweet_cutoff
+                }
+            })
+        else:
+            return jsonify({
+                'status': 400,
+                'message': 'Failed to get old tweets. Check server logs.',
+                'data': None
+            })
 
-        return jsonify({
-            'status': 200,
-            'message': 'Success',
-            'data': {
-                'tweets': tweets,
-                'next_id': next_id
-            }
-        })
+        # from TLInterface.get_tweet_feed import get_historic_tweets
+        # response = get_historic_tweets(campaign_id=campaign_id, next_id=next_id)
+        #
+        # if response:
+        #     tweets, next_id = response
 
     except json.decoder.JSONDecodeError as e:
         print('FAILED: request_body = json.loads(request.data)')
