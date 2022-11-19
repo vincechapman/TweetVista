@@ -1,0 +1,16 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+<link rel="stylesheet" href="https://bulma.io/vendor/fontawesome-free-5.15.2-web/css/all.min.css">
+<link rel="stylesheet" href="/app/static/styles/layouts/base.css">
+<link rel="stylesheet" href="/app/static/styles/pages/campaigns.css">
+
+{% macro check_for_new_tweets() %}
+    <div id="new-tweet-count-container" class="container has-text-centered is-hidden">
+        <span class="tag is-info is-rounded is-clickable is-medium" onclick="location.reload();">
+            <span id="new-tweet-count"></span>. Click to refresh
+        </span>
+    </div>
+
+    <script>
+        {% include 'js/tweet_feed/check_for_new_tweets.js' %}
+    </script>
+{% endmacro %}
