@@ -87,3 +87,49 @@ def delete_campaign():
     logging.info(f'Campaign {campaign_id} ({campaign_name}) started.')
 
     return jsonify(response)
+
+
+@api_campaigns.route('/countCampaignTweets', methods=['POST'])
+def count_campaign_tweets():
+
+    try:
+
+        from TLInterface import get_web_connection
+        wc = get_web_connection()
+
+        request_body = json.loads(request.data)
+        campaign_id = request_body.get('campaignId')
+        keywords = request_body.get('keywords')
+        start_date = request_body.get('startDate')
+        end_date = request_body.get('endDate')
+        start_score = request_body.get('startScore')
+        end_score = request_body.get('endScore')
+
+        print()
+        print('Campaign_id:', campaign_id)
+        print('Keywords:', keywords)
+        print('Start date:', start_date)
+        print('End date:', end_date)
+        print('Start score:', start_score)
+        print('End score:', end_score)
+        print()
+
+        data = wc.count_campaign_tweets(campaign_id=campaign_id, key_words=keywords, start_date=start_date, end_date=end_date, start_score=start_score, end_score=end_score)
+
+        if data.get('status') != 200:
+            print(data.get('status'))
+            print(data.get('msg'))
+            return jsonify(False)
+
+        num_tweets = data.get('data', 0)
+
+        return jsonify(num_tweets)
+
+    except json.decoder.JSONDecodeError as e:
+        print('FAILED: request_body = json.loads(request.data)')
+        print(e)
+        return jsonify('Failed to get campaign tweet count.', 404)
+
+    except Exception as e:
+        print(e)
+        return jsonify('Failed to get campaign tweet count', 404)
