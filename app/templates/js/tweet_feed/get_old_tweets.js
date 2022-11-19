@@ -5,12 +5,8 @@ TODO Some profile images aren't loading properly - the link is not working. But 
 TODO Look into combining the html tweet objects for the getOldTweets and getNewTweets function so we don't have to manage two different versions of this.
 */
 
-let nextOldId = 0
-
-let fetchedPageIds = []  // A temporary measure to stop multiple requests for one page of old tweets
-
+let fetchedPages = []  // A temporary measure to stop multiple requests for one page of old tweets
 const loadOffset = 5000 // When we scroll to this distance from the bottom, a new page of tweets will be fetched
-
 
 // Event listener: Checks if scrolled near bottom of page
 window.onscroll = function(ev) {
@@ -23,17 +19,24 @@ window.onscroll = function(ev) {
     }, 100)
 }
 
+let tweets;
+let nextPage = 1
+let tweetCutoff = undefined
+let numTweets = undefined
+let numPages = undefined
+let ascending = false
 
 getOldTweets()
 
-
 function getOldTweets() {
 
-    if (fetchedPageIds.includes(nextOldId) === false) {
+    if (fetchedPages.includes(nextPage) === false) {
 
-        console.log('Fetching page beginning with tweet', nextOldId)
+        tweets = undefined
 
-        fetchedPageIds.push(nextOldId)
+        console.log('Fetching page:', nextPage)
+
+        fetchedPages.push(nextPage)
 
         fetch('{{ url_for("api_feed.get_old_tweets") }}', {
                 method: 'POST',
@@ -43,14 +46,23 @@ function getOldTweets() {
                 },
                 body: JSON.stringify({
                     'campaignId': campaignId,
-                    'nextId': nextOldId
+                    'nextPage': nextPage,
+                    'tweetCutoff': tweetCutoff,
+                    'numTweets': numTweets,
+                    'numPages': numPages,
+                    'ascending': ascending
                 })
             })
             .then((response) => response.json())
             .then((data) => {
                 if (data['status'] === 200) {
-                    nextOldId = data['data']['next_id']
-                    let tweets = data['data']['tweets']
+
+                    tweets = data['data']['tweets']
+                    nextPage = data['data']['nextPage']
+                    numPages = data['data']['numPages']
+                    numTweets = data['data']['numTweets']
+                    tweetCutoff = data['data']['tweetCutoff']
+
                     for (let i = 0; i < tweets.length; i++) {
                         append_new_html_object(tweets[i])
                     }
