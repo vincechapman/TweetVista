@@ -36,10 +36,8 @@ function getNewTweets() {
         .then((data) => {
             if (data['status'] === 200) {
                 let tweets = data['data']['tweets']
-                if (latestId !== 0) {  // Added this condition temporarily so it doesn't load the first batch of tweets that come in when the stream is started up
-                    for (let i = 0; i < tweets.length; i++) {
-                        prepend_new_html_object(tweets[i])
-                    }
+                for (let i = 0; i < tweets.length; i++) {
+                    prepend_new_html_object(tweets[i])
                 }
                 latestId = data['data']['next_id']
             } else {
