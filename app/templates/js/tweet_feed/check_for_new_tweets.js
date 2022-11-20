@@ -20,7 +20,6 @@ function checkForNewTweets() {
         })
         .then((response) => response.json())
         .then((data) => {
-            console.log(data)
             latestTweetCount = data
             if (latestTweetCount !== numTweets) {
                 console.log(latestTweetCount - numTweets, 'new tweets')
@@ -30,6 +29,8 @@ function checkForNewTweets() {
 
                 let tweetCountContainer = newTweetCountElem.parentNode.parentNode
                 tweetCountContainer.classList.remove('is-hidden')
+            } else {
+                console.log('No new tweets found!')
             }
         })
 }
