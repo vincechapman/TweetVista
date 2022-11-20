@@ -20,7 +20,7 @@
 
         <main class="column p-6" style="z-index: 0;">
 
-            <section class="section pt-5" style="position: fixed; top: 0; background: linear-gradient(180deg, #edeef1 35%, rgba(237,238,241,0.18) 60%, rgba(0,0,255,0)); width: -webkit-fill-available; padding-bottom: 100px;"> {# TODO Ensure this width setting has good browser compatability #}
+            <section class="section pt-5" style="position: fixed; top: 0; background: linear-gradient(180deg, #edeef1 35%, rgba(237,238,241,0.18) 60%, rgba(0,0,255,0)); width: -webkit-fill-available; padding-bottom: 100px; z-index: 100"> {# TODO Ensure this width setting has good browser compatability #}
 
                 <div class="columns is-gapless is-multiline">
 
@@ -83,6 +83,9 @@
                             </div>
                         </section>
                     {% endif %}
+                {% else %}
+                    {% from 'pages/campaigns/historic/check_for_new_tweets.html' import check_for_new_tweets %}
+                    {{ check_for_new_tweets() }}
                 {% endif %}
 
                 <div id="tweet-wall-results">
@@ -99,7 +102,10 @@
     {% include 'js/tweet_feed/like_unlike_tweet.html' %}
 
     <script>
-        let campaignId = {{ selected_campaign }}
+        let campaignId = '{{ selected_campaign }}'
+        let keywords = undefined
+        let startScore = undefined
+        let endScore = undefined
 
         {% include 'js/tweet_feed/tweet_locker.js' %}
 
