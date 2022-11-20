@@ -84,8 +84,10 @@
                         </section>
                     {% endif %}
                 {% else %}
-                    {% from 'pages/campaigns/historic/check_for_new_tweets.html' import check_for_new_tweets %}
-                    {{ check_for_new_tweets() }}
+                    {% if campaign_is_active %}
+                        {% from 'pages/campaigns/historic/check_for_new_tweets.html' import check_for_new_tweets %}
+                        {{ check_for_new_tweets() }}
+                    {% endif %}
                 {% endif %}
 
                 <div id="tweet-wall-results">
