@@ -21,16 +21,16 @@ function checkForNewTweets() {
         .then((response) => response.json())
         .then((data) => {
             latestTweetCount = data
+            let newTweetCountElem = document.getElementById('new-tweet-count')
+            let tweetCountContainer = newTweetCountElem.parentNode.parentNode
             if (latestTweetCount !== numTweets) {
                 console.log(latestTweetCount - numTweets, 'new tweets')
-                let newTweetCountElem = document.getElementById('new-tweet-count')
                 let numNewTweets = latestTweetCount - numTweets
                 newTweetCountElem.innerHTML = `<span class="has-text-weight-bold">${numNewTweets}</span> new tweet${numNewTweets === 1 ? '' : 's'}`
-
-                let tweetCountContainer = newTweetCountElem.parentNode.parentNode
                 tweetCountContainer.classList.remove('is-hidden')
             } else {
                 console.log('No new tweets found!')
+                tweetCountContainer.classList.add('is-hidden')
             }
         })
 }
