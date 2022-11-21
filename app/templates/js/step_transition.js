@@ -16,7 +16,7 @@ function stepTransition(elem = undefined, nextStepId = undefined) {
     }
 
     if (nextStepId === 'none') {
-        document.getElementById('signup-modal').classList.remove('is-active')
+        // document.getElementById('signup-modal').classList.remove('is-active')
         window.location.href = '{{ url_for('index') }}'
     }
 
