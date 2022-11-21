@@ -14,17 +14,6 @@ Ideally this one filter should cover all filtering needs i.e.
 
 let lowestTweetScore = 0
 
-function getLowestTweetScoreSelection() {
-    let selection = 0
-    let tweetScoreOptions = document.getElementsByName('debt-amount')
-    for (let i = 0; i < tweetScoreOptions.length; i++) {
-        if (tweetScoreOptions[i].checked) {
-             selection = parseInt(tweetScoreOptions[i].value)
-        }
-    }
-    return selection
-}
-
 let startDate = undefined
 let endDate = undefined
 
@@ -75,28 +64,15 @@ function setupPage() {
 function applyFilters(tweetElems = undefined, mode = 'old') {
     /* This function applies current page filters to all tweets or just the ones specified by tweetElems argument */
 
-    let tweetsHidden = 0
-
-    lowestTweetScore = getLowestTweetScoreSelection()
-
-    if (!tweetElems) tweetElems = document.getElementsByClassName('tweet-container')
-
-    let hide;
-    for (let i = 0; i < tweetElems.length; i++) {
-
-        let tweetScoreTest = tweetScoreRule(tweetElems[i], lowestTweetScore)
-        let keywordsTest = keywordsRule(tweetElems[i])
-        let dateTest = dateRangeRule(tweetElems[i])
+    let tweetWall = document.getElementById('tweet-wall')
+    tweetWall.replaceChildren()
 
     setupPage()
 
-        tweetElems[i].hidden = hide
-
-        if (hide) tweetsHidden++
-
+    if (mode === 'old') {
+        getOldTweets()
     }
 
-    return `Tweets hidden: ${tweetsHidden}`
 }
 
 function tweetScoreRule(elem, lowestTweetScore) {
