@@ -179,7 +179,7 @@
 
             <script>
                 function loginToAccount(elem) {
-                    // This function creates an account in database via an api endpoint call.
+                    // This function logs in an account via an api endpoint call.
                     let formFields = elem.form.elements
                     if (checkFormValidity(formFields)) {
                         elem.classList.add('is-loading', 'is-light');  // Button loading formatting
@@ -196,7 +196,12 @@
                             .then((data) => {
                                 if (data['success']) {
                                     console.log(data['message'])
-                                    stepTransition(elem)
+                                    console.log(data['twitterCredentialsFound'])
+                                    if (data['twitterCredentialsFound'] === true) {
+                                        stepTransition(elem, 'none')
+                                    } else {
+                                        stepTransition(elem)
+                                    }
                                 } else {
                                     alert(data['message'])
                                     elem.classList.remove('is-loading', 'is-light');  // Button formatting
