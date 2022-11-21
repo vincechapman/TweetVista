@@ -30,7 +30,12 @@ function getOldTweets() {
                     'tweetCutoff': tweetCutoff,
                     'numTweets': numTweets,
                     'numPages': numPages,
-                    'ascending': ascending
+                    'ascending': ascending,
+                    'startScore': startScore,
+                    'endScore': endScore,
+                    'startDate': startDate,
+                    'endDate': endDate,
+                    'keywords': keywords
                 })
             })
             .then((response) => response.json())
@@ -212,6 +217,20 @@ function append_new_html_object(tweet) {
     let newElement = document.createElement('div')
     newElement.classList.add('tweet-container')
     newElement.innerHTML = html
-    applyFilters([newElement])
     document.getElementById('tweet-wall').appendChild(newElement)
+}
+
+
+// This section handles the automatic loading of new tweets as user scrolls down page
+const loadOffset = 5000 // When we scroll to this distance from the bottom, a new page of tweets will be fetched
+
+// Event listener: Checks if scrolled near bottom of page
+window.onscroll = function(ev) {
+    let loop = setInterval(function () {
+        if ((window.innerHeight + Math.ceil(window.pageYOffset + 1)) >= document.body.offsetHeight - loadOffset) {
+            getOldTweets()
+        } else {
+            clearInterval(loop)
+        }
+    }, 100)
 }
