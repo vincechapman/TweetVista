@@ -1,6 +1,6 @@
 from TLInterface import get_web_connection
 
-wc = get_web_connection(username='test10@gmail.com', password='test10')
+wc = get_web_connection()
 
 
 def get_saved_tweets(campaign_id):
