@@ -32,7 +32,47 @@ let positiveKeywords;  // Only return tweets that contain this keyword.
 let negativeKeywords; // Only return tweets that do not contain this keyword.
 
 
-function applyFilters(tweetElems = undefined) {
+let tweets
+let nextPage
+// let keywords
+let tweetCutoff
+// let startDate
+// let endDate
+let numTweets
+let numPages
+let ascending
+let fetchedPages = []  // A temporary measure to stop multiple requests for one page of old tweets
+
+
+function setupPage() {
+    nextPage = 1
+    tweetCutoff = undefined
+
+    keywords = document.getElementById('new-search-words').value
+
+    startDate = undefined  // TODO Change to get value from date input. The minimum and maximum dates should be set to campaign start and today's date respectively
+    endDate = undefined  // TODO Change to get value from date input. The minimum and maximum dates should be set to campaign start and today's date respectively
+
+    startScore = parseInt(document.getElementById('tweet-score-limit').value)
+    endScore = undefined
+
+    numTweets = undefined
+    numPages = undefined
+
+    ascending = false  // TODO Change to get value from a dropdown
+
+    fetchedPages = []
+
+    let tweetCountContainer = document.getElementById('new-tweet-count-container')
+    if (tweetCountContainer) {
+        tweetCountContainer.classList.add('is-hidden')
+    }
+}
+
+
+
+
+function applyFilters(tweetElems = undefined, mode = 'old') {
     /* This function applies current page filters to all tweets or just the ones specified by tweetElems argument */
 
     let tweetsHidden = 0
@@ -48,7 +88,7 @@ function applyFilters(tweetElems = undefined) {
         let keywordsTest = keywordsRule(tweetElems[i])
         let dateTest = dateRangeRule(tweetElems[i])
 
-        hide = !(tweetScoreTest && keywordsTest && dateTest);  // Tweet has to pass all checks in order to be visible
+    setupPage()
 
         tweetElems[i].hidden = hide
 

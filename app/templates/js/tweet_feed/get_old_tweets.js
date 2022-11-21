@@ -5,27 +5,7 @@ TODO Some profile images aren't loading properly - the link is not working. But 
 TODO Look into combining the html tweet objects for the getOldTweets and getNewTweets function so we don't have to manage two different versions of this.
 */
 
-let fetchedPages = []  // A temporary measure to stop multiple requests for one page of old tweets
-const loadOffset = 5000 // When we scroll to this distance from the bottom, a new page of tweets will be fetched
-
-// Event listener: Checks if scrolled near bottom of page
-window.onscroll = function(ev) {
-    let loop = setInterval(function () {
-        if ((window.innerHeight + Math.ceil(window.pageYOffset + 1)) >= document.body.offsetHeight - loadOffset) {
-            getOldTweets()
-        } else {
-            clearInterval(loop)
-        }
-    }, 100)
-}
-
-let tweets;
-let nextPage = 1
-let tweetCutoff = undefined
-let numTweets = undefined
-let numPages = undefined
-let ascending = false
-
+setupPage()
 getOldTweets()
 
 function getOldTweets() {
