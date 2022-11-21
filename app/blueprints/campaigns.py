@@ -9,7 +9,7 @@ campaigns = Blueprint('campaigns', __name__, url_prefix='/campaigns')
 @campaigns.route('/', methods=['GET', 'POST'])
 def main():
 
-    if not (has_request_context() and session.get('twitter_handle')):
+    if not (has_request_context() and session.get('logged_in')):
         return render_template('pages/auth/not_signed_in.html')
 
     else:
@@ -114,7 +114,7 @@ def main():
 @campaigns.route('/<int:campaign_id>', methods=['GET', 'POST'])
 def view_campaign(campaign_id):
 
-    if not (has_request_context() and session.get('twitter_handle')):
+    if not (has_request_context() and session.get('logged_in')):
         return render_template('pages/auth/not_signed_in.html')
 
     else:
