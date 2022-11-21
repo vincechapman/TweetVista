@@ -4,7 +4,7 @@ from flask import session, has_request_context
 from TLInterface import get_web_connection, save_web_connection
 
 
-def create_account(username: str, firstname: str, lastname: str, email: str, password: str) -> (bool, str):
+def create_account(username: str, firstname: str, lastname: str, email: str, password: str, company_name: str = None, company_role: str = None, contact_number: str = None, number_of_users: str = None) -> (bool, str):
     """Creates an account in TweetLocator backend."""
 
     try:
@@ -16,7 +16,12 @@ def create_account(username: str, firstname: str, lastname: str, email: str, pas
             firstname=firstname,
             lastname=lastname,
             email=email,
-            password=password)
+            password=password,
+            company_name=company_name,
+            company_role=company_role,
+            contact_number=contact_number,
+            number_of_users=number_of_users,
+        )
 
         if response['status'] == 200:
             save_web_connection(wc)
@@ -66,6 +71,7 @@ def logout_of_account():
             session.pop('twitter_handle', default=None)
             session.pop('twitter_screen_name', default=None)
             session.pop('twitter_profile_image', default=None)
+            session['logged_in'] = False
         return response
     else:
         print('No WebConnection object found in session.')
