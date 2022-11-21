@@ -171,6 +171,11 @@ def get_old_tweets():
         num_tweets = request_body.get('numTweets')
         num_pages = request_body.get('numPages')
         ascending = request_body.get('ascending')
+        start_score = request_body.get('startScore')
+        end_score = request_body.get('endScore')
+        start_date = request_body.get('startDate')
+        end_date = request_body.get('endDate')
+        keywords = request_body.get('keywords')
 
         print()
         print('Campaign_id:', campaign_id)
@@ -179,6 +184,11 @@ def get_old_tweets():
         print('Num tweets:', num_tweets)
         print('Num pages:', num_pages)
         print('Ascending:', ascending)
+        print('Start score:', start_score)
+        print('End score:', end_score)
+        print('Start date:', start_date)
+        print('End date:', end_date)
+        print('Keywords:', keywords)
         print()
 
         from TLInterface.get_tweet_feed import get_historic_tweets
@@ -189,7 +199,13 @@ def get_old_tweets():
             page_num=page_num,
             num_pages=num_pages,
             num_tweets=num_tweets,
-            tweet_cutoff=tweet_cutoff)
+            tweet_cutoff=tweet_cutoff,
+            start_score=start_score,
+            end_score=end_score,
+            start_date=start_date,
+            end_date=end_date,
+            keywords=keywords
+        )
 
         if response:
             tweets, next_page, num_pages, num_tweets = response
