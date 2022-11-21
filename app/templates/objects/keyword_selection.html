@@ -24,6 +24,8 @@
                             <button class="button is-small bg-is-light-grey" style="border-radius: 10px; border-color: white; box-shadow: 1px 2px 3px rgba(0,0,0,0.16);">{{ kw }}</button>
                         {% endfor %}
                     </div>
+                    {% from 'objects/feed_filters/search_box.html' import search_box %}
+                    {{ search_box() }}
                 </div>
             </div>
         </div>
