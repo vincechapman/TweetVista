@@ -95,4 +95,11 @@
   box-shadow: rgba(135, 135, 135, 0.1294117647) 0 10px 5px 2px;
 }
 
+#filter-section {
+  pointer-events: none;
+}
+#filter-section * {
+  pointer-events: initial;
+}
+
 /*# sourceMappingURL=campaigns.css.map */
