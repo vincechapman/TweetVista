@@ -2,7 +2,7 @@ import json
 import models
 import logging
 
-from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify
+from flask import Blueprint, request, jsonify, has_request_context, session
 from flask_login import login_user, login_required, current_user
 
 auth = Blueprint('api_auth', __name__, url_prefix='/api/auth')
@@ -28,13 +28,17 @@ def signup():
             lastname=last_name,
             email=email_address,
             password=password)
-        print(data)
+
         status = data.get('status', 404)
+
+        print(data)
 
         if status == 200:
             from TLInterface.auth import login_to_account
             response = login_to_account(email_address, password)
             if response.get('status') == 200:
+                if has_request_context():
+                    session['logged_in'] = True
                 return jsonify({
                     'success': True,
                     'message': "Account created and logged in."})
@@ -47,6 +51,7 @@ def signup():
                 'success': False,
                 'message': "Account already exists. Please log in instead."})
         else:
+            print(data)
             return jsonify({
                 'success': False,
                 'message': "Unknown error."
@@ -94,10 +99,31 @@ def login():
 
         if response['status'] == 200:
             print('Success!')
-            return jsonify({
-                'success': True,
-                'message': "Successfully logged in to account."
-            })
+
+            if has_request_context():
+                session['logged_in'] = True
+
+            from TLInterface import get_web_connection
+            wc = get_web_connection()
+
+            print('\nChecking if twitter account set:')
+            response = wc.is_twitter_account_set()
+
+            # TODO Get Dave to return the twitter details in this response and then save them to the session object below
+
+            if response.get('status') == 200:
+                return jsonify({
+                    'success': True,
+                    'message': "Successfully logged in to account and valid twitter credentials found.",
+                    'twitterCredentialsFound': True
+                })
+            else:
+                print(response)
+                return jsonify({
+                    'success': True,
+                    'message': "Successfully logged in to account but valid twitter credentials not found.",
+                    'twitterCredentialsFound': False
+                })
 
         else:
             return jsonify({
