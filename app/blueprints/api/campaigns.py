@@ -105,14 +105,14 @@ def count_campaign_tweets():
         start_score = request_body.get('startScore')
         end_score = request_body.get('endScore')
 
-        print()
-        print('Campaign_id:', campaign_id)
-        print('Keywords:', keywords)
-        print('Start date:', start_date)
-        print('End date:', end_date)
-        print('Start score:', start_score)
-        print('End score:', end_score)
-        print()
+        # print()
+        # print('Campaign_id:', campaign_id)
+        # print('Keywords:', keywords)
+        # print('Start date:', start_date)
+        # print('End date:', end_date)
+        # print('Start score:', start_score)
+        # print('End score:', end_score)
+        # print()
 
         data = wc.count_campaign_tweets(campaign_id=campaign_id, key_words=keywords, start_date=start_date, end_date=end_date, start_score=start_score, end_score=end_score)
 
