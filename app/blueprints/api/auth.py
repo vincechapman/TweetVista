@@ -109,14 +109,20 @@ def login():
             print('\nChecking if twitter account set:')
             response = wc.is_twitter_account_set()
 
-            # TODO Get Dave to return the twitter details in this response and then save them to the session object below
-
             if response.get('status') == 200:
+                data = response.get('data')
+
+                if has_request_context():
+                    session['twitter_handle'] = data.get('handle')
+                    session['twitter_profile_image'] = data.get('profile_image')
+                    session['twitter_screen_name'] = data.get('name')
+
                 return jsonify({
                     'success': True,
                     'message': "Successfully logged in to account and valid twitter credentials found.",
                     'twitterCredentialsFound': True
                 })
+
             else:
                 print(response)
                 return jsonify({
