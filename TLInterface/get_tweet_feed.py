@@ -140,29 +140,36 @@ def get_historic_tweets(campaign_id: int, page_num: int = 1, page_len: int = 100
 
 if __name__ == '__main__':
 
-    campaign_id = 53
+    campaign_id = 49
     page_num = 1
     looping = True
     tweet_cutoff = None
     num_tweets = None
     num_pages = None
-    ascending = True
+    start_date = None
+    end_date = None
+    start_score = 400
+    end_score = None
+    ascending = False
+    keywords = ['metal']
 
     while looping:
-
-        print()
-        print('Page number:', page_num)
-        print('Tweet cutoff:', tweet_cutoff)
-        print('Number of tweets:', num_tweets)
-        print('Number of pages:', num_pages)
 
         response = get_historic_tweets(
             campaign_id=campaign_id,
             ascending=ascending,
             page_num=page_num,
+            keywords=keywords,
+            start_date=start_date,
+            end_date=end_date,
+            start_score=start_score,
+            end_score=end_score,
             num_pages=num_pages,
             num_tweets=num_tweets,
             tweet_cutoff=tweet_cutoff)
+
+        print()
+        print('Page number:', page_num)
 
         if response:
             tweets, page_num, num_pages, num_tweets = response
@@ -170,3 +177,7 @@ if __name__ == '__main__':
                 tweet_cutoff = tweets[0]['id']
         else:
             looping = False
+
+        print('Tweet cutoff:', tweet_cutoff)
+        print('Number of tweets:', num_tweets)
+        print('Number of pages:', num_pages)
