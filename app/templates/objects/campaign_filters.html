@@ -4,6 +4,7 @@
 
 {% macro campaign_filters() %}
     <div class="columns ml-5">
+        {# Keywords & Hashtags #}
         <div class="column is-narrow">
             <div class="dropdown-trigger">
                 <button class="button border-is-electric-blue campaign-filter has-text-info-dark" data-field="keyword-selector" aria-haspopup="true" aria-controls="dropdown-menu">
@@ -24,6 +25,7 @@
             </span>
         </div>
 
+        {# Tweetscore #}
         <div class="column is-narrow">
             <div class="dropdown-trigger">
                 <button class="button border-is-electric-blue campaign-filter has-text-info-dark" data-field="tweet-score-slider" aria-haspopup="true" aria-controls="dropdown-menu">
@@ -43,5 +45,50 @@
                 <i class="fas fa-angle-double-down"></i>
             </span>
         </div>
+
+        {# Date range #}
+        <div class="column is-narrow">
+            <button type="text" class="button border-is-electric-blue has-text-info-dark" id="date-filter" value="">
+                <span class="icon is-small">
+                    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+                </span>
+
+                <span id="date-range-label">Dates</span>
+
+                <span class="icon is-small">
+                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                </span>
+            </button>
+
+            <script type="text/javascript">
+                $(function () {
+
+                    $('#date-filter').daterangepicker({
+                        autoUpdateInput: false,
+                        locale: {
+                            cancelLabel: 'Clear'
+                        }
+                    });
+
+                    $('#date-filter').on('apply.daterangepicker', function (ev, picker) {
+                        $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+                        console.log('Date range applied!')
+                        startDate = picker.startDate.format('YYYY-MM-DDTHH:mm:ssZ')
+                        endDate = picker.endDate.format('YYYY-MM-DDTHH:mm:ssZ')
+                        document.getElementById('date-range-label').innerHTML = picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY')
+                    });
+
+                    $('#date-filter').on('cancel.daterangepicker', function (ev, picker) {
+                        $(this).val('');
+                        console.log('Date range cleared!')
+                        startDate = undefined
+                        endDate = undefined
+                        document.getElementById('date-range-label').innerHTML = 'Dates'
+                    });
+
+                });
+            </script>
+        </div>
+
     </div>
 {% endmacro %}

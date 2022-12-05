@@ -8,6 +8,14 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/objects/campaign_dropdowns.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='/styles/objects/feed_filters/tweet_score_slider.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/pages/campaigns.css') }}">
+
+    {# Date range picker imports #}
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    {#  #}
+
 {% endblock %}
 
 {% block body %}
@@ -40,7 +48,7 @@
                         {{ live_toggle(is_live) }}
                     </div>
 
-                    <div id="account" class="column" style="margin-top: -7px;">
+                    <div id="account" class="column" style="margin-top: -7px; display: none;">
                         {% include 'layouts/account.html' %}
                     </div>
 
@@ -51,6 +59,9 @@
 
                         {% from 'objects/feed_filters/tweet_score_slider.html' import tweet_score_slider %}
                         {{ tweet_score_slider() }}
+
+                        {% from 'objects/feed_filters/date_range_selection.html' import date_range_selection %}
+                        {{ date_range_selection() }}
 
                     </div>
 
