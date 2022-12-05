@@ -100,19 +100,31 @@ def count_campaign_tweets():
         request_body = json.loads(request.data)
         campaign_id = request_body.get('campaignId')
         keywords = request_body.get('keywords')
-        start_date = request_body.get('startDate')
-        end_date = request_body.get('endDate')
         start_score = request_body.get('startScore')
         end_score = request_body.get('endScore')
+        start_date = request_body.get('startDate')
+        end_date = request_body.get('endDate')
 
-        # print()
-        # print('Campaign_id:', campaign_id)
-        # print('Keywords:', keywords)
-        # print('Start date:', start_date)
-        # print('End date:', end_date)
-        # print('Start score:', start_score)
-        # print('End score:', end_score)
-        # print()
+        if start_date and end_date:
+
+            from datetime import datetime
+
+            # Parsing into datetime format
+            start_date = datetime.strptime(start_date, '%Y-%m-%dT%H:%M:%S%f%z')
+            end_date = datetime.strptime(end_date, '%Y-%m-%dT%H:%M:%S%f%z')
+
+            # Formatting into Dave's format
+            start_date = start_date.strftime('%d-%m-%Y')
+            end_date = end_date.strftime('%d-%m-%Y')
+
+        print()
+        print('Campaign_id:', campaign_id)
+        print('Keywords:', keywords)
+        print('Start date:', start_date)
+        print('End date:', end_date)
+        print('Start score:', start_score)
+        print('End score:', end_score)
+        print()
 
         data = wc.count_campaign_tweets(campaign_id=campaign_id, key_words=keywords, start_date=start_date, end_date=end_date, start_score=start_score, end_score=end_score)
 
