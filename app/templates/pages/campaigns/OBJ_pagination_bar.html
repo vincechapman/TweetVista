@@ -1,0 +1,32 @@
+{#<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">#}
+{#<link rel="stylesheet" href="https://bulma.io/vendor/fontawesome-free-5.15.2-web/css/all.min.css">#}
+{#<link rel="stylesheet" href="/app/static/styles/layouts/base.css">#}
+
+{% macro pagination_bar() %}
+    <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
+        <a class="pagination-previous">Previous</a>
+        <a class="pagination-next">Next page</a>
+        <ul class="pagination-list">
+            <li><a class="pagination-link" aria-label="Goto page 1">1</a></li>
+            <li hidden><span class="pagination-ellipsis">&hellip;</span></li>
+            <li><a class="pagination-link" aria-label="Goto page 45">45</a></li>
+            <li><a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a></li>
+            <li><a class="pagination-link" aria-label="Goto page 47">47</a></li>
+            <li hidden><span class="pagination-ellipsis">&hellip;</span></li>
+            <li><a class="pagination-link" aria-label="Goto page 86">86</a></li>
+        </ul>
+    </nav>
+    <script>
+        let paginationList = document.getElementsByClassName('pagination-list')[0]
+        function setPages() {}
+        function addPages() {
+            let newPageNumber = 39
+            let newElement = document.createElement('li')
+            newElement.innerHTML = `<a class="pagination-link" aria-label="Goto page ${newPageNumber}">${newPageNumber}</a>`
+            paginationList.appendChild(newElement)
+        }
+        function removePages() {}
+    </script>
+{% endmacro %}
+<button onclick="addPages()">Add page</button>
+<button>Remove page</button>
