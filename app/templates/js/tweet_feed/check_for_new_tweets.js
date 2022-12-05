@@ -23,7 +23,7 @@ function checkForNewTweets() {
             latestTweetCount = data
             let newTweetCountElem = document.getElementById('new-tweet-count')
             let tweetCountContainer = newTweetCountElem.parentNode.parentNode
-            if (latestTweetCount !== numTweets) {
+            if (latestTweetCount - numTweets > 0) {  // TODO Confirm this is working
                 console.log(latestTweetCount - numTweets, 'new tweets')
                 let numNewTweets = latestTweetCount - numTweets
                 newTweetCountElem.innerHTML = `<span class="has-text-weight-bold">${numNewTweets}</span> new tweet${numNewTweets === 1 ? '' : 's'}`
