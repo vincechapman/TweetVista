@@ -39,8 +39,8 @@ function setupPage() {
 
     keywords = document.getElementById('new-search-words').value
 
-    startDate = undefined  // TODO Change to get value from date input. The minimum and maximum dates should be set to campaign start and today's date respectively
-    endDate = undefined  // TODO Change to get value from date input. The minimum and maximum dates should be set to campaign start and today's date respectively
+    // startDate = undefined  // TODO Change to get value from date input. The minimum and maximum dates should be set to campaign start and today's date respectively
+    // endDate = undefined  // TODO Change to get value from date input. The minimum and maximum dates should be set to campaign start and today's date respectively
 
     startScore = parseInt(document.getElementById('tweet-score-limit').value)
     endScore = undefined
