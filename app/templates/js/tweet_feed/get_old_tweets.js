@@ -44,19 +44,22 @@ function getOldTweets() {
 
                     tweets = data['data']['tweets']
                     nextPage = data['data']['nextPage']
-                    numPages = data['data']['numPages']
+                    numPages = data['data']['numPages']  // TODO Use numPages here to set up pagination
                     numTweets = data['data']['numTweets']
                     tweetCutoff = data['data']['tweetCutoff']
 
                     for (let i = 0; i < tweets.length; i++) {
                         append_new_html_object(tweets[i])
                     }
+
                 }
             })
     }
 }
 
 function append_new_html_object(tweet) {
+
+    console.log(tweet)
 
     let tweetId = tweet['id']
 
@@ -74,6 +77,8 @@ function append_new_html_object(tweet) {
     let authorProfileImage = tweet['raw']['user']['profile_image_url']
     let authorDisplayName = tweet['raw']['user']['name']
     let authorHandle = tweet['raw']['user']['screen_name']
+
+    let tweetDate = tweet['created_at']
 
     let tweetText = tweet['raw']['text']
     try {
@@ -160,6 +165,8 @@ function append_new_html_object(tweet) {
                 </div>
 
             </div>
+            
+            <p class="is-size-7 mb-3 has-text-grey-light">${tweetDate}</p>
 
             <p class="tweet-text">
                 ${tweetText}
@@ -174,7 +181,7 @@ function append_new_html_object(tweet) {
                 </div>
 
                 <div class="tweet-score column has-text-right">
-                    <span>TS</span>
+                    <span>TwitterScore</span>
                     <span>${twitterScore}</span>
                 </div>
             </div>
