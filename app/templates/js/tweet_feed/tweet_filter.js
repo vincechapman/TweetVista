@@ -30,7 +30,6 @@ let tweetCutoff
 let numTweets
 let numPages
 let ascending
-let fetchedPages = []  // A temporary measure to stop multiple requests for one page of old tweets
 
 
 function setupPage() {
