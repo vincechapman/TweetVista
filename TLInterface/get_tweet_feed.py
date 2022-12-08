@@ -90,7 +90,7 @@ def get_latest_tweets(campaign_id: int, tweet_id: int = 0) -> (list, int) or Fal
 
 
 # TODO THIS FUNCTION NEEDS SOME WORK
-def get_historic_tweets(campaign_id: int, page_num: int = 1, page_len: int = 100, start_date: str = None, end_date: str = None, keywords: list = [], ascending: bool = True, start_score: int = None, end_score: int = None, tweet_cutoff: int = None, num_pages: int = None, num_tweets: int = None) -> (dict, int) or False:
+def get_historic_tweets(campaign_id: int, page_num: int = 1, page_len: int = 50, start_date: str = None, end_date: str = None, keywords: list = [], ascending: bool = True, start_score: int = None, end_score: int = None, tweet_cutoff: int = None, num_pages: int = None, num_tweets: int = None) -> (dict, int) or False:
 
     try:
         from TLInterface import get_web_connection
