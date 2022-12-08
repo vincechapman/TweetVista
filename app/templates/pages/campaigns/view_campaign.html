@@ -101,6 +101,8 @@
                         {% from 'pages/campaigns/historic/check_for_new_tweets.html' import check_for_new_tweets %}
                         {{ check_for_new_tweets() }}
                     {% endif %}
+                    {% from 'pages/campaigns/OBJ_pagination_bar.html' import pagination_bar %}
+                    {{ pagination_bar() }}
                 {% endif %}
 
                 <div id="tweet-wall-results">

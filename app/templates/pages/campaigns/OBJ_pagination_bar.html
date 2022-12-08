@@ -3,30 +3,56 @@
 {#<link rel="stylesheet" href="/app/static/styles/layouts/base.css">#}
 
 {% macro pagination_bar() %}
-    <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
-        <a class="pagination-previous">Previous</a>
-        <a class="pagination-next">Next page</a>
+    <nav class="pagination is-rounded" style="position: fixed; bottom: 10px; margin-bottom: 0; padding: 10px; border-radius: 20px; background: #c0c0c0" role="navigation" aria-label="pagination">
+        <a class="pagination-previous" onclick="nextPage = nextPage - 2; getOldTweets()">Previous</a>
+        <a class="pagination-next" onclick="getOldTweets();">Next page</a>
         <ul class="pagination-list">
-            <li><a class="pagination-link" aria-label="Goto page 1">1</a></li>
-            <li hidden><span class="pagination-ellipsis">&hellip;</span></li>
-            <li><a class="pagination-link" aria-label="Goto page 45">45</a></li>
-            <li><a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a></li>
-            <li><a class="pagination-link" aria-label="Goto page 47">47</a></li>
-            <li hidden><span class="pagination-ellipsis">&hellip;</span></li>
-            <li><a class="pagination-link" aria-label="Goto page 86">86</a></li>
         </ul>
     </nav>
     <script>
         let paginationList = document.getElementsByClassName('pagination-list')[0]
-        function setPages() {}
-        function addPages() {
-            let newPageNumber = 39
+        function setupPages(numPages, currentPage) {
+            removePages()
+            if (numPages < 6) {
+                for (let i = 1; i <= numPages; i++) {
+                    addPage(i, i === currentPage)
+                }
+            } else {
+                if (currentPage <= 3) {
+                    for (let i = 1; i < 5; i++) {
+                        addPage(i, i===currentPage)
+                    }
+                    addEllipses()
+                    addPage(numPages)
+                } else if (currentPage > numPages - 3) {
+                    addPage(1)
+                    addEllipses()
+                    for (let i = numPages - 3; i <= numPages; i++) {
+                        addPage(i, i===currentPage)
+                    }
+                } else {
+                    addPage(1)
+                    addEllipses()
+                    addPage(currentPage - 1)
+                    addPage(currentPage, true)
+                    addPage(currentPage + 1)
+                    addEllipses()
+                    addPage(numPages)
+                }
+            }
+        }
+        function addPage(pageNumber, current = false) {
             let newElement = document.createElement('li')
-            newElement.innerHTML = `<a class="pagination-link" aria-label="Goto page ${newPageNumber}">${newPageNumber}</a>`
+            newElement.innerHTML = `<a class="pagination-link ${current ? 'is-current' : ''}" aria-label="Goto page ${pageNumber}" onclick="nextPage=${pageNumber}; getOldTweets()">${pageNumber}</a>`
             paginationList.appendChild(newElement)
         }
-        function removePages() {}
+        function removePages() {
+            paginationList.replaceChildren()
+        }
+        function addEllipses() {
+            let newElement = document.createElement('li')
+            newElement.innerHTML = `<li><span class="pagination-ellipsis">&hellip;</span></li>`
+            paginationList.appendChild(newElement)
+        }
     </script>
 {% endmacro %}
-<button onclick="addPages()">Add page</button>
-<button>Remove page</button>
