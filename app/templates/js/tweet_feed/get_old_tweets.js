@@ -9,52 +9,49 @@ setupPage()
 getOldTweets()
 
 function getOldTweets() {
+    let tweetWall = document.getElementById('tweet-wall')
+    tweetWall.replaceChildren()
 
-    if (fetchedPages.includes(nextPage) === false) {
+    tweets = undefined
 
-        tweets = undefined
-
-        console.log('Fetching page:', nextPage)
-
-        fetchedPages.push(nextPage)
-
-        fetch('{{ url_for("api_feed.get_old_tweets") }}', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    'campaignId': campaignId,
-                    'nextPage': nextPage,
-                    'tweetCutoff': tweetCutoff,
-                    'numTweets': numTweets,
-                    'numPages': numPages,
-                    'ascending': ascending,
-                    'startScore': startScore,
-                    'endScore': endScore,
-                    'startDate': startDate,
-                    'endDate': endDate,
-                    'keywords': keywords
-                })
+    fetch('{{ url_for("api_feed.get_old_tweets") }}', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'campaignId': campaignId,
+                'nextPage': nextPage,
+                'tweetCutoff': tweetCutoff,
+                'numTweets': numTweets,
+                'numPages': numPages,
+                'ascending': ascending,
+                'startScore': startScore,
+                'endScore': endScore,
+                'startDate': startDate,
+                'endDate': endDate,
+                'keywords': keywords
             })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data['status'] === 200) {
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data['status'] === 200) {
 
-                    tweets = data['data']['tweets']
-                    nextPage = data['data']['nextPage']
-                    numPages = data['data']['numPages']  // TODO Use numPages here to set up pagination
-                    numTweets = data['data']['numTweets']
-                    tweetCutoff = data['data']['tweetCutoff']
+                tweets = data['data']['tweets']
+                nextPage = data['data']['nextPage']
+                numPages = data['data']['numPages']  // TODO Use numPages here to set up pagination
+                numTweets = data['data']['numTweets']
+                tweetCutoff = data['data']['tweetCutoff']
 
-                    for (let i = 0; i < tweets.length; i++) {
-                        append_new_html_object(tweets[i])
-                    }
+                setupPages(numPages - 1, nextPage - 1)
 
+                for (let i = 0; i < tweets.length; i++) {
+                    append_new_html_object(tweets[i])
                 }
-            })
-    }
+
+            }
+        })
 }
 
 function append_new_html_object(tweet) {
@@ -225,19 +222,4 @@ function append_new_html_object(tweet) {
     newElement.classList.add('tweet-container')
     newElement.innerHTML = html
     document.getElementById('tweet-wall').appendChild(newElement)
-}
-
-
-// This section handles the automatic loading of new tweets as user scrolls down page
-const loadOffset = 5000 // When we scroll to this distance from the bottom, a new page of tweets will be fetched
-
-// Event listener: Checks if scrolled near bottom of page
-window.onscroll = function(ev) {
-    let loop = setInterval(function () {
-        if ((window.innerHeight + Math.ceil(window.pageYOffset + 1)) >= document.body.offsetHeight - loadOffset) {
-            getOldTweets()
-        } else {
-            clearInterval(loop)
-        }
-    }, 100)
 }
