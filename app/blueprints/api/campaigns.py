@@ -145,3 +145,73 @@ def count_campaign_tweets():
     except Exception as e:
         print(e)
         return jsonify('Failed to get campaign tweet count', 404)
+
+
+@api_campaigns.route('/getCampaignFilters', methods=['POST'])
+def get_campaign_filters():
+
+    print('\ncalled /getCampaignFilters!\n')
+
+    try:
+        request_body = json.loads(request.data)
+        campaign_id = request_body.get('campaignId')
+
+        from TLInterface.filter_sets import get_filters
+        response = get_filters(campaign_id)
+
+        if response:
+            return jsonify({
+                'status': 200,
+                'message': "Success",
+                'data': response
+            })
+        else:
+            return jsonify({
+                'status': 400,
+                'message': "Failed to get campaign filters. See server logs.",
+                'data': None
+            })
+
+    except Exception as e:
+        print(e)
+        return jsonify({
+            'status': 400,
+            'message': "Unknown error. See server logs.",
+            'data': None
+        })
+
+
+@api_campaigns.route('/saveCampaignFilter', methods=['POST'])
+def save_campaign_filter():
+
+    print('called /saveCampaignFilter!')
+
+    try:
+        request_body = json.loads(request.data)
+        campaign_id = request_body.get('campaignId')
+        filter_name = request_body.get('filterName')
+        filter_keywords = request_body.get('filterKeywords')
+
+        from TLInterface.filter_sets import save_new_filter
+        response = save_new_filter(campaign_id, filter_name, filter_keywords)
+
+        if response:
+            return jsonify({
+                'status': 200,
+                'message': "Success",
+                'data': None
+            })
+        else:
+            return jsonify({
+                'status': 400,
+                'message': "Failed to get campaign filters. See server logs.",
+                'data': None
+            })
+
+    except Exception as e:
+        print(e)
+        return jsonify({
+            'status': 400,
+            'message': "Unknown error. See server logs.",
+            'data': None
+        })
