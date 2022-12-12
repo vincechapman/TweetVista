@@ -12,44 +12,43 @@ Ideally this one filter should cover all filtering needs i.e.
 (And any combination of these)
 */
 
-let lowestTweetScore = 0
-
-let startDate = undefined
-let endDate = undefined
-
-let positiveKeywords;  // Only return tweets that contain this keyword.
-let negativeKeywords; // Only return tweets that do not contain this keyword.
-
-
 let tweets
 let nextPage
-// let keywords
+let keywords
+let startDate = undefined
+let endDate = undefined
+let startScore, endScore
 let tweetCutoff
-// let startDate
-// let endDate
 let numTweets
 let numPages
 let ascending
 
 
-function setupPage() {
+function setupPage(setKeywords) {
+    // This function sets/resets appropriate variables every time filter is applied
+
     nextPage = 1
     tweetCutoff = undefined
+    numTweets = undefined
+    numPages = undefined
+    ascending = false  // TODO Change to get value from a dropdown
 
-    keywords = document.getElementById('new-search-words').value
+    // Setting up keywords variable
+    if (setKeywords === undefined) {
+        keywords = document.getElementById('new-search-words').value.split(",")
+        for (let i = 0; i < keywords.length; i++) {
+            keywords[i] = keywords[i].trim()
+        }
+    } else {
+        document.getElementById('new-search-words').value = setKeywords.join(", ")
+    }
 
+    // Other filter variables
+    startScore = parseInt(document.getElementById('tweet-score-limit').value)
+    endScore = undefined
     // startDate = undefined  // TODO Change to get value from date input. The minimum and maximum dates should be set to campaign start and today's date respectively
     // endDate = undefined  // TODO Change to get value from date input. The minimum and maximum dates should be set to campaign start and today's date respectively
 
-    startScore = parseInt(document.getElementById('tweet-score-limit').value)
-    endScore = undefined
-
-    numTweets = undefined
-    numPages = undefined
-
-    ascending = false  // TODO Change to get value from a dropdown
-
-    fetchedPages = []
 
     let tweetCountContainer = document.getElementById('new-tweet-count-container')
     if (tweetCountContainer) {
@@ -58,21 +57,49 @@ function setupPage() {
 }
 
 
+function loadTweetLockerFunc() {
+    fetch('/locker/' + campaignId, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => response.json())
+        .then((lockerTweets) => {
+            console.log('Saved tweets!')
+            console.log(lockerTweets)
+            if (lockerTweets) {
+                    for (let i = 0; i < lockerTweets.length; i++) {
+                        append_new_html_object(lockerTweets[i])
+                    }
+            } else {
+                alert('No tweets saved to locker yet!')
+            }
+        })
+}
 
 
-function applyFilters(tweetElems = undefined, mode = 'old') {
+function applyFilters(tweetElems = undefined, mode = 'old', keywords = undefined, loadTweetLocker = false) {
     /* This function applies current page filters to all tweets or just the ones specified by tweetElems argument */
 
     let tweetWall = document.getElementById('tweet-wall')
     tweetWall.replaceChildren()
 
-    setupPage()
+    if (loadTweetLocker) {
+        loadTweetLockerFunc()
+    } else {
 
-    if (mode === 'old') {
-        getOldTweets()
+        setupPage(keywords)
+
+        if (mode === 'old') {
+            getOldTweets()
+        }
+
     }
 
 }
+
 
 function tweetScoreRule(elem, lowestTweetScore) {
     // Checks if current tweet satisfies minimum tweet score rule, if not returns False.
