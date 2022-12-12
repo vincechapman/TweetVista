@@ -1,0 +1,191 @@
+{#<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">#}
+{#<link rel="stylesheet" href="https://bulma.io/vendor/fontawesome-free-5.15.2-web/css/all.min.css">#}
+{#<link rel="stylesheet" href="/app/static/styles/layouts/base.css">#}
+
+{% macro filter_sets(campaign_id) %}
+    <div id="filter-set-dropdown" class="dropdown">
+        <div class="dropdown-trigger">
+            <button class="button border-is-electric-blue has-text-info-dark" aria-haspopup="true" aria-controls="dropdown-menu2" onclick="toggleDropdown()">
+                <span id="saved-filters-dropdown-name">Saved filters</span>
+                <span class="icon is-small">
+                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                </span>
+            </button>
+        </div>
+        <div class="dropdown-menu" id="dropdown-menu2" role="menu">
+            <div class="dropdown-content">
+                <a class="dropdown-item has-text-centered has-text-info" onclick="document.getElementById('save-new-filter-popup').classList.add('is-active')">
+                    <span class="icon is-small ml-1">
+                        <i class="fas fa-plus-circle"></i>
+                    </span>
+                    <span>Save current filter</span>
+                </a>
+                <hr class="dropdown-divider">
+                <div id="saved-filter-list"></div>
+                <a href="#" class="dropdown-item" onclick="applyFilterSet('tweet-locker')">
+                    <span>Tweet locker</span>
+                    <span class="icon is-small ml-1">
+                        <i class="fas fa-box"></i>
+                    </span>
+                </a>
+                <hr class="dropdown-divider">
+                <a href="#" class="dropdown-item" onclick="applyFilterSet('reset')">
+                    <span class="is-size-7 has-text-grey-light">Remove filters</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="save-new-filter-popup" class="modal" style="z-index: 1000;">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <div class="box">
+                <label for="new-filter-name" class="label">Please enter a name for the new filter...</label>
+                <div class="columns is-variable is-1">
+                    <div class="column">
+                        <input id="new-filter-name" name="new-filter-name" class="input" required>
+                    </div>
+                    <div class="column is-narrow">
+                        <button class="button is-success" onclick="saveNewFilter()">Save filter</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="modal-close is-large" aria-label="close" onclick="document.getElementById('save-new-filter-popup').classList.remove('is-active'); document.getElementById('new-filter-name').value = ''"></button>
+    </div>
+
+    <style>
+        .dropdown-item  {
+            padding: 4px 10px !important;
+        }
+    </style>
+
+    <script>
+        // Save new filter
+        function saveNewFilter() {
+            let newFilterName = document.getElementById("new-filter-name")
+            if (newFilterName.checkValidity() === true) {
+                fetch("{{ url_for("api_campaigns.save_campaign_filter") }}", {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        'campaignId': campaignId,
+                        'filterName': newFilterName.value,
+                        'filterKeywords': keywords
+                    })
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data['status'] === 200) {
+                            console.log("New filter saved")
+                            getCampaignFilters()
+                            newFilterName.value = ''
+                            document.getElementById('save-new-filter-popup').classList.remove('is-active')
+                        } else {
+                            alert('Failed to save new filter')
+                        }
+                    })
+            } else {
+                alert("Filter name required!")
+            }
+        }
+
+        // Apply filter set
+        function applyFilterSet(elem) {
+            if (elem === 'tweet-locker') {
+                applyFilters(undefined, 'old', undefined, true)
+                document.getElementById("saved-filters-dropdown-name").innerText = 'Tweet locker'
+            } else if (elem === 'reset') {
+                keywords = []
+                document.getElementById("saved-filters-dropdown-name").innerText = 'Saved filters'
+                applyFilters(undefined, 'old', keywords)
+            } else {
+                let nameOfFilter = elem.innerText
+                // Get saved filter sets from API
+                fetch("{{ url_for("api_campaigns.get_campaign_filters") }}", {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        'campaignId': campaignId
+                    })
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data['status'] === 200) {
+                            for (let i = 0; i < data['data'].length; i++) {
+                                if (data['data'][i]['name'] === nameOfFilter) {
+                                    keywords = data['data'][i]['keywords']
+                                    document.getElementById("saved-filters-dropdown-name").innerText = data['data'][i]['name']
+                                    applyFilters(undefined, 'old', keywords)
+                                }
+                            }
+                        } else {
+                            console.log('Failed to get campaign filters')
+                        }
+                    })
+            }
+        }
+
+        // Dropdown controls
+        function toggleDropdown() {
+            console.log('Toggle dropdown called!')
+            document.getElementById("filter-set-dropdown").classList.toggle("is-active")
+        }
+
+        function getCampaignFilters() {
+            // Get saved filter sets from API
+            fetch("{{ url_for("api_campaigns.get_campaign_filters") }}", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'campaignId': campaignId
+                })
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data['status'] === 200) {
+                        document.getElementById("saved-filter-list").replaceChildren()
+                        for (let i = 0; i < data['data'].length; i++) {
+                            displaySavedFilter(data['data'][i]['name'])
+                        }
+                    } else {
+                        console.log('Failed to get campaign filters')
+                    }
+                })
+        }
+        getCampaignFilters()
+
+        // Adding saved filter sets to dropdown
+        function displaySavedFilter(filterName) {
+            let newNode = document.createElement('div')
+            newNode.innerHTML = `<a class="dropdown-item">
+                                    <div class="columns is-vcentered is-gapless">
+                                        <div class="column" onclick="applyFilterSet(this);">
+                                            ${filterName}
+                                        </div>
+                                        <div class="column is-narrow ml-3">
+                                            <button class="button is-danger is-small is-rounded">
+                                                <span class="icon is-small">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </a>
+                                <hr class="dropdown-divider">`
+            document.getElementById("saved-filter-list").appendChild(newNode);
+        }
+    </script>
+
+{% endmacro %}
+
+<button onclick="displaySavedFilter()">Add</button>
