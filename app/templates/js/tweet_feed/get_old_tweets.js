@@ -56,8 +56,6 @@ function getOldTweets() {
 
 function append_new_html_object(tweet) {
 
-    console.log(tweet)
-
     let tweetId = tweet['id']
 
     let mediaType;
