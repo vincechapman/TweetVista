@@ -20,6 +20,10 @@
 
 {% block body %}
 
+    <script>
+        let campaignId = '{{ selected_campaign }}'
+    </script>
+
     <div class="columns is-desktop is-gapless">
 
         <nav id="side-menu" class="column is-3 is-hidden-touch">
@@ -48,7 +52,7 @@
                         {{ live_toggle(is_live) }}
                     </div>
 
-                    <div id="account" class="column" style="margin-top: -7px; display: none;">
+                    <div id="account" class="column" style="margin-top: -7px;">
                         {% include 'layouts/account.html' %}
                     </div>
 
@@ -64,8 +68,6 @@
                         {{ date_range_selection() }}
 
                     </div>
-
-                    <button class="button is-rounded is-electric-blue" onclick="applyFilters()">Apply filter</button>
 
                     <script>
                         {% include 'js/feed_filters/show_hide_filters.js' %}
@@ -119,11 +121,6 @@
     {% include 'js/tweet_feed/like_unlike_tweet.html' %}
 
     <script>
-        let campaignId = '{{ selected_campaign }}'
-        let keywords
-        let startScore
-        let endScore
-
         {% include 'js/tweet_feed/tweet_locker.js' %}
 
         {% include 'js/tweet_feed/tweet_filter.js' %}
