@@ -7,10 +7,7 @@
 }
 
 .is-electric-blue {
-  color: #1BA2F3;
-}
-.is-electric-blue:hover {
-  color: #7ccaf8;
+  color: #20aaeb;
 }
 
 .is-deep-purple {
@@ -25,7 +22,7 @@
 }
 
 .border-is-electric-blue {
-  border: 2px solid #1BA2F3 !important;
+  border: 2px solid #20aaeb !important;
   border-radius: 10px !important;
 }
 
@@ -39,7 +36,7 @@
 }
 
 .bg-is-electric-blue {
-  background-color: #1BA2F3;
+  background-color: #20aaeb;
 }
 
 .bg-is-light-grey {
@@ -47,19 +44,19 @@
 }
 
 .button.is-electric-blue {
-  background-color: #1BA2F3;
+  background-color: #20aaeb;
   color: #fff;
-  border-color: #42b8ff;
+  border-color: #3fc2ff;
 }
 .button.is-electric-blue.is-light {
-  color: #75cbff;
-  background-color: #dbf2ff;
-  border-color: #42b8ff;
+  color: #72d2ff;
+  background-color: #d8f3ff;
+  border-color: #3fc2ff;
 }
 .button.is-electric-blue:hover {
-  color: #75cbff;
-  background-color: #dbf2ff;
-  border-color: #42b8ff;
+  color: #72d2ff;
+  background-color: #d8f3ff;
+  border-color: #3fc2ff;
 }
 
 #tweet-wall {
@@ -76,7 +73,7 @@
   width: 100%;
 }
 .campaign-section table thead > tr > th {
-  color: #1BA2F3;
+  color: #20aaeb;
 }
 
 .campaign-filter {
