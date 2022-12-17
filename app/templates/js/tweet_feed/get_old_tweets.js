@@ -56,6 +56,8 @@ function getOldTweets() {
 
 function append_new_html_object(tweet) {
 
+    console.log(tweet)
+
     let tweetId = tweet['id']
 
     let mediaType;
@@ -107,9 +109,7 @@ function append_new_html_object(tweet) {
     }
 
     for (let i = 0; i < tweetUserMentions.length; i++) {
-        {#let userId = tweetUserMentions[i]['screen_name']#}
         let userHandle = tweetUserMentions[i]['screen_name']
-        {#let userName = tweetUserMentions[i]['name']#}
         tweetText = tweetText.replace(`@${userHandle}`, `<a href="https://twitter.com/${userHandle}" class="is-electric-blue">@${userHandle}</a>`)
     }
 
@@ -176,7 +176,7 @@ function append_new_html_object(tweet) {
                 </div>
 
                 <div class="tweet-score column has-text-right">
-                    <span>TwitterScore</span>
+                    <span>TweetScore</span>
                     <span>${twitterScore}</span>
                 </div>
             </div>
@@ -196,7 +196,7 @@ function append_new_html_object(tweet) {
             </div>
 
             <div class="column is-narrow">
-                <span class="icon-text" onclick="{# Add a function here that uses fetch to communicate with our api, then flash the response from the api on screen #}">
+                <span class="icon-text" onclick="createKeywordPopup(this, '${tweet['word_tokens']}')">
                     <span class="icon">
                         <img src="{{ url_for('static', filename='images/icons/Plus-Icon.png') }}" alt="">
                     </span>
@@ -205,7 +205,7 @@ function append_new_html_object(tweet) {
             </div>
 
             <div class="column is-narrow">
-                <span class="icon-text" onclick="{# Add a function here that uses fetch to communicate with our api, then flash the response from the api on screen #}">
+                <span class="icon-text">
                     <span class="icon">
                         <img src="{{ url_for('static', filename='images/icons/Plus-Icon.png') }}" alt="">
                     </span>
