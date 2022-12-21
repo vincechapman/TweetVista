@@ -78,6 +78,9 @@
 
             <section class="section mt-6">
 
+                {% from 'pages/campaigns/OBJ_filter_summary.html' import filter_summary %}
+                {{ filter_summary(campaign_name) }}
+
                 {% if is_live%}
                     {% if campaign_is_active %}
                         <div id="loading-dots" class="container is-fluid has-text-centered" style="margin-top: -1.0rem;" hidden>

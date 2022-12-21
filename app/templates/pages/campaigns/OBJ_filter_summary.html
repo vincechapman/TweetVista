@@ -1,0 +1,94 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+<link rel="stylesheet" href="https://bulma.io/vendor/fontawesome-free-5.15.2-web/css/all.min.css">
+<link rel="stylesheet" href="/app/static/styles/layouts/base.css">
+
+{% macro filter_summary(campaign_name) %}
+    <div class="mb-5">
+        <h2 class="campaign-title title is-bright-orange mb-2">{{ campaign_name }}</h2>
+        <p>
+            <span id="active-keywords-summary" class="summary-bar-section is-hidden">
+                <span class="is-hot-pink">Keywords:</span>
+                <span>
+
+                </span>
+            </span>
+
+            <span id="active-tweet-score-summary" class="summary-bar-section is-hidden">
+                <span class="is-hot-pink">Tweet Score:</span>
+                <span>
+
+                </span>
+            </span>
+
+            <span id="active-date-range-summary" class="summary-bar-section is-hidden">
+                <span class="is-hot-pink">Date Range:</span>
+                <span>
+
+                </span>
+            </span>
+        </p>
+    </div>
+    <script>
+        let activeKeywordSummary = document.getElementById('active-keywords-summary')
+        let activeTweetScoreSummary = document.getElementById('active-tweet-score-summary')
+        let activeDateRangeSummary = document.getElementById('active-date-range-summary')
+
+        function setupFilterSummary() {
+            activeKeywordSummary.lastElementChild.replaceChildren()
+            activeTweetScoreSummary.lastElementChild.replaceChildren()
+            addKeywordsToSummary()
+            addTweetScoreFilterToSummary()
+        }
+
+        function addKeywordsToSummary() {
+            if (keywords.length > 0) {
+                activeKeywordSummary.classList.remove('is-hidden')
+            } else {
+                activeKeywordSummary.classList.add('is-hidden')
+            }
+            let activeKeywordsBox = activeKeywordSummary.lastElementChild
+            for (let i = 0; i < keywords.length; i++) {
+                activeKeywordsBox.innerHTML += `
+                    <span class="icon-text">
+                        <span>${keywords[i]}</span>
+                        <span class="icon" onclick="removeKeyword(this)">
+                            <i class="fas fa-times has-text-grey-light"></i>
+                        </span>
+                    </span>`
+            }
+        }
+
+        function addTweetScoreFilterToSummary() {
+            if (startScore !== 0) {
+                activeTweetScoreSummary.classList.remove('is-hidden')
+            } else {
+                activeTweetScoreSummary.classList.add('is-hidden')
+            }
+            activeTweetScoreSummary.lastElementChild.innerHTML += `
+                <span class="icon-text">
+                    <span>${startScore} - ${endScore}</span>
+                    <span class="icon" onclick="removeTSFilterViaSummary(this)">
+                        <i class="fas fa-times has-text-grey-light"></i>
+                    </span>
+                </span>`
+        }
+
+        function removeKeyword(elem) {
+            elem.parentElement.remove()
+            console.log(keywords)
+            keywords = keywords.filter(e => e !== elem.parentElement.firstElementChild.innerText);
+            console.log(keywords)
+            applyFilters(undefined, undefined, keywords)
+        }
+
+        function removeTSFilterViaSummary() {
+            activeTweetScoreSummary.lastElementChild.replaceChildren()
+            activeTweetScoreSummary.classList.add('is-hidden')
+            document.getElementById('tweet-score-limit').value = 0
+            document.getElementById('tweet-score-limit').previousElementSibling.innerText = 'Show All'
+            applyFilters()
+        }
+    </script>
+{% endmacro %}
+
+<button class="button" onclick="setupFilterSummary()">Add</button>
