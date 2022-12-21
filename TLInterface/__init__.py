@@ -40,19 +40,6 @@ def get_web_connection(username: str = None, password: str = None) -> WebConnect
         url = 'https://tlapi.ictbenchmark.org/'
         wc = session.get('wc') if has_request_context() else None
 
-        # if (username is None or password is None) and has_request_context():
-        #     username = session.get('tl_username')
-        #     password = session.get('tl_password')
-
-        # if username is None or password is None:
-        #     print('No user details provided as arguments or in session object.')
-        # else:
-        #     try:
-        #         wc = authenticate_user(username, password)
-        #     except Exception as e:
-        #         logging.error(f'Failed to authenticate user, due to following error:\n\n{e}')
-        #         return False
-
         if wc:
             wc = pickle.loads(wc)
             print('Returning WebConnection saved in session.: ', wc.__dict__)
