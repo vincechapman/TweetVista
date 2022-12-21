@@ -16,7 +16,7 @@
                             <p id="form-title" class="mt-1 mb-4">What's the minimum Twitter account score you'd like to see?</p>
                             <div class="mb-5">
                                 <output style="display: block;" class="subtitle is-size-3 mt-3 mb-2 has-text-weight-bold has-text-info">Show all</output>
-                                <input id="tweet-score-limit" name="tweet-score-limit" type="range" value="0" min="0" max="700" step="50" checked onchange="this.previousElementSibling.value = this.value === '0' ? 'Show All' : this.value + '+';">
+                                <input id="tweet-score-limit" name="tweet-score-limit" type="range" value="0" min="0" max="700" step="50" checked onchange="this.previousElementSibling.value = this.value === '0' ? 'Show All' : this.value + '+'; applyFilters()">
                             </div>
                         </form>
                     </div>
