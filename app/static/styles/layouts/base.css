@@ -10304,6 +10304,10 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   color: rgba(224, 24, 105, 0.73) !important;
 }
 
+.is-bright-orange {
+  color: #F07F23 !important;
+}
+
 .border-is-electric-blue {
   border: 2px solid #20aaeb !important;
   border-radius: 10px !important;
