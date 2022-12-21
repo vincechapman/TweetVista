@@ -126,6 +126,7 @@ def view_campaign(campaign_id):
 
         # Data for this campaign
         campaign_data = get_campaign_data(campaign_id)
+        campaign_name = campaign_data['name']
         campaign_is_active = campaign_data['is_active'] if campaign_data else False
 
         is_live = False
@@ -159,4 +160,4 @@ def view_campaign(campaign_id):
                 print('SELECTED CAMPAIGN:', selected_campaign)
                 return redirect(url_for('campaigns.view_campaign', campaign_id=selected_campaign))
 
-        return render_template('pages/campaigns/view_campaign.html', all_campaigns=all_campaigns, selected_campaign=campaign_id, is_live=is_live, campaign_is_active=campaign_is_active)
+        return render_template('pages/campaigns/view_campaign.html', all_campaigns=all_campaigns, selected_campaign=campaign_id, is_live=is_live, campaign_is_active=campaign_is_active, campaign_name=campaign_name)
