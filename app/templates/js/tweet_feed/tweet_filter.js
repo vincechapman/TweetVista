@@ -39,13 +39,16 @@ function setupPage(setKeywords) {
         for (let i = 0; i < keywords.length; i++) {
             keywords[i] = keywords[i].trim()
         }
+        if (keywords.length === 1 && keywords[0] === "") {
+            keywords = []
+        }
     } else {
         document.getElementById('new-search-words').value = setKeywords.join(", ")
     }
 
     // Other filter variables
     startScore = parseInt(document.getElementById('tweet-score-limit').value)
-    endScore = undefined
+    endScore = 700
     // startDate = undefined  // TODO Change to get value from date input. The minimum and maximum dates should be set to campaign start and today's date respectively
     // endDate = undefined  // TODO Change to get value from date input. The minimum and maximum dates should be set to campaign start and today's date respectively
 
@@ -54,6 +57,9 @@ function setupPage(setKeywords) {
     if (tweetCountContainer) {
         tweetCountContainer.classList.add('is-hidden')
     }
+
+    setupFilterSummary()
+
 }
 
 
@@ -92,29 +98,10 @@ function applyFilters(tweetElems = undefined, mode = 'old', keywords = undefined
 
         setupPage(keywords)
 
-        if (mode === 'old') {
+        if (mode === 'old' || mode === undefined) {
             getOldTweets()
         }
 
     }
 
-}
-
-
-function tweetScoreRule(elem, lowestTweetScore) {
-    // Checks if current tweet satisfies minimum tweet score rule, if not returns False.
-    if (lowestTweetScore > 0) {
-        let tweetScore = parseInt(elem.querySelector('div.tweet-content > div.columns > div.tweet-score > span:nth-child(2)').innerText)
-        return tweetScore >= lowestTweetScore
-    } else {
-        return true
-    }
-}
-
-function keywordsRule(elem) {
-    return true
-}
-
-function dateRangeRule(elem) {
-    return true
 }
