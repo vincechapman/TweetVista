@@ -111,6 +111,11 @@
                 {% endif %}
 
                 <div id="tweet-wall-results">
+                    <div id="keyword-modal" class="modal" style="z-index: 100">
+                        <div class="modal-background"></div>
+{#                        <button class="modal-close is-large" aria-label="close"></button>#}
+                    </div>
+
                     {% include 'layouts/tweet_masonry_display.html' %}
                 </div>
 

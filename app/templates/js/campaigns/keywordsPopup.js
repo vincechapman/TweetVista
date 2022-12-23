@@ -31,7 +31,7 @@ function createKeywordPopup(elem, tokens) {
 
     newElem.style.maxWidth = '600px'
     newElem.style.position = 'relative'
-    newElem.classList.add('border-is-electric-blue', 'keywords-popup', 'is-unselectable')
+    newElem.classList.add('border-is-electric-blue', 'keywords-popup', 'is-unselectable', 'modal-content', 'bg-is-white')
 
     newElem.innerHTML = `
 
@@ -83,7 +83,8 @@ function createKeywordPopup(elem, tokens) {
     </div>
 
 `
-    let parent = elem.parentNode.parentNode.parentNode
+    let parent = document.getElementById('keyword-modal')
+    parent.classList.add('is-active')
     parent.append(newElem)
 
 }
@@ -199,5 +200,6 @@ function removeSelectedKeyword(elem) {
 }
 
 function closeWindow(elem) {
-    elem.closest(".keywords-popup").remove()
+    // elem.closest(".keywords-popup").remove()
+    document.getElementById('keyword-modal').classList.remove('is-active')
 }
