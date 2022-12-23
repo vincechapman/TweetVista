@@ -10,7 +10,6 @@ getOldTweets()
 
 function getOldTweets() {
     let tweetWall = document.getElementById('tweet-wall')
-    tweetWall.replaceChildren()
 
     tweets = undefined
 
@@ -46,11 +45,14 @@ function getOldTweets() {
 
                 setupPages(numPages - 1, nextPage - 1)
 
+                tweetWall.replaceChildren()
+
                 for (let i = 0; i < tweets.length; i++) {
                     append_new_html_object(tweets[i])
                 }
 
             }
+
         })
 }
 
