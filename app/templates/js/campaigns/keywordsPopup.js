@@ -1,3 +1,5 @@
+let parent = document.getElementById('keyword-modal')
+
 function createKeywordPopup(elem, tokens) {
 
     let keywordPopups = document.getElementsByClassName('keywords-popup')
@@ -83,7 +85,6 @@ function createKeywordPopup(elem, tokens) {
     </div>
 
 `
-    let parent = document.getElementById('keyword-modal')
     parent.classList.add('is-active')
     parent.append(newElem)
 
@@ -177,6 +178,29 @@ function getSelectedKeywords(elem) {
 
     let positiveKeywordArray = getSelectedPositiveKeywords(container)
     let negativeKeywordArray = getSelectedNegativeKeywords(container)
+
+    fetch("{{ url_for('api_campaigns.add_campaign_keywords') }}", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'campaignId': campaignId,
+                'keywords': {
+                    positive: positiveKeywordArray,
+                    negative: negativeKeywordArray
+                }
+            })
+        }
+    )
+        .then((response) => response.json())
+        .then((data) => {
+            console.log('Add keywords (response):', data)
+            container.remove()
+            parent.classList.remove('is-active')
+            alert('Keywords added to campaign. Campaign may take a minute to update.')
+        })
 
     return {
         "positive": positiveKeywordArray,
