@@ -3,7 +3,7 @@
 {#<link rel="stylesheet" href="/app/static/styles/layouts/base.css">#}
 
 {% macro filter_sets(campaign_id) %}
-    <div id="filter-set-dropdown" class="dropdown">
+    <div id="filter-set-dropdown" class="dropdown is-hoverable">
         <div class="dropdown-trigger">
             <button class="button border-is-electric-blue has-text-info-dark" aria-haspopup="true" aria-controls="dropdown-menu2" onclick="toggleDropdown()">
                 <span id="saved-filters-dropdown-name">Saved filters</span>
@@ -13,7 +13,7 @@
             </button>
         </div>
         <div class="dropdown-menu" id="dropdown-menu2" role="menu">
-            <div class="dropdown-content">
+            <div class="dropdown-content border-is-electric-blue">
                 <a class="dropdown-item has-text-centered has-text-info" onclick="document.getElementById('save-new-filter-popup').classList.add('is-active')">
                     <span class="icon is-small ml-1">
                         <i class="fas fa-plus-circle"></i>
@@ -122,7 +122,7 @@
                                 if (data['data'][i]['name'] === nameOfFilter) {
                                     keywords = data['data'][i]['keywords']
                                     document.getElementById("saved-filters-dropdown-name").innerText = data['data'][i]['name']
-                                    applyFilters(undefined, 'old', keywords)
+                                    applyFilters(undefined, undefined, keywords)
                                 }
                             }
                         } else {
