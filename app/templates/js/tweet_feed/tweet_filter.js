@@ -80,6 +80,9 @@ function setupPage(setKeywords) {
         tweetCountContainer.classList.add('is-hidden')
     }
 
+    campaignTweetCountOriginal.hidden = false
+    campaignTweetCountClone.hidden = true
+    checkForNewTweets()
     setupFilterSummary()
 
 }
@@ -95,12 +98,26 @@ function loadTweetLockerFunc() {
         })
         .then((response) => response.json())
         .then((lockerTweets) => {
-            keywords = []
-            setupPage(keywords)
             if (lockerTweets) {
-                    for (let i = 0; i < lockerTweets.length; i++) {
-                        append_new_html_object(lockerTweets[i])
+
+                keywords = []
+                setupPage(keywords)
+
+                let lockerLength = lockerTweets.length
+
+                for (let i = 0; i < lockerLength; i++) {
+                    append_new_html_object(lockerTweets[i])
+                }
+
+                for (let i = 0; i < excludedTweets.length; i++) {
+                    if (tweetLocker.includes(excludedTweets[i])) {
+                        lockerLength -= 1
                     }
+                }
+
+                campaignTweetCountClone.innerHTML = "— " + lockerLength + " tweets"
+                campaignTweetCountClone.hidden = false
+                campaignTweetCountOriginal.hidden = true
             } else {
                 alert('No tweets saved to locker yet!')
             }
