@@ -41,6 +41,9 @@
     <script>
         let campaignId = '{{ selected_campaign }}'
         let isLive = '{{ is_live }}' === 'True' ? true : false
+
+        let tweetLocker = "{{ campaign_locker }}".replace("[", "").replace("]", "").split(", ")
+        let excludedTweets = "{{ campaign_excluded_tweets }}".replace("[", "").replace("]", "").split(", ")
     </script>
 
     <div class="columns is-desktop is-gapless mb-0">
@@ -97,7 +100,12 @@
             <section class="section mt-6">
 
                 {% from 'pages/campaigns/OBJ_filter_summary.html' import filter_summary %}
-                {{ filter_summary(campaign_name) }}
+                {{ filter_summary(campaign_name, campaign_tweet_count) }}
+
+                {% if campaign_is_active %}
+                    {% from 'pages/campaigns/historic/check_for_new_tweets.html' import check_for_new_tweets %}
+                    {{ check_for_new_tweets() }}
+                {% endif %}
 
                 {% if is_live%}
                     {% if campaign_is_active %}
@@ -120,10 +128,6 @@
                         </section>
                     {% endif %}
                 {% else %}
-                    {% if campaign_is_active %}
-                        {% from 'pages/campaigns/historic/check_for_new_tweets.html' import check_for_new_tweets %}
-                        {{ check_for_new_tweets() }}
-                    {% endif %}
                     {% from 'pages/campaigns/OBJ_pagination_bar.html' import pagination_bar %}
                     {{ pagination_bar() }}
                 {% endif %}
@@ -148,17 +152,12 @@
 
     <script>
         {% include 'js/tweet_feed/tweet_locker.js' %}
-
         {% include 'js/tweet_feed/tweet_filter.js' %}
-
         {% include 'js/campaigns/keywordsPopup.js' %}
+        {% include 'pages/campaigns/excludeTweets.js' %}
 
-        {% if is_live %}
-            {% if campaign_is_active %}
-                {% include 'js/tweet_feed/get_new_tweets.js' %}
-            {% else %}
-                {# Add script here for activate campaign button #}
-            {% endif %}
+        {% if is_live and campaign_is_active %}
+            {% include 'js/tweet_feed/get_new_tweets.js' %}
         {% else %}
             {% include 'js/tweet_feed/get_old_tweets.js' %}
         {% endif %}
