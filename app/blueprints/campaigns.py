@@ -127,7 +127,11 @@ def view_campaign(campaign_id):
         # Data for this campaign
         campaign_data = get_campaign_data(campaign_id)
         campaign_name = campaign_data['name']
+        campaign_tweet_count = campaign_data['tweet_count']
         campaign_is_active = campaign_data['is_active'] if campaign_data else False
+        campaign_excluded_tweets = campaign_data['excluded_tweets']
+        campaign_locker = campaign_data['tweetlocker']
+
 
         is_live = False
 
@@ -162,4 +166,13 @@ def view_campaign(campaign_id):
 
         is_live = True if request.args.get('liveMode') == 'true' else False
 
-        return render_template('pages/campaigns/view_campaign.html', all_campaigns=all_campaigns, selected_campaign=campaign_id, is_live=is_live, campaign_is_active=campaign_is_active, campaign_name=campaign_name)
+        return render_template('pages/campaigns/view_campaign.html',
+                               all_campaigns=all_campaigns,
+                               selected_campaign=campaign_id,
+                               is_live=is_live,
+                               campaign_is_active=campaign_is_active,
+                               campaign_name=campaign_name,
+                               campaign_tweet_count=campaign_tweet_count,
+                               campaign_excluded_tweets=campaign_excluded_tweets,
+                               campaign_locker=campaign_locker
+                               )
