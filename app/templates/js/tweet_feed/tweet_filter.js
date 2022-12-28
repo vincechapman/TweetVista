@@ -93,8 +93,8 @@ function loadTweetLockerFunc() {
         })
         .then((response) => response.json())
         .then((lockerTweets) => {
-            console.log('Saved tweets!')
-            console.log(lockerTweets)
+            keywords = []
+            setupPage(keywords)
             if (lockerTweets) {
                     for (let i = 0; i < lockerTweets.length; i++) {
                         append_new_html_object(lockerTweets[i])
