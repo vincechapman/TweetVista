@@ -1,0 +1,137 @@
+{#<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">#}
+{#<link rel="stylesheet" href="https://bulma.io/vendor/fontawesome-free-5.15.2-web/css/all.min.css">#}
+{#<link rel="stylesheet" href="/app/static/styles/layouts/base.css">#}
+
+{% macro view_filters(is_live) %}
+    <div class="dropdown is-hoverable">
+        <div class="dropdown-trigger">
+            <button class="button border-is-electric-blue has-text-info-dark" aria-haspopup="true" aria-controls="dropdown-menu2">
+                <span>View / User Filters</span>
+                <span class="icon is-small">
+                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                </span>
+            </button>
+        </div>
+        <div class="dropdown-menu" id="dropdown-menu2" role="menu">
+            <div class="dropdown-content border-is-electric-blue p-4" style="width: 100vw; max-width: 250px">
+                <h4 class="is-deep-purple has-text-weight-bold subtitle">Captured / Live</h4>
+
+                <div class="columns is-vcentered is-gapless mb-0">
+                    <div class="column is-bright-orange">Live Mode</div>
+                    <div class="column is-narrow">
+                        <label class="toggle">
+                            <input id="live-mode-toggle" class="toggle-checkbox" type="checkbox" {% if is_live %}checked{% endif %}>
+                            <div class="toggle-switch"></div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="columns is-vcentered is-gapless mb-0">
+                    <div class="column is-bright-orange">View Businesses</div>
+                    <div class="column is-narrow">
+                        <label class="toggle">
+                            <input id="view-businesses-toggle" class="toggle-checkbox" type="checkbox">
+                            <div class="toggle-switch"></div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="columns is-vcentered is-gapless">
+                    <div class="column is-bright-orange">View Private Users</div>
+                    <div class="column is-narrow">
+                        <label class="toggle">
+                            <input id="view-private-users-toggle" class="toggle-checkbox" type="checkbox">
+                            <div class="toggle-switch"></div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="columns is-vcentered">
+                    <div class="column has-text-right">
+                        <a class="has-text-grey">
+                            <span class="is-size-7">Clear</span>
+                        </a>
+                    </div>
+                    <div class="column is-narrow">
+                        <button class="button is-electric-blue is-small is-rounded" onclick="applyView();">
+                            Apply
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        *,
+        *:before,
+        *:after {
+            box-sizing: border-box;
+        }
+
+        .toggle {
+            cursor: pointer;
+            display: block;
+        }
+
+        .toggle-switch {
+            transform: scale(0.8);
+            display: inline-block;
+            background: #ccc;
+            border-radius: 16px;
+            width: 58px;
+            height: 32px;
+            position: relative;
+            vertical-align: middle;
+            transition: background 0.25s;
+        }
+
+        .toggle-switch:before, .toggle-switch:after {
+            content: "";
+        }
+
+        .toggle-switch:before {
+            display: block;
+            background: linear-gradient(to bottom, #fff 0%, #eee 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
+            width: 24px;
+            height: 24px;
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            transition: left 0.25s;
+        }
+
+        .toggle:hover .toggle-switch:before {
+            background: linear-gradient(to bottom, #fff 0%, #fff 100%);
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+        }
+
+        .toggle-checkbox:checked + .toggle-switch {
+            background: rgba(240, 127, 35, 0.73);
+        }
+
+        .toggle-checkbox:checked + .toggle-switch:before {
+            left: 30px;
+        }
+
+        .toggle-checkbox {
+            position: absolute;
+            visibility: hidden;
+        }
+
+        .toggle-label {
+            margin-right: 5px;
+            position: relative;
+            top: 2px;
+        }
+    </style>
+    <script>
+        function applyView() {
+            let liveToggle = document.getElementById('live-mode-toggle')
+            if (liveToggle.checked !== isLive) {
+                window.location = create_link({'liveMode': liveToggle.checked})
+            }
+        }
+    </script>
+{% endmacro %}
