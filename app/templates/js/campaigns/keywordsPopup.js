@@ -1,6 +1,11 @@
 let parent = document.getElementById('keyword-modal')
 
-function createKeywordPopup(elem, tokens) {
+function createKeywordPopup(elem, tokens, mode = 'keywords') {
+
+    if (tokens.length === 0) {
+        alert(`No ${mode} found for this tweet.`)
+        return
+    }
 
     let keywordPopups = document.getElementsByClassName('keywords-popup')
     for (let i = 0; i < keywordPopups.length; i++) {
@@ -67,12 +72,12 @@ function createKeywordPopup(elem, tokens) {
         <hr style="border: 1px dashed #20aaeb">
 
         <!-- Selected Positive Keywords -->
-        <p class="is-electric-blue selected-positive-keywords-label" hidden>Add Positive Keywords to your Campaign</p>
+        <p class="is-electric-blue selected-positive-keywords-label" hidden>Keywords to <span class="has-text-weight-bold">include</span> in your Campaign</p>
         <div class="mb-3 selected-positive-keywords">
         </div>
 
         <!-- Selected Negative Keywords -->
-        <p class="has-text-danger selected-negative-keywords-label" hidden>Add Negative Keywords to your Campaign</p>
+        <p class="has-text-danger selected-negative-keywords-label" hidden>Keywords to <span class="has-text-weight-bold">exclude</span> from your Campaign</p>
         <div class="mb-3 selected-negative-keywords">
         </div>
 

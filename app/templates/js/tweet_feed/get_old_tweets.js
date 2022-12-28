@@ -94,8 +94,8 @@ function append_new_html_object(tweet) {
     }
 
     for (let i = 0; i < tweetHashtags.length; i++) {
-        let hashtag = tweetHashtags[i]['text']
-        tweetText = tweetText.replace(`#${hashtag}`, `<span class="is-electric-blue">#${hashtag}&nbsp;</span>`)
+        tweetHashtags[i] = '#' + tweetHashtags[i]['text']
+        tweetText = tweetText.replace(`${tweetHashtags[i]}`, `<span class="is-electric-blue">${tweetHashtags[i]}&nbsp;</span>`)
     }
 
 
@@ -198,7 +198,7 @@ function append_new_html_object(tweet) {
             </div>
 
             <div class="column is-narrow">
-                <span class="icon-text is-clickable" onclick="createKeywordPopup(this, '${tweet['word_tokens']}')">
+                <span class="icon-text is-clickable" onclick="createKeywordPopup(this, '${tweet['word_tokens']}', 'keywords')">
                     <span class="icon">
                         <img src="{{ url_for('static', filename='images/icons/Plus-Icon.png') }}" alt="">
                     </span>
@@ -207,7 +207,7 @@ function append_new_html_object(tweet) {
             </div>
 
             <div class="column is-narrow">
-                <span class="icon-text">
+                <span class="icon-text is-clickable" onclick="createKeywordPopup(this, '${tweetHashtags}', 'hashtags')">
                     <span class="icon">
                         <img src="{{ url_for('static', filename='images/icons/Plus-Icon.png') }}" alt="">
                     </span>
