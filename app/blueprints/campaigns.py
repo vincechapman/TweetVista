@@ -160,4 +160,6 @@ def view_campaign(campaign_id):
                 print('SELECTED CAMPAIGN:', selected_campaign)
                 return redirect(url_for('campaigns.view_campaign', campaign_id=selected_campaign))
 
+        is_live = True if request.args.get('liveMode') == 'true' else False
+
         return render_template('pages/campaigns/view_campaign.html', all_campaigns=all_campaigns, selected_campaign=campaign_id, is_live=is_live, campaign_is_active=campaign_is_active, campaign_name=campaign_name)
