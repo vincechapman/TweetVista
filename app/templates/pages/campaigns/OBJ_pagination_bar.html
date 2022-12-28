@@ -3,7 +3,7 @@
 {#<link rel="stylesheet" href="/app/static/styles/layouts/base.css">#}
 
 {% macro pagination_bar() %}
-    <nav class="pagination is-rounded" style="position: fixed; bottom: 10px; margin-bottom: 0; padding: 10px; border-radius: 20px; background: #c0c0c0" role="navigation" aria-label="pagination">
+    <nav class="pagination is-rounded has-shadow" style="position: fixed; bottom: 30px; margin-bottom: 0; padding: 10px; border-radius: 20px; background: #c0c0c0" role="navigation" aria-label="pagination">
         <a class="pagination-previous" onclick="nextPage = nextPage - 2; getOldTweets()">Previous</a>
         <a class="pagination-next" onclick="getOldTweets();">Next page</a>
         <ul class="pagination-list">
@@ -51,7 +51,7 @@
         }
         function addEllipses() {
             let newElement = document.createElement('li')
-            newElement.innerHTML = `<li><span class="pagination-ellipsis">&hellip;</span></li>`
+            newElement.innerHTML = `<li><span class="pagination-ellipsis" style="color: #1c1c1c;">&hellip;</span></li>`
             paginationList.appendChild(newElement)
         }
     </script>
