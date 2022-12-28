@@ -67,14 +67,6 @@
   border-color: #3fc2ff;
 }
 
-.dropdown-trigger button {
-  min-width: 200px;
-}
-
-.dropdown-menu {
-  min-width: 200px;
-}
-
 .dropdown-item:not(#campaign-filter-message) {
   cursor: pointer;
 }
