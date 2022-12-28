@@ -40,12 +40,15 @@
         let activeKeywordSummary = document.getElementById('active-keywords-summary')
         let activeTweetScoreSummary = document.getElementById('active-tweet-score-summary')
         let activeDateRangeSummary = document.getElementById('active-date-range-summary')
+        let startDateFormatted, endDateFormatted
 
         function setupFilterSummary() {
             activeKeywordSummary.lastElementChild.replaceChildren()
             activeTweetScoreSummary.lastElementChild.replaceChildren()
+            activeDateRangeSummary.lastElementChild.replaceChildren()
             addKeywordsToSummary()
             addTweetScoreFilterToSummary()
+            addDateRangeSummary()
         }
 
         function addKeywordsToSummary() {
@@ -59,7 +62,7 @@
                 activeKeywordsBox.innerHTML += `
                     <span class="icon-text">
                         <span>${keywords[i]}</span>
-                        <span class="icon" onclick="removeKeyword(this)">
+                        <span class="icon is-clickable" onclick="removeKeyword(this)">
                             <i class="fas fa-times has-text-grey-light"></i>
                         </span>
                     </span>`
@@ -67,7 +70,7 @@
         }
 
         function addTweetScoreFilterToSummary() {
-            if (startScore !== 0) {
+            if ((startScore !== 0 && startScore !== undefined) || (endScore !== 700 && endScore !== undefined)) {
                 activeTweetScoreSummary.classList.remove('is-hidden')
             } else {
                 activeTweetScoreSummary.classList.add('is-hidden')
@@ -75,10 +78,41 @@
             activeTweetScoreSummary.lastElementChild.innerHTML += `
                 <span class="icon-text">
                     <span>${startScore} - ${endScore}</span>
-                    <span class="icon" onclick="removeTSFilterViaSummary(this)">
+                    <span class="icon is-clickable" onclick="removeTSFilterViaSummary(this)">
                         <i class="fas fa-times has-text-grey-light"></i>
                     </span>
                 </span>`
+        }
+
+        function addDateRangeSummary() {
+            if (startDate || endDate) {
+                if (startDate) {
+                    startDateFormatted = startDate.split('-')
+                    startDateFormatted.reverse()
+                    startDateFormatted = startDateFormatted.join('.')
+                } else {
+                    startDateFormatted = 'Start'
+                }
+
+                if (endDate) {
+                    endDateFormatted = endDate.split('-')
+                    endDateFormatted.reverse()
+                    endDateFormatted = endDateFormatted.join('.')
+                } else {
+                    endDateFormatted = 'Now'
+                }
+
+                activeDateRangeSummary.classList.remove('is-hidden')
+                activeDateRangeSummary.lastElementChild.innerHTML = `
+                <span class="icon-text">
+                    <span>${startDateFormatted} - ${endDateFormatted}</span>
+                    <span class="icon is-clickable" onclick="removeDateFilterViaSummary(this)">
+                        <i class="fas fa-times has-text-grey-light"></i>
+                    </span>
+                </span>`
+            } else {
+                activeDateRangeSummary.classList.add('is-hidden')
+            }
         }
 
         function removeKeyword(elem) {
@@ -87,13 +121,31 @@
             keywords = keywords.filter(e => e !== elem.parentElement.firstElementChild.innerText);
             console.log(keywords)
             applyFilters(undefined, undefined, keywords)
+            document.getElementById('saved-filters-dropdown-name').innerText = "Saved Filters"
         }
 
         function removeTSFilterViaSummary() {
             activeTweetScoreSummary.lastElementChild.replaceChildren()
             activeTweetScoreSummary.classList.add('is-hidden')
-            document.getElementById('tweet-score-limit').value = 0
-            document.getElementById('tweet-score-limit').previousElementSibling.innerText = 'Show All'
+            $("#slider-range").slider({
+                values: [0, 700]
+            })
+            document.getElementById('amount').innerText = 0 + " - " + 700
+            startScore = 0
+            endScore = 700
+            applyFilters()
+        }
+
+        function removeDateFilterViaSummary(elem) {
+            activeDateRangeSummary.lastElementChild.replaceChildren()
+            activeDateRangeSummary.classList.add('is-hidden')
+
+            startDate = undefined
+            endDate = undefined
+
+            startDateElem.value = undefined
+            endDateElem.value = undefined
+
             applyFilters()
         }
     </script>
