@@ -11,6 +11,7 @@ function excludeTweets(elem, tweetId) {
             if (success) {
                 console.log("Tweet successfully excluded from showing up again.")
                 elem.closest('.tweet-container').remove()
+                excludedTweets.push(String(tweetId))
             } else {
                 alert("Failed to exclude tweet. Please try again later or contact us.")
             }
