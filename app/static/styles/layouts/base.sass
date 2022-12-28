@@ -33,6 +33,7 @@
 
 *
     font-family: 'Poppins', sans-serif
+    //scrollbar-gutter: both-edges
 
 select
     font-family: 'Poppins', sans-serif !important
@@ -53,3 +54,24 @@ a
 .modal-background
     backdrop-filter: blur(3px)
     //background: radial-gradient(circle, rgb(10 10 10 / 70%), rgba(10,10,10,.86)) !important
+
+
+/* width */
+::-webkit-scrollbar
+    background: colours.$background-grey
+    width: 7px
+
+/* Track */
+::-webkit-scrollbar-track
+    display: none
+
+/* Handle */
+::-webkit-scrollbar-thumb
+    background: rgba(158, 142, 166, 0.73)
+    border-radius: 10px
+    opacity: 0.5
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover
+    background: rgba(75, 48, 128, 0.73)
+

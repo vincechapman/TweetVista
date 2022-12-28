@@ -10404,4 +10404,27 @@ a {
   backdrop-filter: blur(3px);
 }
 
+/* width */
+::-webkit-scrollbar {
+  background: #EFF0F2;
+  width: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  display: none;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(158, 142, 166, 0.73);
+  border-radius: 10px;
+  opacity: 0.5;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(75, 48, 128, 0.73);
+}
+
 /*# sourceMappingURL=base.css.map */
