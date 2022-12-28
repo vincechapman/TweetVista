@@ -15,6 +15,7 @@
         <h2 class="campaign-title title mb-2 is-size-5">
             <span class="is-bright-orange ">{{ campaign_name }}</span>
             <span id="campaign-tweet-count" class="has-text-weight-normal has-text-grey"></span>
+            <span id="campaign-tweet-count-locker" class="has-text-weight-normal has-text-grey" hidden></span>
             <script>
                 let campaignTweetCount = parseInt({{ campaign_tweet_count }})
                 document.getElementById("campaign-tweet-count").innerText = "— " + campaignTweetCount.toLocaleString("en-US") + " tweets"
