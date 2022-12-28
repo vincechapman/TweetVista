@@ -66,13 +66,6 @@ function setupPage(setKeywords) {
         document.getElementById('new-search-words').value = setKeywords.join(", ")
     }
 
-    // Other filter variables
-    startScore = parseInt(document.getElementById('tweet-score-limit').value)
-    endScore = 700
-    // startDate = undefined  // TODO Change to get value from date input. The minimum and maximum dates should be set to campaign start and today's date respectively
-    // endDate = undefined  // TODO Change to get value from date input. The minimum and maximum dates should be set to campaign start and today's date respectively
-
-
     let tweetCountContainer = document.getElementById('new-tweet-count-container')
     if (tweetCountContainer) {
         tweetCountContainer.classList.add('is-hidden')
