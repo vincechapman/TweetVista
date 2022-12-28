@@ -39,6 +39,8 @@
 {% block body %}
 
     <script>
+        // Initialising page
+
         let campaignId = '{{ selected_campaign }}'
         let isLive = '{{ is_live }}' === 'True' ? true : false
 
@@ -152,6 +154,28 @@
 
     <script>
         {% include 'js/tweet_feed/tweet_locker.js' %}
+
+        let tweets
+        let nextPage
+
+        let keywords = []
+        let keywordInput = document.getElementById('new-search-words')
+
+        let startDate = undefined
+        let endDate = undefined
+
+        let startDateElem = document.getElementById('start-date')
+        let endDateElem = document.getElementById('end-date')
+
+        let startScore, endScore
+        let tweetCutoff
+        let numTweets
+        let numPages
+        let ascending
+
+        let liveMode = false
+        let viewBusinesses, viewPrivateUsers = true
+
         {% include 'js/tweet_feed/tweet_filter.js' %}
         {% include 'js/campaigns/keywordsPopup.js' %}
         {% include 'pages/campaigns/excludeTweets.js' %}

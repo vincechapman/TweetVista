@@ -12,26 +12,8 @@ Ideally this one filter should cover all filtering needs i.e.
 (And any combination of these)
 */
 
-let tweets
-let nextPage
-
-let keywords = []
-let keywordInput = document.getElementById('new-search-words')
-
-let startDate = undefined
-let endDate = undefined
-
-let startDateElem = document.getElementById('start-date')
-let endDateElem = document.getElementById('end-date')
-
-let startScore, endScore
-let tweetCutoff
-let numTweets
-let numPages
-let ascending
-
-let liveMode = false
-let viewBusinesses, viewPrivateUsers = true
+let campaignTweetCountOriginal = document.getElementById("campaign-tweet-count")
+let campaignTweetCountClone = document.getElementById("campaign-tweet-count-locker")
 
 
 Array.prototype.unique = function() {
