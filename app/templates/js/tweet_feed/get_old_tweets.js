@@ -43,7 +43,7 @@ function getOldTweets() {
                 numTweets = data['data']['numTweets']
                 tweetCutoff = data['data']['tweetCutoff']
 
-                setupPages(numPages - 1, nextPage - 1)
+                setupPages(numPages, nextPage - 1)
 
                 tweetWall.replaceChildren()
 
@@ -198,7 +198,7 @@ function append_new_html_object(tweet) {
             </div>
 
             <div class="column is-narrow">
-                <span class="icon-text" onclick="createKeywordPopup(this, '${tweet['word_tokens']}')">
+                <span class="icon-text is-clickable" onclick="createKeywordPopup(this, '${tweet['word_tokens']}')">
                     <span class="icon">
                         <img src="{{ url_for('static', filename='images/icons/Plus-Icon.png') }}" alt="">
                     </span>
