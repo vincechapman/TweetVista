@@ -123,7 +123,8 @@ def get_historic_tweets(campaign_id: int, page_num: int = 1, page_len: int = 50,
             tweet_cutoff=tweet_cutoff)  # TODO Test this works for latest first mode (which I believe is descending
 
         if response['status'] == 200:
-            if page_num + 1 <= num_pages:
+
+            if page_num <= num_pages:
                 return response['data']['tweets'], page_num + 1, num_pages, num_tweets
             else:
                 logging.info('Got all pages')
