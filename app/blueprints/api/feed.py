@@ -87,10 +87,10 @@ def like_tweet():
         return jsonify(False)
 
 
-@feed.route('/saveTweet', methods=['POST'])
-def save_tweet():
+@feed.route('/saveTweetToLocker', methods=['POST'])
+def save_tweet_to_locker():
 
-    print('api/feed/saveTweet called!')
+    print('api/feed/saveTweetToLocker called!')
 
     try:
         request_body = json.loads(request.data)
@@ -111,6 +111,40 @@ def save_tweet():
             tweet_id=tweet_id
         )
         return jsonify('Success', 200)
+
+
+@feed.route('/deleteTweetFromLocker', methods=['POST'])
+def delete_tweet_from_locker():
+
+    try:
+        print('api/feed/deleteTweetFromLocker called!')
+
+        request_body = json.loads(request.data)
+        tweet_id = request_body['tweetId']
+        campaign_id = request_body['campaignId']
+
+        from TLInterface import get_web_connection
+        wc = get_web_connection()
+
+        response = wc.delete_from_locker(
+            campaign_id=campaign_id,
+            tweet_id=tweet_id
+        )
+
+        return jsonify(True if response.get('status') == 200 else False)
+
+    except json.decoder.JSONDecodeError as e:
+        print('FAILED: request_body = json.loads(request.data)')
+        print(e)
+        return jsonify(False)
+
+    except KeyError as e:
+        logging.error(e)
+        return jsonify(False)
+
+    except Exception as e:
+        logging.error(e)
+        return jsonify(False)
 
 
 @feed.route('/getNewTweets', methods=['POST'])
