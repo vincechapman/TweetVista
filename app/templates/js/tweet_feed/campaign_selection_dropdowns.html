@@ -1,6 +1,6 @@
 <script>
     // Adding toggle for dropdown menus
-    const dropDowns = document.getElementsByClassName('dropdown')
+    const dropDowns = document.querySelectorAll('.dropdown:not(.is-hoverable)')
     function toggleDropdown() {
         this.classList.toggle('is-active')
     }
