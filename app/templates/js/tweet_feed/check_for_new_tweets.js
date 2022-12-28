@@ -20,9 +20,12 @@ function checkForNewTweets() {
         })
         .then((response) => response.json())
         .then((data) => {
-            latestTweetCount = data
+            latestTweetCount = parseInt(data)
+            document.getElementById("campaign-tweet-count").innerText = "— " + latestTweetCount.toLocaleString("en-US") + " tweets"
+
             let newTweetCountElem = document.getElementById('new-tweet-count')
             let tweetCountContainer = newTweetCountElem.parentNode.parentNode
+
             if (latestTweetCount - numTweets > 0) {  // TODO Confirm this is working
                 console.log(latestTweetCount - numTweets, 'new tweets')
                 let numNewTweets = latestTweetCount - numTweets
