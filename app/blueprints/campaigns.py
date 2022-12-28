@@ -176,3 +176,17 @@ def view_campaign(campaign_id):
                                campaign_excluded_tweets=campaign_excluded_tweets,
                                campaign_locker=campaign_locker
                                )
+
+
+@campaigns.route('/<int:campaign_id>/edit')
+def edit_campaign(campaign_id):
+    try:
+        from TLInterface.get_campaigns import get_campaign_data
+        campaign_data = get_campaign_data(campaign_id)
+
+        return render_template('pages/campaigns/PAGE_edit_campaign.html',
+                               campaign_data=campaign_data)
+
+    except Exception as e:
+        logging.error(e)
+        return redirect(url_for('index'))

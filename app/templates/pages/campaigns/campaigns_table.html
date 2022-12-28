@@ -18,6 +18,7 @@
                     <th class="has-text-centered">End Date</th>
                     <th class="has-text-centered">Pause/Run</th>
                     <th class="has-text-left">View Campaign</th>
+                    <th class="has-text-centered">Edit</th>
                     <th class="has-text-centered">Delete</th>
                 </tr>
                 </thead>
@@ -39,13 +40,18 @@
                             <td>{{ cmp['end_at'] }}</td>
                             <td>
                                 {% if cmp['is_active'] %}
-                                    <img class="campaign-table-icon" src="{{ url_for('static', filename='images/icons/Pause-Icon.jpg') }}" alt="Campaign is active" onclick="startStopCampaign(this, 'stop');">
+                                    <img class="campaign-table-icon" src="{{ url_for('static', filename='images/icons/Pause-Icon.jpg') }}" title="Campaign is active" onclick="startStopCampaign(this, 'stop');">
                                 {% else %}
-                                    <img class="campaign-table-icon" src="{{ url_for('static', filename='images/icons/Play-Icon.jpg') }}" alt="Campaign is not active" onclick="startStopCampaign(this, 'start');">
+                                    <img class="campaign-table-icon" src="{{ url_for('static', filename='images/icons/Play-Icon.jpg') }}" title="Campaign is not active" onclick="startStopCampaign(this, 'start');">
                                 {% endif %}
                             </td>
                             <td class="has-text-left"><a href="{{ url_for('campaigns.view_campaign', campaign_id=cmp['id']) }}">View {{ cmp['name'] }}</a></td>
-                            <td><img class="campaign-table-icon" src="{{ url_for('static', filename='images/icons/Bin-Icon.jpg') }}" alt="Campaign is not active" onclick="deleteCampaign(this);"></td>
+                            <td>
+                                <span class="icon is-clickable campaign-table-icon" onclick="window.location.href = '{{ url_for("campaigns.edit_campaign", campaign_id=cmp['id']) }}'">
+                                    <i class="fas fa-lg fa-wrench is-electric-blue"></i>
+                                </span>
+                            </td>
+                            <td><img class="campaign-table-icon" src="{{ url_for('static', filename='images/icons/Bin-Icon.jpg') }}" onclick="deleteCampaign(this);"></td>
                         </tr>
                     {% endfor %}
                 {% endif %}
