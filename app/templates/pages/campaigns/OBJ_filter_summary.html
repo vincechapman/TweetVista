@@ -10,9 +10,16 @@
     let endDate = '2022-12-14'
 </script>
 
-{% macro filter_summary(campaign_name) %}
+{% macro filter_summary(campaign_name, campaign_tweet_count) %}
     <div class="mb-5">
-        <h2 class="campaign-title title is-bright-orange mb-2 is-size-5">{{ campaign_name }}</h2>
+        <h2 class="campaign-title title mb-2 is-size-5">
+            <span class="is-bright-orange ">{{ campaign_name }}</span>
+            <span id="campaign-tweet-count" class="has-text-weight-normal has-text-grey"></span>
+            <script>
+                let campaignTweetCount = parseInt({{ campaign_tweet_count }})
+                document.getElementById("campaign-tweet-count").innerText = "— " + campaignTweetCount.toLocaleString("en-US") + " tweets"
+            </script>
+        </h2>
         <p>
             <span id="active-keywords-summary" class="summary-bar-section is-hidden mr-1">
                 <span class="is-hot-pink">Keywords:</span>
