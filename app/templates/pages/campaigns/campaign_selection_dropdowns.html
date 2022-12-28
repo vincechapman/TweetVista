@@ -2,9 +2,9 @@
 
     <form action="#" method="post">
 
-        <div class="columns is-desktop is-vcentered is-variable is-1-desktop is-hidden">
+        <div class="columns is-desktop is-vcentered is-variable is-1-desktop">
 
-            <div class="column">
+            <div class="column is-hidden">
                 <div class="select">
                     <select class="border-is-electric-blue is-hot-pink">
                         {% if all_campaigns %}
@@ -17,7 +17,7 @@
                 </div>
             </div>
 
-            <div class="column is-hidden-tablet-only">
+            <div class="column is-hidden-tablet-only is-hidden">
                 <span class="icon is-electric-blue">
                     <i class="fas fa-angle-double-right"></i>
                 </span>
@@ -25,7 +25,7 @@
 
             <div class="column">
                 <div class="select">
-                    <select required class="border-is-electric-blue is-hot-pink" name="campaign-selection">
+                    <select required class="border-is-electric-blue is-hot-pink" name="campaign-selection" onchange="this.form.submit()">
                         {% if all_campaigns %}
                             <option value="" disabled selected hidden>Select Campaign</option>
                             {% for campaign in all_campaigns %}
@@ -36,7 +36,7 @@
                 </div>
             </div>
 
-            <div class="column">
+            <div class="column is-hidden">
                 <button class="button is-electric-blue has-text-weight-bold" type="submit" style="border-radius: 10px; border-width: 2px;">GO</button>
             </div>
         </div>
