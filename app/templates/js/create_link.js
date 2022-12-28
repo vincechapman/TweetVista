@@ -13,5 +13,9 @@ function create_link(data, base = window.location.href) {
         searchParams.set(key, String(value))
     }
 
-    return base + '?' + searchParams.toString()
+    let URL = base + '?' + searchParams.toString()
+
+    console.log('Returned URL:', URL)
+
+    return URL
 }
