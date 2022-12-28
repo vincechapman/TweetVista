@@ -62,30 +62,30 @@
 
                     <div class="column">
                         {% from 'objects/campaign_filters.html' import campaign_filters %}
-                        {{ campaign_filters() }}
+                        {{ campaign_filters(all_campaigns, selected_campaign, is_live) }}
                     </div>
 
-                    <div class="column">
-                        {% from 'objects/campaigns/live_mode_toggle.html' import live_toggle %}
-                        {{ live_toggle(is_live) }}
-                    </div>
+{#                    <div class="column">#}
+{#                        {% from 'objects/campaigns/live_mode_toggle.html' import live_toggle %}#}
+{#                        {{ live_toggle(is_live) }}#}
+{#                    </div>#}
 
                     <div id="account" class="column" style="margin-top: -7px;">
                         {% include 'layouts/account.html' %}
                     </div>
 
-                    <div class="column is-full">
-
-                        {% from 'objects/keyword_selection.html' import keyword_filters %}
-                        {{ keyword_filters() }}
-
-                        {% from 'objects/feed_filters/tweet_score_slider.html' import tweet_score_slider %}
-                        {{ tweet_score_slider() }}
-
-                        {% from 'objects/feed_filters/date_range_selection.html' import date_range_selection %}
-                        {{ date_range_selection() }}
-
-                    </div>
+{#                    <div class="column is-full">#}
+{##}
+{#                        {% from 'objects/keyword_selection.html' import keyword_filters %}#}
+{#                        {{ keyword_filters() }}#}
+{##}
+{#                        {% from 'objects/feed_filters/tweet_score_slider.html' import tweet_score_slider %}#}
+{#                        {{ tweet_score_slider() }}#}
+{##}
+{#                        {% from 'objects/feed_filters/date_range_selection.html' import date_range_selection %}#}
+{#                        {{ date_range_selection() }}#}
+{##}
+{#                    </div>#}
 
                     <script>
                         {% include 'js/feed_filters/show_hide_filters.js' %}
