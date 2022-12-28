@@ -117,20 +117,20 @@ def count_campaign_tweets():
             start_date = start_date.strftime('%d-%m-%Y')
             end_date = end_date.strftime('%d-%m-%Y')
 
-        print()
-        print('Campaign_id:', campaign_id)
-        print('Keywords:', keywords)
-        print('Start date:', start_date)
-        print('End date:', end_date)
-        print('Start score:', start_score)
-        print('End score:', end_score)
-        print()
+        # print()
+        # print('Campaign_id:', campaign_id)
+        # print('Keywords:', keywords)
+        # print('Start date:', start_date)
+        # print('End date:', end_date)
+        # print('Start score:', start_score)
+        # print('End score:', end_score)
+        # print()
 
         data = wc.count_campaign_tweets(campaign_id=campaign_id, key_words=keywords, start_date=start_date, end_date=end_date, start_score=start_score, end_score=end_score)
 
         if data.get('status') != 200:
-            print(data.get('status'))
-            print(data.get('msg'))
+            # print(data.get('status'))
+            # print(data.get('msg'))
             return jsonify(False)
 
         num_tweets = data.get('data', 0)
@@ -216,6 +216,30 @@ def save_campaign_filter():
             'data': None
         })
 
+
+@api_campaigns.route('/deleteCampaignFilter', methods=['POST'])
+def delete_campaign_filter_set():
+
+    try:
+        print('api/Campaigns/deleteCampaignFilter called!')
+
+        from TLInterface import get_web_connection
+        wc = get_web_connection()
+
+        request_body = json.loads(request.data)
+        campaign_id = request_body.get('campaignId')
+        filter_name = request_body.get('filterName')
+
+        response = wc.delete_from_campaign_filters(
+                        campaign_id=campaign_id,
+                        filter_name=filter_name)
+
+        print(response)
+        return jsonify(True if response.get('status') == 200 else False)
+
+    except Exception as e:
+        logging.error(e)
+        return jsonify(False)
 
 @api_campaigns.route('/addCampaignKeywords', methods=['POST'])
 def add_campaign_keywords():
