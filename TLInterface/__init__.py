@@ -42,7 +42,7 @@ def get_web_connection(username: str = None, password: str = None) -> WebConnect
 
         if wc:
             wc = pickle.loads(wc)
-            print('Returning WebConnection saved in session.: ', wc.__dict__)
+            # print('Returning WebConnection saved in session.: ', wc.__dict__)
 
             if wc.userid and wc.password:
                 response = wc.authenticate_user()
