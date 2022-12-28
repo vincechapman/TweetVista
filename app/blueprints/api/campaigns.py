@@ -288,3 +288,32 @@ def add_campaign_keywords():
             False
         )
 
+
+@api_campaigns.route('/addToExcludedTweets', methods=['POST'])
+def exclude_tweets():
+    try:
+        print('api/Campaigns/addToExcludedTweets called!')
+
+        request_body = json.loads(request.data)
+        campaign_id = request_body.get('campaignId')
+        tweet_id = request_body.get('tweetId')
+
+        print('CAMPIGN ID', campaign_id)
+        print('TWETE ID:', tweet_id)
+
+        from TLInterface import get_web_connection
+        wc = get_web_connection()
+
+        response = wc.save_to_excluded_tweets(
+                    campaign_id=campaign_id,
+                    tweet_id=tweet_id)
+
+        print(response)
+
+        return jsonify(True if response.get('status') == 200 else False)
+
+    except Exception as e:
+        logging.error(e)
+        return jsonify(
+            False
+        )
