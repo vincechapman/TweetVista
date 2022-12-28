@@ -51,6 +51,10 @@
   background-color: #fff;
 }
 
+.bg-is-background-grey {
+  background-color: #EFF0F2;
+}
+
 .button.is-electric-blue {
   background-color: #20aaeb;
   color: #fff;
@@ -105,6 +109,23 @@
 }
 #filter-section * {
   pointer-events: initial;
+}
+
+.tweet-content-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  pointer-events: none;
+  background: rgba(28, 19, 40, 0.73);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.tweet-content-overlay.visible {
+  opacity: 0.5;
 }
 
 /*# sourceMappingURL=campaigns.css.map */

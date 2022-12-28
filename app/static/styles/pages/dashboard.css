@@ -10334,6 +10334,10 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   background-color: #fff;
 }
 
+.bg-is-background-grey {
+  background-color: #EFF0F2;
+}
+
 .button.is-electric-blue {
   background-color: #20aaeb;
   color: #fff;
