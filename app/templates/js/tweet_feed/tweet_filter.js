@@ -25,6 +25,9 @@ let numTweets
 let numPages
 let ascending
 
+let liveMode = false
+let viewBusinesses, viewPrivateUsers = true
+
 
 function setupPage(setKeywords) {
     // This function sets/resets appropriate variables every time filter is applied
