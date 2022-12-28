@@ -2,102 +2,178 @@
 <link rel="stylesheet" href="https://bulma.io/vendor/fontawesome-free-5.15.2-web/css/all.min.css">
 <link rel="stylesheet" href="/app/static/styles/layouts/base.css">
 
-{% macro campaign_filters() %}
-    <div class="columns">
-        {# Keywords & Hashtags #}
+{% macro campaign_filters(all_campaigns, selected_campaign, is_live) %}
+    <div class="columns is-variable is-2">
+
+        {# Campaign selection #}
         <div class="column is-narrow">
-            <div class="dropdown-trigger">
-                <button class="button border-is-electric-blue campaign-filter has-text-info-dark" data-field="keyword-selector" aria-haspopup="true" aria-controls="dropdown-menu">
-                    <span class="icon is-small">
-                        <i class="fas fa-hashtag" aria-hidden="true"></i>
-                    </span>
-
-                    <span>Keywords</span>
-
-                    <span class="icon is-small">
-                        <i class="fas fa-angle-down" aria-hidden="true"></i>
-                    </span>
-                </button>
-            </div>
-
-            <span class="icon is-electric-blue" style="margin: auto 10px; width: 100%; display: none;">
-                <i class="fas fa-angle-double-down"></i>
-            </span>
-        </div>
-
-        {# Tweetscore #}
-        <div class="column is-narrow">
-            <div class="dropdown-trigger">
-                <button class="button border-is-electric-blue campaign-filter has-text-info-dark" data-field="tweet-score-slider" aria-haspopup="true" aria-controls="dropdown-menu">
-                    <span class="icon is-small">
-                        <i class="fas fa-medal" aria-hidden="true"></i>
-                    </span>
-
-                    <span>TweetScore</span>
-
-                    <span class="icon is-small">
-                        <i class="fas fa-angle-down" aria-hidden="true"></i>
-                    </span>
-                </button>
-            </div>
-
-            <span class="icon is-electric-blue" style="margin: auto 10px; width: 100%; display: none;">
-                <i class="fas fa-angle-double-down"></i>
-            </span>
+            {% from 'pages/campaigns/campaign_selection_dropdowns.html' import campaign_selection_macro %}
+            {{ campaign_selection_macro(all_campaigns, selected_campaign) }}
         </div>
 
         {# Date range #}
         <div class="column is-narrow">
-            <button type="text" class="button border-is-electric-blue has-text-info-dark" id="date-filter" value="">
-                <span class="icon is-small">
-                    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-                </span>
+            <div class="dropdown is-hoverable">
+                <div class="dropdown-trigger">
+                    <button class="button border-is-electric-blue has-text-info-dark" aria-haspopup="true" aria-controls="dropdown-menu2">
+                        <span>Date Range</span>
+                        <span class="icon is-small">
+                            <i class="fas fa-angle-down" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                </div>
+                <div class="dropdown-menu campaign-filter-field" id="dropdown-menu2" role="menu">
+                    <div class="dropdown-content p-3 border-is-electric-blue" style="width: 100vw; max-width: 300px;">
+                        <h4 class="is-deep-purple subtitle has-text-weight-bold mb-2">Filter Dates</h4>
+                        <div class="columns is-gapless">
+                            <div class="column">
+                                <span class="icon-text">
+                                    <span class="icon">
+                                        <i class="fas fa-calendar-alt is-hot-pink"></i>
+                                    </span>
+                                    <span>Start date</span>
+                                </span>
+                                <input type="date" id="start-date" style="border: none;" onchange="applyFilters()">
+                            </div>
+                            <div class="column is-narrow ml-3 mr-3" style="width: 1px; background: black;">
+                            </div>
+                            <div class="column">
+                                <span class="icon-text">
+                                    <span class="icon">
+                                        <i class="fas fa-calendar-alt is-hot-pink"></i>
+                                    </span>
+                                    <span>End date</span>
+                                </span>
+                                <input type="date" id="end-date" style="border: none;" onchange="applyFilters()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                <span id="date-range-label">Dates</span>
+        <style>
+            {#input[type="date"]::-webkit-inner-spin-button,#}
+            {#input[type="date"]::-webkit-calendar-picker-indicator {#}
+            {#    display: none;#}
+            {#    -webkit-appearance: none;#}
+            {#}#}
+        </style>
 
-                <span class="icon is-small">
-                    <i class="fas fa-angle-down" aria-hidden="true"></i>
-                </span>
-            </button>
+        {# Keywords & Hashtags #}
+        <div class="column is-narrow">
+            <div class="dropdown is-hoverable">
+                <div class="dropdown-trigger">
+                    <button class="button border-is-electric-blue has-text-info-dark" aria-haspopup="true" aria-controls="dropdown-menu2">
+                        <span>Keywords</span>
+                        <span class="icon is-small">
+                            <i class="fas fa-angle-down" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                </div>
+                <div class="dropdown-menu campaign-filter-field" id="dropdown-menu2" role="menu">
+                    <div class="dropdown-content p-3 border-is-electric-blue" style="width: 100vw; max-width: 300px;">
+                        <h4 class="is-deep-purple subtitle has-text-weight-bold mb-2">Keyword Filter</h4>
+                        <div class="field">
+                            <p class="control has-icons-right">
+                                <input id="new-search-words" class="input border-is-light-grey" style="background: whitesmoke;" type="text" placeholder="Search">
+                                <span class="icon is-small is-right">
+                                    <i class="fas fa-search is-bright-orange"></i>
+                                </span>
+                            </p>
+                        </div>
+                        <div class="columns is-vcentered">
+                            <div class="column has-text-right">
+                                <a class="has-text-grey">
+                                    <span class="is-size-7">Clear</span>
+                                </a>
+                            </div>
+                            <div class="column is-narrow">
+                                <button class="button is-electric-blue is-small is-rounded" onclick="applyFilters(); this.blur();">
+                                    Apply
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            <script type="text/javascript">
-                $(function () {
+        {# Tweet Score #}
+        <div class="column is-narrow">
+            <div class="dropdown is-hoverable">
+                <div class="dropdown-trigger">
+                    <button class="button border-is-electric-blue has-text-info-dark" aria-haspopup="true" aria-controls="dropdown-menu2">
+                        <span>Tweet Score</span>
+                        <span class="icon is-small">
+                            <i class="fas fa-angle-down" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                </div>
+                <div class="dropdown-menu campaign-filter-field" id="dropdown-menu2" role="menu">
+                    <div class="dropdown-content p-3 border-is-electric-blue" style="width: 100vw; max-width: 300px;">
+                        <h4 class="is-deep-purple subtitle has-text-weight-bold mb-2">Tweet Score Filter</h4>
+                        <div class="pl-5 pr-5">
+                            <p id="amount" class="has-text-centered is-size-3 has-text-weight-bold is-bright-orange">
+                                0 - 700
+                            </p>
+                            <div id="slider-range"></div>
+                            <div class="columns is-size-7 is-bright-orange">
+                                <div class="column">
+                                    100
+                                </div>
+                                <div class="column has-text-right">
+                                    700
+                                </div>
+                            </div>
+                        </div>
+                        <style>
+                            .ui-widget-header, .ui-slider-handle {
+                                background: #617de1 !important;
+                            }
+                            .ui-slider-handle {
+                                border-radius: 100%;
+                                top: -2px !important;
+                                height: 13px !important;
+                                width: 13px !important;
+                                border: none !important;
+                            }
 
-                    $('#date-filter').daterangepicker({
-                        autoUpdateInput: false,
-                        locale: {
-                            cancelLabel: 'Clear'
-                        }
-                    });
+                            .ui-corner-all {
+                                border-radius: 15px !important;
+                            }
 
-                    $('#date-filter').on('apply.daterangepicker', function (ev, picker) {
-                        $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
-                        console.log('Date range applied!')
-                        startDate = picker.startDate.format('YYYY-MM-DDTHH:mm:ssZ')
-                        endDate = picker.endDate.format('YYYY-MM-DDTHH:mm:ssZ')
-                        document.getElementById('date-range-label').innerHTML = picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY')
-                    });
-
-                    $('#date-filter').on('cancel.daterangepicker', function (ev, picker) {
-                        $(this).val('');
-                        console.log('Date range cleared!')
-                        startDate = undefined
-                        endDate = undefined
-                        document.getElementById('date-range-label').innerHTML = 'Dates'
-                    });
-
-                });
-            </script>
+                            .ui-slider-range {
+                                height: 7px !important;
+                                top: 2px !important;
+                            }
+                        </style>
+                        <div class="columns is-vcentered">
+                            <div class="column has-text-right">
+                                <a class="has-text-grey">
+                                    <span class="is-size-7">Clear</span>
+                                </a>
+                            </div>
+                            <div class="column is-narrow">
+                                <button class="button is-electric-blue is-small is-rounded" onclick="applyFilters(); this.blur();">
+                                    Apply
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="column is-narrow">
-            {% from 'pages/campaigns/OBJ_filter_sets.html' import filter_sets %}
-            {{ filter_sets(selected_campaign) }}
+            {% from 'pages/campaigns/OBJ_view_filters.html' import view_filters %}
+            {{ view_filters(is_live) }}
         </div>
 
-        <div class="column is-narrow">
-            <button class="button is-electric-blue has-text-weight-bold" style="border-radius: 10px; border-width: 2px;" onclick="applyFilters()">Apply filter</button>
-        </div>
+{#        <div class="column is-narrow">#}
+{#            {% from 'pages/campaigns/OBJ_filter_sets.html' import filter_sets %}#}
+{#            {{ filter_sets(selected_campaign) }}#}
+{#        </div>#}
 
     </div>
 {% endmacro %}
