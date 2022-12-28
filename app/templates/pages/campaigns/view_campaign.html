@@ -48,6 +48,17 @@
         let excludedTweets = "{{ campaign_excluded_tweets }}".replace("[", "").replace("]", "").split(", ")
     </script>
 
+    <div id="lightbox-modal" class="modal">
+        <div class="modal-background" style="backdrop-filter: blur(0px); cursor: pointer;" onclick="document.getElementById('lightbox-modal').classList.remove('is-active')"></div>
+        <div class="modal-content">
+            <p class="image">
+                <img id="lightbox-image" src="https://bulma.io/images/placeholders/1280x960.png" alt=""
+                     style="max-height: 90vh; width: auto; margin: auto; border-radius: 5px;">
+            </p>
+        </div>
+        <button class="modal-close is-large" aria-label="close" onclick="document.getElementById('lightbox-modal').classList.remove('is-active')"></button>
+    </div>
+
     <div class="columns is-desktop is-gapless mb-0">
 
         <nav id="side-menu" class="column is-3 is-hidden-touch">
@@ -154,6 +165,15 @@
 
     {% include 'js/tweet_feed/campaign_selection_dropdowns.html' %}
     {% include 'js/tweet_feed/like_unlike_tweet.html' %}
+
+    <script>
+        let lightboxImage = document.getElementById('lightbox-image')
+        let lightboxModal = document.getElementById('lightbox-modal')
+        function displayLightboxImage(src) {
+            lightboxImage.src = src
+            lightboxModal.classList.add('is-active')
+        }
+    </script>
 
     <script>
         {% include 'js/tweet_feed/tweet_locker.js' %}

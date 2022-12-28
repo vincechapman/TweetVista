@@ -145,8 +145,8 @@ function append_new_html_object(tweet) {
         <div class="tweet-content-overlay"></div>
 
         ${mediaType === 'photo' ? `
-            <img class="tweet-media" src="${mediaUrl}" alt="The image attached to the tweet."
-            onclick="">
+            <img class="tweet-media is-clickable" src="${mediaUrl}" alt="The image attached to the tweet."
+            onclick="displayLightboxImage(this.src)">
             ` : ''}
 
         <div class="tweet-content">
