@@ -105,17 +105,19 @@ def count_campaign_tweets():
         start_date = request_body.get('startDate')
         end_date = request_body.get('endDate')
 
-        if start_date and end_date:
+        from datetime import datetime
 
-            from datetime import datetime
-
-            # Parsing into datetime format
-            start_date = datetime.strptime(start_date, '%Y-%m-%dT%H:%M:%S%f%z')
-            end_date = datetime.strptime(end_date, '%Y-%m-%dT%H:%M:%S%f%z')
-
-            # Formatting into Dave's format
+        if start_date:
+            start_date = datetime.strptime(start_date, '%Y-%m-%d')
             start_date = start_date.strftime('%d-%m-%Y')
+        else:
+            start_date = None
+
+        if end_date:
+            end_date = datetime.strptime(end_date, '%Y-%m-%d')
             end_date = end_date.strftime('%d-%m-%Y')
+        else:
+            end_date = None
 
         # print()
         # print('Campaign_id:', campaign_id)
