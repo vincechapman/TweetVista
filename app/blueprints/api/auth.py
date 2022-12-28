@@ -13,6 +13,12 @@ def signup():
 
     """The client sends signup details to this route and this function creates an account for them."""
 
+    # TODO remove this once email verification has been added
+    return jsonify({
+        'success': False,
+        'message': "No new accounts being created at this time."})
+
+
     request_body = json.loads(request.data)
     email_address = request_body['email_address']
     first_name = request_body['first_name']
