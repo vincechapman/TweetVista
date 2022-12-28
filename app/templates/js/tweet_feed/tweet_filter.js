@@ -14,11 +14,16 @@ Ideally this one filter should cover all filtering needs i.e.
 
 let tweets
 let nextPage
-let keywords
+
+let keywords = []
+let keywordInput = document.getElementById('new-search-words')
+
 let startDate = undefined
 let endDate = undefined
+
 let startDateElem = document.getElementById('start-date')
 let endDateElem = document.getElementById('end-date')
+
 let startScore, endScore
 let tweetCutoff
 let numTweets
@@ -27,6 +32,19 @@ let ascending
 
 let liveMode = false
 let viewBusinesses, viewPrivateUsers = true
+
+
+Array.prototype.unique = function() {
+    let a = this.concat();
+    for(let i=0; i<a.length; ++i) {
+        for(let j=i+1; j<a.length; ++j) {
+            if(a[i] === a[j])
+                a.splice(j--, 1);
+        }
+    }
+
+    return a;
+};
 
 
 function setupPage(setKeywords) {
@@ -55,16 +73,19 @@ function setupPage(setKeywords) {
 
     // Setting up keywords variable
     if (setKeywords === undefined) {
-        keywords = document.getElementById('new-search-words').value.split(",")
+        keywords = keywords.concat(keywordInput.value.split(",")).unique();  // Merges old keyword list with new keyword list and removes duplicates
         for (let i = 0; i < keywords.length; i++) {
             keywords[i] = keywords[i].trim()
         }
         if (keywords.length === 1 && keywords[0] === "") {
             keywords = []
         }
-    } else {
-        document.getElementById('new-search-words').value = setKeywords.join(", ")
     }
+    // else {
+    //     k
+    // }
+
+    keywordInput.value = ""  // Clears input field
 
     let tweetCountContainer = document.getElementById('new-tweet-count-container')
     if (tweetCountContainer) {

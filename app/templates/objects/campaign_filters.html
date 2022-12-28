@@ -76,7 +76,7 @@
                         <h4 class="is-deep-purple subtitle has-text-weight-bold mb-2">Keyword Filter</h4>
                         <div class="field">
                             <p class="control has-icons-right">
-                                <input id="new-search-words" class="input border-is-light-grey" style="background: whitesmoke;" type="text" placeholder="Search">
+                                <input id="new-search-words" class="input border-is-light-grey" style="background: whitesmoke;" type="text" placeholder="Search" autocomplete="off">
                                 <span class="icon is-small is-right">
                                     <i class="fas fa-search is-bright-orange"></i>
                                 </span>
@@ -85,12 +85,12 @@
                         <div class="columns is-vcentered">
                             <div class="column has-text-right">
                                 <a class="has-text-grey">
-                                    <span class="is-size-7">Clear</span>
+                                    <span class="is-size-7" onclick="keywords = []; applyFilters(undefined, undefined, [])">Remove all</span>
                                 </a>
                             </div>
                             <div class="column is-narrow">
-                                <button class="button is-electric-blue is-small is-rounded" onclick="applyFilters(); this.blur();">
-                                    Apply
+                                <button class="button is-electric-blue is-small is-rounded" onclick="applyFilters();">
+                                    Add
                                 </button>
                             </div>
                         </div>
@@ -98,6 +98,18 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            let input = document.getElementById("new-search-words")
+
+            // Execute a function when the user presses a key on the keyboard
+            input.addEventListener("keypress", function (event) {
+                // If the user presses the "Enter" key on the keyboard
+                if (event.key === "Enter") {
+                    applyFilters()
+                }
+            });
+        </script>
 
         {# Tweet Score #}
         <div class="column is-narrow">
