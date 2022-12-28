@@ -17,6 +17,8 @@ let nextPage
 let keywords
 let startDate = undefined
 let endDate = undefined
+let startDateElem = document.getElementById('start-date')
+let endDateElem = document.getElementById('end-date')
 let startScore, endScore
 let tweetCutoff
 let numTweets
@@ -32,6 +34,21 @@ function setupPage(setKeywords) {
     numTweets = undefined
     numPages = undefined
     ascending = false  // TODO Change to get value from a dropdown
+
+    startDate = startDateElem.value
+    endDate = endDateElem.value
+
+    if (startDate) {
+        endDateElem.setAttribute("min", startDate)
+    } else {
+        endDateElem.removeAttribute("min")
+    }
+
+    if (endDate) {
+        startDateElem.setAttribute("max", endDate)
+    } else {
+        startDateElem.removeAttribute("max")
+    }
 
     // Setting up keywords variable
     if (setKeywords === undefined) {
