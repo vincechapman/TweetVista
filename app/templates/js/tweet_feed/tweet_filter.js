@@ -73,7 +73,13 @@ function setupPage(setKeywords) {
 
     // Setting up keywords variable
     if (setKeywords === undefined) {
-        keywords = keywords.concat(keywordInput.value.split(",")).unique();  // Merges old keyword list with new keyword list and removes duplicates
+        let currentInput = keywordInput.value.split(",")
+        for (let i = 0; i < currentInput.length; i++) {
+            if (currentInput[i] === "") {
+                currentInput.splice(i, 1)
+            }
+        }
+        keywords = keywords.concat(currentInput).unique();  // Merges old keyword list with new keyword list and removes duplicates
         for (let i = 0; i < keywords.length; i++) {
             keywords[i] = keywords[i].trim()
         }
