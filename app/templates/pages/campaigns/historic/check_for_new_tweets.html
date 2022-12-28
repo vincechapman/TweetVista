@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="/app/static/styles/pages/campaigns.css">
 
 {% macro check_for_new_tweets() %}
-    <div id="new-tweet-count-container" class="container has-text-centered is-hidden">
+    <div id="new-tweet-count-container" class="container has-text-centered is-hidden" style="z-index: 1">
         <span class="tag is-info is-rounded is-clickable is-medium" onclick="location.reload();">
             <span id="new-tweet-count"></span>. Click to refresh
         </span>
