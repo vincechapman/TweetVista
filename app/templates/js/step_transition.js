@@ -8,11 +8,14 @@ function stepTransition(elem = undefined, nextStepId = undefined) {
             elem = elem.parentNode
         }
 
-        elem.classList.add('hidden')  // Hiding the old step
-
         if (nextStepId === undefined) {
             nextStepId = elem.getAttribute('data-next-step')
         }
+
+        if (nextStepId !== 'none') {
+            elem.classList.add('hidden')  // Hiding the old step
+        }
+
     }
 
     if (nextStepId === 'none') {
