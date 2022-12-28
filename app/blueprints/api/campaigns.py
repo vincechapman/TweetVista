@@ -215,3 +215,50 @@ def save_campaign_filter():
             'message': "Unknown error. See server logs.",
             'data': None
         })
+
+
+@api_campaigns.route('/addCampaignKeywords', methods=['POST'])
+def add_campaign_keywords():
+
+    try:
+
+        success = True
+
+        request_body = json.loads(request.data)
+        campaign_id = request_body.get('campaignId')
+        keywords = request_body.get('keywords')
+
+        from TLInterface import get_web_connection
+
+        wc = get_web_connection()
+
+        for pos_key in keywords['positive']:
+            print(f"Storing positive keyword:  {pos_key}")
+            response = wc.store_campaign_keyword(
+                campaign_id=campaign_id,
+                keyword_type='positive',
+                keyword_text=pos_key,
+            )
+            print(response)
+            if response.get('status') != 200:
+                success = False
+
+        for neg_key in keywords['negative']:
+            print(f"Storing negative keyword:  {neg_key}")
+            response = wc.store_campaign_keyword(
+                campaign_id=campaign_id,
+                keyword_type='negative',
+                keyword_text=neg_key,
+            )
+            print(response)
+            if response.get('status') != 200:
+                success = False
+
+        return jsonify(success)
+
+    except Exception as e:
+        logging.error(e)
+        return jsonify(
+            False
+        )
+
