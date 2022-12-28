@@ -58,9 +58,13 @@ function getOldTweets() {
 
 function append_new_html_object(tweet) {
 
-    console.log(tweet)
-
     let tweetId = tweet['id']
+
+    if (excludedTweets.includes(String(tweetId))) {
+        return;
+    }
+
+    let savedInLocker = tweetLocker.includes(String(tweetId))
 
     let mediaType;
     let mediaUrl;
@@ -137,29 +141,61 @@ function append_new_html_object(tweet) {
 
     // HTML Tweet Template
     let html = `
-        ${mediaType === 'photo' ? `<img class="tweet-media" src="${mediaUrl}" alt="The image attached to the tweet.">` : ''}
+
+        <div class="tweet-content-overlay"></div>
+
+        ${mediaType === 'photo' ? `
+            <img class="tweet-media" src="${mediaUrl}" alt="The image attached to the tweet."
+            onclick="">
+            ` : ''}
 
         <div class="tweet-content">
-
+        
             <div class="columns is-multiline is-vcentered mb-0">
 
                 <a class="tweet-profile-pic column is-narrow pr-1 is-black" href="https://twitter.com/${authorHandle}" target="_blank">
                     <img src="${authorProfileImage}" alt="Profile picture for tweet author.">
                 </a>
 
-                <a class="tweet-user-details column is-narrow pl-1 is-black" href="https://twitter.com/${authorHandle}" target="_blank">
+                <a class="tweet-user-details column pl-1 is-black" href="https://twitter.com/${authorHandle}" target="_blank" style="overflow: hidden; white-space: nowrap; position: relative;">
                     <div>${authorDisplayName}</div>
                     <div>${authorHandle}</div>
+                    <div style="position: absolute; height: 100%; width: 100%; background: linear-gradient(90deg, rgba(0,0,0,0) 95%, white); top: 0; left: 0"></div>
                 </a>
 
                 <div class="column is-narrow">
-                    <span class="icon-text tweet-track-button">
-                        <span class="icon">
-                            <img src="{{ url_for('static', filename='images/icons/Plus-Icon.png') }}" alt="Button to track this handle.">
-                        </span>
-                        <span>TRACK</span>
-                    </span>
+                        <div class="dropdown is-right"
+                        onmouseover="this.closest('.tweet-container').firstElementChild.classList.add('visible'); this.classList.add('is-active')"
+                        onmouseleave="this.closest('.tweet-container').firstElementChild.classList.remove('visible'); this.classList.remove('is-active')">
+                            <div class="dropdown-trigger">
+                                <span class="icon is-clickable">
+                                    <i class="fas fa-ellipsis-v has-text-grey-light"></i>
+                                </span>
+                            </div>
+                            <div class="dropdown-menu" id="dropdown-menu2" role="menu">
+                                <div class="dropdown-content">
+                                    <div class="dropdown-item">
+                                        <span class="icon-text">
+                                            <span class="icon">
+                                                <i class="fas fa-binoculars is-electric-blue"></i>
+                                            </span>
+                                            <span>Track user's posts</span>
+                                        </span>
+                                    </div>
+                                    <div class="dropdown-item"  onclick="excludeTweets(this, ${tweetId})">
+                                        <span class="icon-text">
+                                            <span class="icon">
+                                                <i class="fas fa-times-circle has-text-danger"></i>
+                                            </span>
+                                            <span>Exclude tweet</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                 </div>
+
+
 
             </div>
             
@@ -189,11 +225,12 @@ function append_new_html_object(tweet) {
 
         <div class="tweet-filter-controls columns is-multiline is-vcentered has-text-left m-1">
             <div class="column is-narrow">
-                <span class="icon-text" style="cursor: pointer;" data-tweet="${tweetId}" data-campaign="${campaignId}" onclick="saveTweet(this);">
+                <span class="icon-text" style="cursor: pointer;" data-tweet="${tweetId}" data-campaign="${campaignId}" onclick="${savedInLocker ? `deleteTweetFromLocker(this)` : `saveTweetToLocker(this)`}">
                     <span class="icon">
-                        <img src="{{ url_for('static', filename='images/icons/Plus-Icon.png') }}" alt="">
+                        ${savedInLocker ? `<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flat_tick_icon.svg/768px-Flat_tick_icon.svg.png" style="height: 18px; width: 18px;">`
+                                        : `<img src="{{ url_for('static', filename='images/icons/Plus-Icon.png') }}">`}
                     </span>
-                    <span>LOCKER</span>
+                    <span class="${savedInLocker ? `has-text-success` : ``}">LOCKER</span>
                 </span>
             </div>
 
@@ -220,6 +257,7 @@ function append_new_html_object(tweet) {
 
     let newElement = document.createElement('div')
     newElement.classList.add('tweet-container')
+    newElement.style.position = "relative"
     newElement.innerHTML = html
     document.getElementById('tweet-wall').appendChild(newElement)
 }
