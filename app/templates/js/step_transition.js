@@ -17,7 +17,13 @@ function stepTransition(elem = undefined, nextStepId = undefined) {
 
     if (nextStepId === 'none') {
         // document.getElementById('signup-modal').classList.remove('is-active')
-        window.location.href = '{{ url_for('index') }}'
+        window.location.href = "{{ url_for('index') }}"
+    }
+    // TODO remove next two lines to restore create account section
+    else {
+        if (nextStepId === 'signup-step-1') {
+            nextStepId = 'signup-step-1-login'
+        }
     }
 
     let nextStepElem = document.getElementById(nextStepId)
