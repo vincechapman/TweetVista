@@ -87,6 +87,49 @@ def like_tweet():
         return jsonify(False)
 
 
+@feed.route('/followUser', methods=['POST'])
+# @login_required
+def follow_user():
+
+    try:
+        print('api/followUser called!')
+
+        request_body = json.loads(request.data)
+        user_handle = request_body['handle']
+        campaign_id = request_body['campaign']
+        mode = request_body['mode']
+
+        from TLInterface import get_web_connection
+        wc = get_web_connection()
+
+        if mode == 'follow':
+            response = wc.follow_twitter_account(
+                campaign_id=campaign_id,
+                handle=user_handle
+            )
+        elif mode == 'unfollow':
+            response = wc.unfollow_twitter_account(
+                campaign_id=campaign_id,
+                handle=user_handle
+            )
+        else:
+            response = f'Mode is invalid: {mode}'
+
+        print(response)
+
+        return jsonify(True if response.get('status') == 200 else False)
+
+    except json.decoder.JSONDecodeError as e:
+        print('FAILED: request_body = json.loads(request.data)')
+        logging.error(e)
+        return jsonify(False)
+
+    except Exception as e:
+        logging.error(e)
+        return jsonify(False)
+
+
+
 @feed.route('/saveTweetToLocker', methods=['POST'])
 def save_tweet_to_locker():
 
