@@ -136,7 +136,7 @@ function create_tweet_object(tweet, liveMode = false) {
                                             <span class="icon">
                                                 <i class="fas fa-times-circle has-text-danger"></i>
                                             </span>
-                                            <span>Exclude tweet</span>
+                                            <span>Hide tweet</span>
                                         </span>
                                     </div>
                                 </div>
