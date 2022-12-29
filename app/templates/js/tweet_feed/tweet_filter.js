@@ -82,7 +82,13 @@ function setupPage(setKeywords) {
 
     campaignTweetCountOriginal.hidden = false
     campaignTweetCountClone.hidden = true
-    checkForNewTweets()
+
+    try {
+        checkForNewTweets()
+    }
+    catch (ReferenceError) {
+    }
+
     setupFilterSummary()
 
 }
