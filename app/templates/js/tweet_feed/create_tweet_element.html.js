@@ -1,10 +1,10 @@
-function create_tweet_object(tweet, liveMode = false) {
+function create_tweet_object(tweet, liveMode = false, showExcluded = false) {
 
     console.log(tweet)
 
     let tweetId = tweet['id']
 
-    if (excludedTweets.includes(String(tweetId))) {
+    if (excludedTweets.includes(String(tweetId)) && !showExcluded) {
         return;
     }
 

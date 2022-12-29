@@ -20,15 +20,29 @@
                     </span>
                     <span>Save current filter</span>
                 </a>
+
                 <hr class="dropdown-divider">
+
                 <div id="saved-filter-list"></div>
+
                 <a href="#" class="dropdown-item" onclick="applyFilterSet('tweet-locker')">
                     <span>Tweet locker</span>
                     <span class="icon is-small ml-1">
                         <i class="fas fa-box"></i>
                     </span>
                 </a>
+
                 <hr class="dropdown-divider">
+
+                <a href="#" class="dropdown-item" onclick="applyFilterSet('hidden-tweets')">
+                    <span>Hidden tweets</span>
+                    <span class="icon is-small ml-1">
+                        <i class="fas fa-trash"></i>
+                    </span>
+                </a>
+
+                <hr class="dropdown-divider">
+
                 <a href="#" class="dropdown-item" onclick="applyFilterSet('reset')">
                     <span class="is-size-7 has-text-grey-light">Remove filters</span>
                 </a>
@@ -122,6 +136,9 @@
             if (elem === 'tweet-locker') {
                 applyFilters(undefined, 'old', undefined, true)
                 document.getElementById("saved-filters-dropdown-name").innerText = 'Tweet locker'
+            } else if (elem === 'hidden-tweets') {
+                applyFilters(undefined, undefined, undefined, undefined, true)
+                document.getElementById("saved-filters-dropdown-name").innerText = 'Hidden'
             } else if (elem === 'reset') {
                 keywords = []
                 document.getElementById("saved-filters-dropdown-name").innerText = 'Saved filters'

@@ -56,10 +56,10 @@ function getOldTweets() {
         })
 }
 
-function append_new_html_object(tweet) {
+function append_new_html_object(tweet, showExcluded = false) {
     let newElement = document.createElement('div')
     newElement.classList.add('tweet-container')
     newElement.style.position = "relative"
-    newElement.innerHTML = create_tweet_object(tweet)
+    newElement.innerHTML = create_tweet_object(tweet, false, showExcluded)
     document.getElementById('tweet-wall').appendChild(newElement)
 }

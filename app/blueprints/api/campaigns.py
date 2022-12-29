@@ -236,12 +236,14 @@ def delete_campaign_filter_set():
                         campaign_id=campaign_id,
                         filter_name=filter_name)
 
-        print(response)
+        # print(response)
+
         return jsonify(True if response.get('status') == 200 else False)
 
     except Exception as e:
         logging.error(e)
         return jsonify(False)
+
 
 @api_campaigns.route('/addCampaignKeywords', methods=['POST'])
 def add_campaign_keywords():
@@ -259,24 +261,28 @@ def add_campaign_keywords():
         wc = get_web_connection()
 
         for pos_key in keywords['positive']:
-            print(f"Storing positive keyword:  {pos_key}")
+            # print(f"Storing positive keyword:  {pos_key}")
             response = wc.store_campaign_keyword(
                 campaign_id=campaign_id,
                 keyword_type='positive',
                 keyword_text=pos_key,
             )
-            print(response)
+
+            # print(response)
+
             if response.get('status') != 200:
                 success = False
 
         for neg_key in keywords['negative']:
-            print(f"Storing negative keyword:  {neg_key}")
+            # print(f"Storing negative keyword:  {neg_key}")
             response = wc.store_campaign_keyword(
                 campaign_id=campaign_id,
                 keyword_type='negative',
                 keyword_text=neg_key,
             )
-            print(response)
+
+            # print(response)
+
             if response.get('status') != 200:
                 success = False
 
@@ -308,7 +314,7 @@ def exclude_tweets():
                     campaign_id=campaign_id,
                     tweet_id=tweet_id)
 
-        print(response)
+        # print(response)
 
         return jsonify(True if response.get('status') == 200 else False)
 
@@ -317,3 +323,30 @@ def exclude_tweets():
         return jsonify(
             False
         )
+
+
+@api_campaigns.route('/getExcludedTweets', methods=['POST'])
+def get_excluded_tweets():
+    try:
+        print('api/Campaigns/getExcludedTweets called!')
+
+        request_body = json.loads(request.data)
+        campaign_id = request_body.get('campaignId')
+
+        from TLInterface import get_web_connection
+        wc = get_web_connection()
+
+        response = wc.get_excluded_tweets(
+                        campaign_id=campaign_id)
+
+        # print(response)
+
+        return jsonify(response.get('data') if response.get('status') == 200 else False)
+
+    except Exception as e:
+        logging.error(e)
+        return jsonify(
+            False
+        )
+
+

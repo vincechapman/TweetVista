@@ -131,7 +131,40 @@ function loadTweetLockerFunc() {
 }
 
 
-function applyFilters(tweetElems = undefined, mode = 'old', keywords = undefined, loadTweetLocker = false) {
+
+function loadHiddenTweetsFunc() {
+    fetch(`{{ url_for('api_campaigns.get_excluded_tweets') }}`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'campaignId': campaignId
+            })
+        })
+        .then((response) => response.json())
+        .then((hiddenTweets) => {
+            if (hiddenTweets) {
+
+                keywords = []
+                setupPage(keywords)
+
+                for (let i = 0; i < hiddenTweets.length; i++) {
+                    append_new_html_object(hiddenTweets[i], true)
+                }
+
+                campaignTweetCountClone.innerHTML = "— " + hiddenTweets.length + " tweets"
+                campaignTweetCountClone.hidden = false
+                campaignTweetCountOriginal.hidden = true
+            } else {
+                alert("You haven't hidden any tweets yet!")
+            }
+        })
+}
+
+
+function applyFilters(tweetElems = undefined, mode = 'old', keywords = undefined, loadTweetLocker = false, loadHiddenTweets = false) {
     /* This function applies current page filters to all tweets or just the ones specified by tweetElems argument */
 
     let tweetWall = document.getElementById('tweet-wall')
@@ -139,6 +172,8 @@ function applyFilters(tweetElems = undefined, mode = 'old', keywords = undefined
 
     if (loadTweetLocker) {
         loadTweetLockerFunc()
+    } else if (loadHiddenTweets) {
+        loadHiddenTweetsFunc()
     } else {
 
         setupPage(keywords)
