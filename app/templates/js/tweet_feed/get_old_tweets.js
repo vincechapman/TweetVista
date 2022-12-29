@@ -228,6 +228,13 @@ function append_new_html_object(tweet) {
                     </span>
                 </div>
 
+                <!-- Reply -->
+                <div class="column is-narrow">
+                    <span class="icon is-clickable has-text-grey-light tweet-interaction-icon" data-tweet="${tweetId}" data-campaign="${campaignId}" onclick="reply(this)" title="Reply to this tweet">
+                        <i class="fas fa-reply"></i>
+                    </span>
+                </div>
+
                 <!-- Tweet score -->
                 <div class="tweet-score column has-text-right">
                     <span>TweetScore</span>

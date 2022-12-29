@@ -82,7 +82,6 @@ function followUser(elem) {
 }
 
 function retweet(elem) {
-    // Handles the following (and unfollowing) of Twitter accounts
 
     let retweetMode
 
@@ -98,3 +97,43 @@ function retweet(elem) {
 
 }
 
+function reply(elem) {
+
+    let container = elem.parentElement.parentElement.parentElement
+
+    let thisReplyBox = container.querySelector("#reply-text-box")
+    if (thisReplyBox) {
+        thisReplyBox.parentElement.remove()
+        elem.classList.remove('is-bright-orange')
+    } else {
+        // Removes any reply boxes that were previously opened
+        let oldReplyBox = document.querySelector("#reply-text-box")
+        if (oldReplyBox) {
+            oldReplyBox.parentElement.remove()
+        }
+
+        // Creates a new reply box
+        let newElem = document.createElement('div')
+        newElem.style.position = "relative"
+        newElem.innerHTML = `
+            <textarea id='reply-text-box' class='input has-text-grey' maxlength="280" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'></textarea>
+            <button class="button is-link is-small is-rounded" style="position: absolute; bottom: 10px; right: 10px" onclick="sendReply(this)">
+                <span class="icon">
+                    <i class="fas fa-paper-plane"></i>
+                </span>
+                <span>Send reply</span>
+            </button>`
+        container.appendChild(newElem)
+        newElem.firstElementChild.focus()
+
+        elem.classList.add('is-bright-orange')
+    }
+
+    // alert("No support for replies yet.")
+}
+
+function sendReply(elem) {
+    alert(`No support for reply to tweets currently. Failed to send:\n\n${elem.previousElementSibling.value}`)
+    elem.parentElement.previousElementSibling.lastElementChild.previousElementSibling.firstElementChild.classList.remove('is-bright-orange')
+    elem.parentElement.remove()
+}
