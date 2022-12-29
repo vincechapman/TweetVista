@@ -155,4 +155,23 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
+#reply-text-box {
+  outline: none;
+  resize: none;
+  height: 75px;
+  max-height: 300px;
+  padding-bottom: 50px;
+  background: whitesmoke;
+  transition: height 0.5s, opacity 0.5s;
+  overflow: hidden;
+  font-size: 1em;
+}
+#reply-text-box:focus {
+  border-color: #1BA2F3 !important;
+}
+
+input:focus {
+  border-color: #1BA2F3 !important;
+}
+
 /*# sourceMappingURL=campaigns.css.map */
