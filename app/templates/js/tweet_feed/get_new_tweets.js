@@ -50,6 +50,7 @@ function prepend_new_html_object(tweet) {
 
     let newElement = document.createElement('div')
     newElement.classList.add('tweet-container')
+    newElement.style.position = "relative"
     newElement.innerHTML = create_tweet_object(tweet, true)
     let loop
     newElement.onclick = function() {
@@ -62,10 +63,6 @@ function prepend_new_html_object(tweet) {
                 focusElems[i].removeAttribute("name")
             }
             this.setAttribute("name", "#focus")
-            let tweetOverlays = document.getElementsByClassName('tweet-content-overlay')
-            for (let i = 0; i < tweetOverlays.length; i++) {
-                tweetOverlays[i].classList.add("visible")
-            }
             loop = setInterval(function() {
                 let position = document.getElementsByName("#focus")[0].offsetTop - Math.floor(window.innerHeight / 3)
                 window.scrollTo(0, position)
