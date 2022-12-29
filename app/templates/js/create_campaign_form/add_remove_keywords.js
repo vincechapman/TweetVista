@@ -1,4 +1,17 @@
-function addKeyword(rowNumber, parentID, elem = undefined) {
+
+function prefillKeywordFields(prefillKeywords) {
+    let currentRow
+    for (let i = 0; i < prefillKeywords.length; i++) {
+        currentRow = prefillKeywords[i]
+        if (currentRow['type'] === 'positive') {
+            addKeyword(1, 'positive-keywords-field', undefined, currentRow['text'], currentRow['order'])
+        } else {
+            addKeyword(1, 'negative-keywords-field', undefined, currentRow['text'], currentRow['order'])
+        }
+    }
+}
+
+function addKeyword(rowNumber, parentID, elem = undefined, prefillText = undefined, prefillOrder = undefined) {
 
     /* This function adds new rows to the keyword fields, provided the current row is not empty */
 
@@ -18,7 +31,7 @@ function addKeyword(rowNumber, parentID, elem = undefined) {
     // Row template
     let rowHTML = `
         <div class="column is-full-touch">
-            <input name="${parentID}|${rowNumber}|keyword" type="text" class="input" placeholder="Enter keyword">
+            <input name="${parentID}|${rowNumber}|keyword" type="text" class="input" placeholder="Enter keyword" value="${prefillText ? prefillText : ''}">
         </div>
 
         <div class="column is-narrow-desktop">
@@ -26,10 +39,10 @@ function addKeyword(rowNumber, parentID, elem = undefined) {
                 <div class="control">
                     <div class="select is-fullwidth">
                         <select name="${parentID}|${rowNumber}|type" class="is-fullwidth" required>
-                            <option>Exact Order</option>
-                            <option>Any Order</option>
-                            <option>Hashtag</option>
-                            <option>Handle</option>
+                            <option ${prefillOrder === 'fixed' ? `selected` : ''}>Exact Order</option>
+                            <option ${prefillOrder === 'none' ? `selected` : ''}>Any Order</option>
+                            <option ${prefillOrder === 'hashtag' ? `selected` : ''}>Hashtag</option>  <!-- TODO Check this is correct -->
+                            <option ${prefillOrder === 'handle' ? `selected` : ''}>Handle</option>  <!-- TODO Check this is correct -->
                         </select>
                     </div>
                 </div>

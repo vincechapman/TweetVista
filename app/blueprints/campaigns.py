@@ -1,6 +1,7 @@
+import json
 import logging
 
-from flask import Blueprint, render_template, request, redirect, url_for, has_request_context, session
+from flask import Blueprint, render_template, request, redirect, url_for, has_request_context, session, jsonify
 from flask_login import login_required
 
 campaigns = Blueprint('campaigns', __name__, url_prefix='/campaigns')
@@ -183,10 +184,13 @@ def edit_campaign(campaign_id):
     try:
         from TLInterface.get_campaigns import get_campaign_data
         campaign_data = get_campaign_data(campaign_id)
+        keywords = campaign_data.get('keywords')
 
         return render_template('pages/campaigns/PAGE_edit_campaign.html',
-                               campaign_data=campaign_data)
+                               campaign_data=campaign_data,
+                               keywords=json.dumps(keywords))
 
     except Exception as e:
         logging.error(e)
+        print(e)
         return redirect(url_for('index'))

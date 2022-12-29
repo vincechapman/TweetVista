@@ -25,7 +25,6 @@
                     {% include 'layouts/account.html' %}
                 </div>
                 <section class="section pb-1 pt-0">
-                    {{ campaign_data }}
                     <div class="columns is-desktop is-multiline">
                         <div class="column is-half-desktop">
                             <div class="container is-fluid campaign-section">
@@ -134,8 +133,13 @@
 
                                 <script>
                                     {% include 'js/create_campaign_form/add_remove_keywords.js' %}
-                                    addKeyword(1, 'positive-keywords-field')
-                                    addKeyword(1, 'negative-keywords-field')
+
+                                    function decode(str) {
+                                        let txt = document.createElement("textarea");
+                                        txt.innerHTML = str;
+                                        return txt.value;
+                                    }
+                                    prefillKeywordFields(JSON.parse(decode("{{ keywords }}")))
                                 </script>
 
                             </div>
