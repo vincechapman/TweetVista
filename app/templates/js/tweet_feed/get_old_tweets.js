@@ -205,14 +205,30 @@ function append_new_html_object(tweet) {
                 ${tweetText}
             </p>
 
-            <div class="columns mt-1">
+            <div class="columns is-variable is-2 mt-1">
 
-                <div class="column">
-                    <span class="icon" data-tweet="${tweetId}" data-campaign="${campaignId}" onclick="likeTweet(this);">
+                <!-- Like tweet -->
+                <div class="column is-narrow">
+                    <span class="icon is-clickable has-text-grey-light tweet-interaction-icon" data-tweet="${tweetId}" data-campaign="${campaignId}" onclick="likeTweet(this);" title="Like tweet">
                         <i class="far fa-heart"></i>
                     </span>
                 </div>
 
+                <!-- Follow user -->
+                <div class="column is-narrow">
+                    <span class="icon is-clickable has-text-grey-light tweet-interaction-icon" data-handle="${authorHandle}" data-campaign="${campaignId}" onclick="followUser(this);" title="Follow user">
+                        <i class="far fa-user"></i>
+                    </span>
+                </div>
+
+                <!-- Retweet -->
+                <div class="column is-narrow">
+                    <span class="icon is-clickable has-text-grey-light tweet-interaction-icon" data-tweet="${tweetId}" data-campaign="${campaignId}" onclick="retweet(this);" title="Retweet post">
+                        <i class="fas fa-retweet"></i>
+                    </span>
+                </div>
+
+                <!-- Tweet score -->
                 <div class="tweet-score column has-text-right">
                     <span>TweetScore</span>
                     <span>${twitterScore}</span>
