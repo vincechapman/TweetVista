@@ -3,11 +3,19 @@
 {#<link rel="stylesheet" href="/app/static/styles/layouts/base.css">#}
 
 {% macro pagination_bar() %}
-    <nav class="pagination is-rounded has-shadow" style="position: fixed; bottom: 30px; margin-bottom: 0; padding: 10px; border-radius: 20px; background: #c0c0c0; z-index: 1" role="navigation" aria-label="pagination">
-        <a class="pagination-previous" onclick="nextPage = nextPage - 2; getOldTweets()">Previous</a>
-        <a class="pagination-next" onclick="getOldTweets();">Next page</a>
+    <nav class="pagination is-centered is-rounded has-shadow" style="position: fixed; bottom: 30px; margin: auto; margin-bottom: 0; padding: 10px; border-radius: 20px; background: rgba(192,192,192,0.45); backdrop-filter: blur(30px); z-index: 1" role="navigation" aria-label="pagination">
+        <a class="pagination-previous" onclick="nextPage = nextPage - 2; getOldTweets()">
+            <span class="icon">
+                <i class="fas fa-arrow-left"></i>
+            </span>
+        </a>
         <ul class="pagination-list">
         </ul>
+        <a class="pagination-next" onclick="getOldTweets();">
+            <span class="icon">
+                <i class="fas fa-arrow-right"></i>
+            </span>
+        </a>
     </nav>
     <script>
         let paginationList = document.getElementsByClassName('pagination-list')[0]
@@ -17,6 +25,7 @@
                 for (let i = 1; i <= numPages; i++) {
                     addPage(i, i === currentPage)
                 }
+                addGoto(numPages)
             } else {
                 if (currentPage <= 3) {
                     for (let i = 1; i < 5; i++) {
@@ -24,12 +33,14 @@
                     }
                     addEllipses()
                     addPage(numPages)
+                    addGoto(numPages)
                 } else if (currentPage > numPages - 3) {
                     addPage(1)
                     addEllipses()
                     for (let i = numPages - 3; i <= numPages; i++) {
                         addPage(i, i===currentPage)
                     }
+                    addGoto(numPages)
                 } else {
                     addPage(1)
                     addEllipses()
@@ -38,6 +49,7 @@
                     addPage(currentPage + 1)
                     addEllipses()
                     addPage(numPages)
+                    addGoto(numPages)
                 }
             }
         }
@@ -46,6 +58,49 @@
             newElement.innerHTML = `<a class="pagination-link ${current ? 'is-current' : ''}" aria-label="Goto page ${pageNumber}" onclick="nextPage=${pageNumber}; getOldTweets()">${pageNumber}</a>`
             paginationList.appendChild(newElement)
         }
+        function addGoto(numPages) {
+            let newElement = document.createElement('li')
+            newElement.innerHTML = `<div class="field has-addons">
+                                      <p class="control">
+                                        <button id="go-to-page-button" class="button is-rounded pagination-link" onclick="goToClick(this, numPages)">
+                                          <span>Go</span>
+                                        </button>
+                                      </p>
+                                    </div>`
+            paginationList.appendChild(newElement)
+        }
+
+        function goToClick(elem, numPages) {
+            let container = elem.parentElement.parentElement
+            if (elem.classList.contains('is-active')) {
+                let inputField = container.querySelector("p > input")
+                if (inputField.checkValidity()) {
+                    if (inputField.value) {
+                        nextPage = parseInt(inputField.value)
+                        getOldTweets()
+                    }
+                } else {
+                    alert('Page number not valid.')
+                }
+                elem.classList.remove('is-active')
+                container.innerHTML = `
+                    <p class="control">
+                        <button id="go-to-page-button" class="button is-rounded pagination-link" onclick="goToClick(this, numPages)">
+                            <span>Go</span>
+                        </button>
+                    </p>`
+            } else {
+                elem.classList.add('is-active')
+                container.innerHTML = `
+                    <p class="control">
+                        <input id="go-to-page-input" type="number" max="${numPages}" min="1" class="input is-rounded pagination-link" placeholder="Page" required>
+                    </p>${container.innerHTML}`
+
+                addInputListener()
+                document.getElementById("go-to-page-input").focus()
+            }
+        }
+
         function removePages() {
             paginationList.replaceChildren()
         }
@@ -54,5 +109,23 @@
             newElement.innerHTML = `<li><span class="pagination-ellipsis" style="color: #1c1c1c;">&hellip;</span></li>`
             paginationList.appendChild(newElement)
         }
+
+        function addInputListener() {
+            let input = document.getElementById("go-to-page-input");
+
+            input.addEventListener("keypress", function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    document.getElementById("go-to-page-button").click()
+                }
+            });
+        }
     </script>
+    <style>
+        .pagination-link, .pagination-next, .pagination-previous {
+            background: white;
+            border: solid #cbcbcb 2px;
+            {#box-shadow: rgba(28, 28, 28, 0.44) 0 0 3px;#}
+        }
+    </style>
 {% endmacro %}
