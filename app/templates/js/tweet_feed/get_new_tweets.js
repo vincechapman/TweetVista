@@ -48,8 +48,6 @@ function getNewTweets() {
 
 function prepend_new_html_object(tweet) {
 
-    console.log(tweet)
-
     let tweetId = tweet['id']
 
     let mediaType;
@@ -209,5 +207,26 @@ function prepend_new_html_object(tweet) {
     let newElement = document.createElement('div')
     newElement.classList.add('tweet-container')
     newElement.innerHTML = html
+    let loop
+    newElement.onclick = function() {
+        if (this.getAttribute("name") === "#focus") {
+            this.removeAttribute("name")
+            clearInterval(loop)
+        } else {
+            let focusElems = document.getElementsByName("#focus")
+            for (let i = 0; i < focusElems.length; i++) {
+                focusElems[i].removeAttribute("name")
+            }
+            this.setAttribute("name", "#focus")
+            let tweetOverlays = document.getElementsByClassName('tweet-content-overlay')
+            for (let i = 0; i < tweetOverlays.length; i++) {
+                tweetOverlays[i].classList.add("visible")
+            }
+            loop = setInterval(function() {
+                let position = document.getElementsByName("#focus")[0].offsetTop - Math.floor(window.innerHeight / 3)
+                window.scrollTo(0, position)
+            }, 1)
+        }
+    }
     document.getElementById('tweet-wall').insertBefore(newElement, document.querySelector('#tweet-wall > div'))
 }
