@@ -205,25 +205,25 @@ function append_new_html_object(tweet) {
                 ${tweetText}
             </p>
 
-            <div class="columns is-variable is-2 mt-1">
+            <div class="columns is-variable is-1 mt-1">
 
                 <!-- Like tweet -->
                 <div class="column is-narrow">
-                    <span class="icon is-clickable has-text-grey-light tweet-interaction-icon" data-tweet="${tweetId}" data-campaign="${campaignId}" onclick="likeTweet(this);" title="Like tweet">
+                    <span class="icon is-clickable has-text-grey-light tweet-interaction-icon" data-tweet="${tweetId}" data-campaign="${campaignId}" onclick="likeTweet(this);" title="Like this tweet">
                         <i class="far fa-heart"></i>
                     </span>
                 </div>
 
                 <!-- Follow user -->
                 <div class="column is-narrow">
-                    <span class="icon is-clickable has-text-grey-light tweet-interaction-icon" data-handle="${authorHandle}" data-campaign="${campaignId}" onclick="followUser(this);" title="Follow user">
+                    <span class="icon is-clickable has-text-grey-light tweet-interaction-icon" data-handle="${authorHandle}" data-campaign="${campaignId}" onclick="followUser(this);" title="Follow this user">
                         <i class="far fa-user"></i>
                     </span>
                 </div>
 
                 <!-- Retweet -->
                 <div class="column is-narrow">
-                    <span class="icon is-clickable has-text-grey-light tweet-interaction-icon" data-tweet="${tweetId}" data-campaign="${campaignId}" onclick="retweet(this);" title="Retweet post">
+                    <span class="icon is-clickable has-text-grey-light tweet-interaction-icon" data-tweet="${tweetId}" data-campaign="${campaignId}" onclick="retweet(this);" title="Retweet this post on your account">
                         <i class="fas fa-retweet"></i>
                     </span>
                 </div>
