@@ -9,6 +9,9 @@ function prefillKeywordFields(prefillKeywords) {
             addKeyword(1, 'negative-keywords-field', undefined, currentRow['text'], currentRow['order'])
         }
     }
+
+    addKeyword(1, 'positive-keywords-field')
+    addKeyword(1, 'negative-keywords-field')
 }
 
 function addKeyword(rowNumber, parentID, elem = undefined, prefillText = undefined, prefillOrder = undefined) {
@@ -25,7 +28,7 @@ function addKeyword(rowNumber, parentID, elem = undefined, prefillText = undefin
 
     // Change button to a bin
     if (elem) {
-        elem.parentNode.innerHTML = "<img src=\"{{ url_for('static', filename='images/icons/Bin-Icon.jpg') }}\" alt='delete keyword' style='max-height: 40px' onclick='removeKeyword(this)'>"
+        elem.parentNode.innerHTML = "<img class=\"is-clickable\" src=\"{{ url_for('static', filename='images/icons/Bin-Icon.jpg') }}\" alt='delete keyword' style='max-height: 40px' onclick='removeKeyword(this)'>"
     }
 
     // Row template
@@ -50,7 +53,9 @@ function addKeyword(rowNumber, parentID, elem = undefined, prefillText = undefin
         </div>
 
         <div class="column has-text-centered is-2 is-3-desktop">
-            <button class="button is-electric-blue is-fullwidth" data-row-number="${rowNumber}" onclick="addKeyword(${rowNumber + 1}, '${parentID}', this);">+ Keyword</button>
+            ${prefillText ? 
+            `<img class="is-clickable" src=\"{{ url_for('static', filename='images/icons/Bin-Icon.jpg') }}\" alt='delete keyword' style='max-height: 40px' onclick='removeKeyword(this)'>`
+            : `<button class="button is-electric-blue is-fullwidth" data-row-number="${rowNumber}" onClick="addKeyword(${rowNumber + 1}, '${parentID}', this);">+ Keyword</button>`}
         </div>
     `
 
