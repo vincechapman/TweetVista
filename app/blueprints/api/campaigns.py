@@ -69,24 +69,25 @@ def delete_campaign():
 
     try:
         request_body = json.loads(request.data)
+        campaign_id = request_body['campaignID']
+
+        from TLInterface import get_web_connection
+        wc = get_web_connection()
+
+        response = wc.delete_campaign(
+            campaign_id=campaign_id
+        )
+
+        return jsonify(response)
+
     except json.decoder.JSONDecodeError as e:
         print('FAILED: request_body = json.loads(request.data)')
         print(e)
-        return 'Failed to get stream.', 404
-    else:
-        campaign_id = request_body['campaignID']
-        campaign_name = request_body['campaignName']
+        return jsonify(False)
 
-    from TLInterface import get_web_connection
-    wc = get_web_connection()
-
-    response = wc.delete_campaign(
-        campaign_id=campaign_id,
-        campaign_name=campaign_name
-    )
-    logging.info(f'Campaign {campaign_id} ({campaign_name}) started.')
-
-    return jsonify(response)
+    except Exception as e:
+        logging.error(e)
+        return jsonify(False)
 
 
 @api_campaigns.route('/countCampaignTweets', methods=['POST'])
