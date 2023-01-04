@@ -51,7 +51,7 @@
                                     <i class="fas fa-lg fa-wrench is-electric-blue"></i>
                                 </span>
                             </td>
-                            <td><img class="campaign-table-icon" src="{{ url_for('static', filename='images/icons/Bin-Icon.jpg') }}" onclick="deleteCampaign(this);"></td>
+                            <td><img class="campaign-table-icon" src="{{ url_for('static', filename='images/icons/Bin-Icon.jpg') }}" onclick="deleteCampaign(this, '{{ cmp['is_active'] }}');"></td>
                         </tr>
                     {% endfor %}
                 {% endif %}
