@@ -123,7 +123,7 @@ function create_tweet_object(tweet, liveMode = false, showExcluded = false) {
                             </div>
                             <div class="dropdown-menu" id="dropdown-menu2" role="menu">
                                 <div class="dropdown-content">
-                                    <div class="dropdown-item">
+                                    <div class="dropdown-item tweet-contextual-menu" onclick="alert('No endpoint added yet')">
                                         <span class="icon-text">
                                             <span class="icon">
                                                 <i class="fas fa-binoculars is-electric-blue"></i>
@@ -131,12 +131,20 @@ function create_tweet_object(tweet, liveMode = false, showExcluded = false) {
                                             <span>Track user's posts</span>
                                         </span>
                                     </div>
-                                    <div class="dropdown-item"  onclick="excludeTweets(this, ${tweetId})">
+                                    <div class="dropdown-item tweet-contextual-menu"  onclick="excludeTweets(this, ${tweetId})">
                                         <span class="icon-text">
                                             <span class="icon">
                                                 <i class="fas fa-times-circle has-text-danger"></i>
                                             </span>
                                             <span>Hide tweet</span>
+                                        </span>
+                                    </div>
+                                    <div class="dropdown-item tweet-contextual-menu" onclick="alert('No endpoint added yet')">
+                                        <span class="icon-text">
+                                            <span class="icon">
+                                                <i class="fas fa-user-slash has-text-danger"></i>
+                                            </span>
+                                            <span>Hide user</span>
                                         </span>
                                     </div>
                                 </div>

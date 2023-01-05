@@ -174,4 +174,8 @@ input:focus {
   border-color: #1BA2F3 !important;
 }
 
+.tweet-contextual-menu:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
 /*# sourceMappingURL=campaigns.css.map */
