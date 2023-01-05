@@ -134,15 +134,15 @@
         // Apply filter set
         function applyFilterSet(elem) {
             if (elem === 'tweet-locker') {
-                applyFilters(undefined, 'old', undefined, true)
+                applyFilters(undefined, undefined, true)
                 document.getElementById("saved-filters-dropdown-name").innerText = 'Tweet locker'
             } else if (elem === 'hidden-tweets') {
-                applyFilters(undefined, undefined, undefined, undefined, true)
+                applyFilters(undefined, undefined, undefined, true)
                 document.getElementById("saved-filters-dropdown-name").innerText = 'Hidden'
             } else if (elem === 'reset') {
                 keywords = []
                 document.getElementById("saved-filters-dropdown-name").innerText = 'Saved filters'
-                applyFilters(undefined, 'old', keywords)
+                applyFilters(undefined, keywords)
             } else {
                 let nameOfFilter = elem.innerText
                 // Get saved filter sets from API
@@ -163,7 +163,7 @@
                                 if (data['data'][i]['name'] === nameOfFilter) {
                                     keywords = data['data'][i]['keywords']
                                     document.getElementById("saved-filters-dropdown-name").innerText = data['data'][i]['name']
-                                    applyFilters(undefined, undefined, keywords)
+                                    applyFilters(undefined, keywords)
                                 }
                             }
                         } else {

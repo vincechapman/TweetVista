@@ -43,6 +43,7 @@
 
         let campaignId = '{{ selected_campaign }}'
         let isLive = '{{ is_live }}' === 'True' ? true : false
+        let isActive = "{{ campaign_is_active }}" === "True" ? true : false
 
         let tweetLocker = "{{ campaign_locker }}".replace("[", "").replace("]", "").split(", ")
         let excludedTweets = "{{ campaign_excluded_tweets }}".replace("[", "").replace("]", "").split(", ")
@@ -204,12 +205,10 @@
         {% include 'pages/campaigns/excludeTweets.js' %}
         {% include 'js/tweet_feed/tweet_interactions.js' %}
         {% include 'js/tweet_feed/create_tweet_element.html.js' %}
+        {% include 'js/tweet_feed/get_new_tweets.js' %}
+        {% include 'js/tweet_feed/get_old_tweets.js' %}
 
-        {% if is_live and campaign_is_active %}
-            {% include 'js/tweet_feed/get_new_tweets.js' %}
-        {% else %}
-            {% include 'js/tweet_feed/get_old_tweets.js' %}
-        {% endif %}
+        applyFilters()
     </script>
 
     {% from 'js/tweet_feed/get_campaign_data.html' import get_campaign_data_macro %}

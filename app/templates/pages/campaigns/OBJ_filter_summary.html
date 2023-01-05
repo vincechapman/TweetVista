@@ -128,7 +128,7 @@
             console.log(keywords)
             keywords = keywords.filter(e => e !== elem.parentElement.firstElementChild.innerText);
             console.log(keywords)
-            applyFilters(undefined, undefined, keywords)
+            applyFilters(undefined, keywords)
             document.getElementById('saved-filters-dropdown-name').innerText = "Saved Filters"
         }
 

@@ -5,8 +5,7 @@ TODO Some profile images aren't loading properly - the link is not working. But 
 TODO Look into combining the html tweet objects for the getOldTweets and getNewTweets function so we don't have to manage two different versions of this.
 */
 
-setupPage()
-getOldTweets()
+// setupPage()
 
 function getOldTweets() {
     let tweetWall = document.getElementById('tweet-wall')

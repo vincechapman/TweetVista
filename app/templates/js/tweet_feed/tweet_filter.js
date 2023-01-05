@@ -164,22 +164,30 @@ function loadHiddenTweetsFunc() {
 }
 
 
-function applyFilters(tweetElems = undefined, mode = 'old', keywords = undefined, loadTweetLocker = false, loadHiddenTweets = false) {
+function applyFilters(tweetElems = undefined, keywords = undefined, loadTweetLocker = false, loadHiddenTweets = false) {
     /* This function applies current page filters to all tweets or just the ones specified by tweetElems argument */
 
     let tweetWall = document.getElementById('tweet-wall')
     tweetWall.replaceChildren()
 
     if (loadTweetLocker) {
+        try {
+            stopLiveStream()
+        } catch (ReferenceError) {}
         loadTweetLockerFunc()
     } else if (loadHiddenTweets) {
+        try {
+            stopLiveStream()
+        } catch (ReferenceError) {}
         loadHiddenTweetsFunc()
     } else {
 
         setupPage(keywords)
 
-        if (mode === 'old' || mode === undefined) {
+        if (!isLive) {
             getOldTweets()
+        } else if (isActive) {
+            startLiveStream()
         }
 
     }

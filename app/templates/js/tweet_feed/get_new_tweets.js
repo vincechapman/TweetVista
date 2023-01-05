@@ -1,22 +1,36 @@
 let latestId = 0
 let is_streaming = false
+let streamLoop
+let loadingDots = document.getElementById("loading-dots")
 
-startStream()
+function startLiveStream(interval = 1000) {
 
-function startStream(interval = 1000) {
+    if (!is_streaming) {
 
-    console.log('Starting stream')
-    is_streaming = true
+        console.log('Starting stream')
+        loadingDots.hidden = false
+        is_streaming = true
 
-    let i = setInterval(function(){
-        getNewTweets()
+        streamLoop = setInterval(function () {
+            getNewTweets()
 
-        if(!is_streaming) {
-            clearInterval(i);
-            alert('Stream closed')
-        }
-    }, interval);
+            if (!is_streaming) {
+                clearInterval(streamLoop);
+                console.log('Stream closed')
+            }
+        }, interval);
 
+    } else {
+        console.log('Stream is already running.')
+    }
+
+}
+
+function stopLiveStream() {
+    clearInterval(streamLoop)
+    loadingDots.hidden = true
+    is_streaming = false
+    console.log('Stream stopped')
 }
 
 function getNewTweets() {
@@ -29,7 +43,14 @@ function getNewTweets() {
             },
             body: JSON.stringify({
                 'campaignId': campaignId,
-                'nextId': latestId
+                'nextId': latestId,
+                'tweetCutoff': tweetCutoff,
+                'numTweets': numTweets,
+                'numPages': numPages,
+                'ascending': ascending,
+                'startScore': startScore,
+                'endScore': endScore,
+                'keywords': keywords
             })
         })
         .then((response) => response.json())
