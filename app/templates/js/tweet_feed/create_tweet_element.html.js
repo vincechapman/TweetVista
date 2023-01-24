@@ -187,7 +187,7 @@ function create_tweet_object(tweet, liveMode = false, showExcluded = false) {
 
                 <!-- Reply -->
                 <div class="column is-narrow">
-                    <span class="icon is-clickable has-text-grey-light tweet-interaction-icon" data-tweet="${tweetId}" data-campaign="${campaignId}" onclick="reply(this)" title="Reply to this tweet">
+                    <span class="icon is-clickable has-text-grey-light tweet-interaction-icon" data-tweet="${tweetId}" data-campaign="${campaignId}" data-handle="${authorHandle}" onclick="reply(this, '${tweetId}', '${authorHandle}')" title="Reply to this tweet">
                         <i class="fas fa-reply"></i>
                     </span>
                 </div>

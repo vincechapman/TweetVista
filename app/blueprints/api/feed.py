@@ -342,3 +342,74 @@ def get_old_tweets():
             'message': e,
             'data': None
         })
+
+
+@feed.route('/replyToTweet', methods=['POST'])
+def reply_to_tweet():
+
+    try:
+
+        print('api/feed/replyToTweets called!')
+
+        from TLInterface import get_web_connection
+        wc = get_web_connection()
+
+        request_body = json.loads(request.data)
+
+        campaign_id = request_body.get('campaignId')
+        text = request_body.get('replyText')
+        tweet_id = request_body.get('tweetId')
+        handle = request_body.get('handle')
+        quote_tweet = request_body['quoteTweet']
+        image = request_body.get('image')
+        name = request_body['name']
+        url = request_body.get('url')
+        short = request_body['shortUrl']
+
+        print('REPLYING TO TWEET:')
+        print('Campaign Id:', campaign_id)
+        print('Text:', text)
+        print('Tweet ID:', tweet_id)
+        print('Handle', handle)
+        print('Quote tweet', quote_tweet)
+        print('Image:', image)
+        print('Name:', name)
+        print('Url:', url)
+        print('Short:', short)
+
+        response = wc.reply_to_tweet(
+            campaign_id,
+            text,
+            tweet_id=tweet_id,
+            handle=handle,
+            quote_tweet=quote_tweet,
+            image=image,
+            name=name,
+            url=url,
+            short=short
+        )
+
+        print(response)
+
+        if response.get('status') == 200:
+            return jsonify(True)
+        else:
+            logging.error(f"Error message: {response.get('msg')}")
+            return jsonify(False)
+
+    except json.decoder.JSONDecodeError as e:
+        print('FAILED: request_body = json.loads(request.data)')
+        print(e)
+        return jsonify({
+            'status': 400,
+            'message': e,
+            'data': None
+        })
+
+    except Exception as e:
+        print(e)
+        return jsonify({
+            'status': 400,
+            'message': e,
+            'data': None
+        })

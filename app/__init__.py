@@ -1,7 +1,7 @@
 import logging
 import os
 from dotenv import load_dotenv
-from flask import Flask, session
+from flask import Flask, session, redirect, url_for
 from flask_login import LoginManager
 
 
@@ -37,12 +37,16 @@ def create_app():
     # Setting up homepage
     homepage = 'campaigns.main'
 
-    app.add_url_rule('/', endpoint=homepage, methods=['GET', 'POST'])
+    # app.add_url_rule('/', endpoint=homepage, methods=['GET', 'POST'])
 
     @app.route('/index', methods=['GET', 'POST'])
     def index():
-        from flask import redirect, url_for
         return redirect(url_for(homepage))
+
+    @app.route('/', methods=['GET', 'POST'])
+    def homepage_redirect():
+        return redirect(url_for(homepage))
+
 
     # Registering blueprints
     from . blueprints.dashboard import dashboard as dashboard_bp

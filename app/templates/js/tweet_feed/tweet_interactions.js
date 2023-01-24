@@ -97,14 +97,16 @@ function retweet(elem) {
 
 }
 
-function reply(elem) {
+function reply(elem, tweetId, handle) {
 
     let container = elem.parentElement.parentElement.parentElement
 
     let thisReplyBox = container.querySelector("#reply-text-box")
+
     if (thisReplyBox) {
         thisReplyBox.parentElement.remove()
         elem.classList.remove('is-bright-orange')
+
     } else {
         // Removes any reply boxes that were previously opened
         let oldReplyBox = document.querySelector("#reply-text-box")
@@ -117,7 +119,7 @@ function reply(elem) {
         newElem.style.position = "relative"
         newElem.innerHTML = `
             <textarea id='reply-text-box' class='input has-text-grey' maxlength="280" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'></textarea>
-            <button class="button is-link is-small is-rounded" style="position: absolute; bottom: 10px; right: 10px" onclick="sendReply(this)">
+            <button class="button is-link is-small is-rounded" style="position: absolute; bottom: 10px; right: 10px" onclick="sendReply(this, '${tweetId}', '${handle}')">
                 <span class="icon">
                     <i class="fas fa-paper-plane"></i>
                 </span>
@@ -132,8 +134,38 @@ function reply(elem) {
     // alert("No support for replies yet.")
 }
 
-function sendReply(elem) {
-    alert(`No support for reply to tweets currently. Failed to send:\n\n${elem.previousElementSibling.value}`)
-    elem.parentElement.previousElementSibling.lastElementChild.previousElementSibling.firstElementChild.classList.remove('is-bright-orange')
-    elem.parentElement.remove()
+function sendReply(elem, tweetId, handle) {
+    let replyText = elem.previousElementSibling.value
+    let quoteTweet = false
+    let image = undefined
+    let name = ""
+    let url =  undefined
+    let shortUrl = ""
+
+    fetch("{{ url_for('api_feed.reply_to_tweet') }}", {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            'campaignId': campaignId,
+            'replyText': replyText,
+            'tweetId': tweetId,
+            'handle': handle,
+            'quoteTweet': quoteTweet,
+            'image': image,
+            'name': name,
+            'url': url,
+            'shortUrl': shortUrl
+        })
+    })
+        .then((response) => response.json())
+        .then((success) => {
+            if (!success) {
+                alert(`Failed to reply to tweet. Please try again later or contact us if the issue persists.`)
+            }
+            elem.parentElement.previousElementSibling.lastElementChild.previousElementSibling.firstElementChild.classList.remove('is-bright-orange')
+            elem.parentElement.remove()
+        })
 }

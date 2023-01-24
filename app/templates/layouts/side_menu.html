@@ -3,8 +3,11 @@
         <img src="https://cdn.freebiesupply.com/logos/large/2x/containership-logo-png-transparent.png" alt="Website logo">
     </div>
     <div id="side-menu-items-container" class="has-text-left">
+        <div class="side-menu-item" style="pointer-events: none">
+            <div><a></a></div>
+        </div>
         <div class="side-menu-item">
-            <div><a>Dashboard</a></div>
+            <div><a href="{{ url_for('dashboard.main') }}">Dashboard</a></div>
         </div>
         <div class="side-menu-item">
             <div><a>My Twitter</a></div>
@@ -40,6 +43,7 @@
 
     for (let i = 0; i < menuItems.length; i++) {
         let pageLink = menuItems[i].children[0].children[0]['href']
+        console.log('PAGELINK:', pageLink)
         if (pageLink && currentPage.includes(pageLink)) {
             menuItems[i].classList.add('is-active')
             if (i > 0) menuItems[i - 1].classList.add('is-above-active')
