@@ -4,10 +4,32 @@
 
 
 #side-menu
-    max-width: 200px
+    max-width: 250px
     min-height: 100vh
     padding-right: 0
     padding-bottom: 0
 
 main
     background-color: colours.$background-grey
+
+
+.carouselProfileContainer
+    text-align: center
+    font-size: 0.8em
+    padding: 10px
+    border-radius: 30px
+    background: rgba(231, 246, 254, 0)
+    transition: 0.1s background
+    cursor: pointer
+    &:hover
+        background: #e7f6fe
+        & > img
+            border-radius: 20px 20px 10px 10px
+
+.carouselProfilePicture
+    margin: 0
+    object-fit: cover
+    width: 100px
+    height: 100px
+    border-radius: 10px
+    transition: 0.1s border-radius

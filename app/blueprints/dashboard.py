@@ -7,8 +7,8 @@ dashboard = Blueprint('dashboard', __name__, url_prefix='/dashboard')
 @dashboard.route('/')
 def main():
 
-    from TLInterface.get_campaigns import get_all_campaigns
+    # from TLInterface.get_campaigns import get_all_campaigns
+    #
+    # campaigns = get_all_campaigns()
 
-    campaigns = get_all_campaigns()
-
-    return render_template('pages/dashboard.html', campaigns=campaigns)
+    return render_template('pages/dashboard.html')

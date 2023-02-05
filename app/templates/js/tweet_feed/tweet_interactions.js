@@ -81,19 +81,38 @@ function followUser(elem) {
         })
 }
 
-function retweet(elem) {
+function retweet(elem, tweetId) {
 
     let retweetMode
 
-    if (elem.childNodes[1].classList.contains('has-text-success')) {
-        elem.childNodes[1].classList.remove('has-text-success')
-        retweetMode = 'delete'
-    } else {
-        elem.childNodes[1].classList.add('has-text-success')
-        retweetMode = 'retweet'
-    }
+    // if (elem.childNodes[1].classList.contains('has-text-success')) {
+    //     elem.childNodes[1].classList.remove('has-text-success')
+    //     retweetMode = 'delete'
+    // } else {
+    //     elem.childNodes[1].classList.add('has-text-success')
+    //     retweetMode = 'retweet'
+    // }
 
-    alert("No support for retweet yet.")
+    elem.childNodes[1].classList.add('has-text-success')
+
+    fetch("{{ url_for('api_feed.retweet') }}", {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            'campaignId': campaignId,
+            'tweetId': tweetId
+        })
+    })
+        .then((response) => response.json())
+        .then((success) => {
+            if (!success) {
+                alert(`Failed to retweet. Please try again later or contact us if the issue persists.`)
+                elem.childNodes[1].classList.remove('has-text-success')
+            }
+        })
 
 }
 

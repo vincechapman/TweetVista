@@ -180,7 +180,7 @@ function create_tweet_object(tweet, liveMode = false, showExcluded = false) {
 
                 <!-- Retweet -->
                 <div class="column is-narrow">
-                    <span class="icon is-clickable has-text-grey-light tweet-interaction-icon" data-tweet="${tweetId}" data-campaign="${campaignId}" onclick="retweet(this);" title="Retweet this post on your account">
+                    <span class="icon is-clickable has-text-grey-light tweet-interaction-icon" data-tweet="${tweetId}" data-campaign="${campaignId}" onclick="retweet(this, '${tweetId}');" title="Retweet this post on your account">
                         <i class="fas fa-retweet"></i>
                     </span>
                 </div>

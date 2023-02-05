@@ -8,6 +8,92 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/objects/campaign_dropdowns.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='/styles/objects/feed_filters/tweet_score_slider.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/pages/campaigns.css') }}">
+    <script>
+        let userTwitterScore = 579;  //  TODO use a fetch request or templating to get twitterScore for logged in account.
+        let userDisplayName = "JimmyVegas45";
+        let userHandle = "@jimmyvegas45";
+        let userBio = "06:00AM THE HOUR WHEN LEGENDS ARE EITHER GETTING UP OR GOING TO BED"
+
+        let tweetsPosted = 1295;
+        let tweetsPostedChange = "+17.8%";
+        let followerCount = 9828;
+        let followerCountChange = "+6.9%";
+        let followingCount = 629;
+        let followingCountChange = "+3.5%";
+        let likeCount = 103;
+        let likeCountChange = "+3.09%";
+        let retweetCount = 78;
+        let retweetCountChange = "+1.9%";
+        let tweetScore = 425;
+        let tweetScoreChange = "+22%";
+
+        let recommendedUsers = [
+            {
+                "profileImage": "https://media.istockphoto.com/id/1301953681/photo/young-woman-student-outdoor-portrait.jpg?b=1&s=170667a&w=0&k=20&c=eOWDZtzQ3pO4gM4GxDNmEorKcyyobgukLfnzjtguhKo=",
+                "displayName": "DisplayName",
+                "twitterHandle": "@twitterhandle",
+                "twitterScore": 500
+            },
+            {
+                "profileImage": "https://media.istockphoto.com/id/1301953681/photo/young-woman-student-outdoor-portrait.jpg?b=1&s=170667a&w=0&k=20&c=eOWDZtzQ3pO4gM4GxDNmEorKcyyobgukLfnzjtguhKo=",
+                "displayName": "DisplayName",
+                "twitterHandle": "@twitterhandle",
+                "twitterScore": 500
+            },
+            {
+                "profileImage": "https://media.istockphoto.com/id/1301953681/photo/young-woman-student-outdoor-portrait.jpg?b=1&s=170667a&w=0&k=20&c=eOWDZtzQ3pO4gM4GxDNmEorKcyyobgukLfnzjtguhKo=",
+                "displayName": "DisplayName",
+                "twitterHandle": "@twitterhandle",
+                "twitterScore": 500
+            },
+            {
+                "profileImage": "https://media.istockphoto.com/id/1301953681/photo/young-woman-student-outdoor-portrait.jpg?b=1&s=170667a&w=0&k=20&c=eOWDZtzQ3pO4gM4GxDNmEorKcyyobgukLfnzjtguhKo=",
+                "displayName": "DisplayName",
+                "twitterHandle": "@twitterhandle",
+                "twitterScore": 500
+            },
+            {
+                "profileImage": "https://media.istockphoto.com/id/1301953681/photo/young-woman-student-outdoor-portrait.jpg?b=1&s=170667a&w=0&k=20&c=eOWDZtzQ3pO4gM4GxDNmEorKcyyobgukLfnzjtguhKo=",
+                "displayName": "DisplayName",
+                "twitterHandle": "@twitterhandle",
+                "twitterScore": 500
+            },
+        ];
+
+        let followerList = [
+            {
+                "profileImage": "https://media.istockphoto.com/id/1301953681/photo/young-woman-student-outdoor-portrait.jpg?b=1&s=170667a&w=0&k=20&c=eOWDZtzQ3pO4gM4GxDNmEorKcyyobgukLfnzjtguhKo=",
+                "displayName": "DisplayName",
+                "twitterHandle": "@twitterhandle",
+                "twitterScore": 500
+            },
+            {
+                "profileImage": "https://media.istockphoto.com/id/1301953681/photo/young-woman-student-outdoor-portrait.jpg?b=1&s=170667a&w=0&k=20&c=eOWDZtzQ3pO4gM4GxDNmEorKcyyobgukLfnzjtguhKo=",
+                "displayName": "DisplayName",
+                "twitterHandle": "@twitterhandle",
+                "twitterScore": 500
+            },
+            {
+                "profileImage": "https://media.istockphoto.com/id/1301953681/photo/young-woman-student-outdoor-portrait.jpg?b=1&s=170667a&w=0&k=20&c=eOWDZtzQ3pO4gM4GxDNmEorKcyyobgukLfnzjtguhKo=",
+                "displayName": "DisplayName",
+                "twitterHandle": "@twitterhandle",
+                "twitterScore": 500
+            },
+            {
+                "profileImage": "https://media.istockphoto.com/id/1301953681/photo/young-woman-student-outdoor-portrait.jpg?b=1&s=170667a&w=0&k=20&c=eOWDZtzQ3pO4gM4GxDNmEorKcyyobgukLfnzjtguhKo=",
+                "displayName": "DisplayName",
+                "twitterHandle": "@twitterhandle",
+                "twitterScore": 500
+            },
+            {
+                "profileImage": "https://media.istockphoto.com/id/1301953681/photo/young-woman-student-outdoor-portrait.jpg?b=1&s=170667a&w=0&k=20&c=eOWDZtzQ3pO4gM4GxDNmEorKcyyobgukLfnzjtguhKo=",
+                "displayName": "DisplayName",
+                "twitterHandle": "@twitterhandle",
+                "twitterScore": 500
+            },
+        ];
+
+    </script>
 {% endblock %}
 
 {% block body %}
@@ -22,64 +108,7 @@
 
             <div class="box is-shadowless">
 
-                <div class="columns has-text-centered p-5">
-
-                    <div class="column is-narrow">
-                        <div id="gauge-container" style="position: relative; width: 170px; height: 170px">
-                            <canvas style="position: absolute; left: 0" id="score-gauge-background" width="170px" height="170px"></canvas>
-                            <canvas style="position: absolute; left: 0; rotate: -90deg" id="score-gauge" width="170px" height="170px"></canvas>
-                            <div>
-                                <p>574</p>
-                                <p>Out of 975</p>
-                            </div>
-                        </div>
-                        <script>
-
-                            let canvas = document.getElementById('score-gauge-background');
-                            let lineWidth = 20
-                            let x = canvas.width / 2;
-                            let y = canvas.height / 2;
-                            let radius = (canvas.width / 2) - lineWidth / 2;
-
-                            // Score ring
-                            let scoreRing = canvas.getContext('2d');
-                            scoreRing.beginPath();
-                            scoreRing.arc(x, y, radius,  0, 2 * Math.PI);
-                            scoreRing.lineWidth = lineWidth;
-                            scoreRing.strokeStyle = '#e5e8ee';
-                            scoreRing.stroke();
-
-                            function setupScoreGauge(twitterScore) {
-                                let percentage = twitterScore / 975
-
-                                let canvas = document.getElementById('score-gauge');
-                                let lineWidth = 20
-                                let x = canvas.width / 2;
-                                let y = canvas.height / 2;
-                                let radius = (canvas.width / 2) - lineWidth / 2;
-
-                                // Score ring
-                                let scoreRing = canvas.getContext('2d');
-                                scoreRing.beginPath();
-                                scoreRing.arc(x, y, radius,  0, percentage * 2 * Math.PI);
-                                scoreRing.lineWidth = lineWidth;
-                                scoreRing.strokeStyle = '#fb4a02';
-                                scoreRing.lineCap = "round"
-                                scoreRing.stroke();
-                            }
-
-                            setupScoreGauge(900)
-                        </script>
-                    </div>
-
-                    <div class="column">
-                        Two
-                    </div>
-
-                    <div class="column is-half">
-                        Three
-                    </div>
-                </div>
+                <div id="dashboard-overview" class="columns has-text-centered p-5 is-vcentered is-variable is-7"></div>
 
             </div>
 
@@ -88,10 +117,12 @@
                     <div class="tile is-child box is-shadowless">
                         <p class="subtitle is-deep-purple mb-1"><span class="is-bright-orange">#</span>FollowList</p>
                         <p class="is-size-7 has-text-grey-light">Based on your TweetScore our algorithm creates a list of #WhoToFollow and Who to UnFollow</p>
+                        <div id="recommendedListContainer" class="pt-5 pb-5"></div>
                     </div>
                     <div class="tile is-child box is-shadowless">
                         <p class="subtitle is-deep-purple mb-1"><span class="is-bright-orange">#</span>MyFollowers</p>
                         <p class="is-size-7 has-text-grey-light">Based on your TweetScore our algorithm creates a list of #WhoToFollow and Who to UnFollow</p>
+                        <div id="followerListContainer" class="pt-5 pb-5"></div>
                     </div>
                 </div>
 
@@ -105,5 +136,262 @@
         </main>
 
     </div>
+
+    <script>
+        function setupDashboardOverview() {
+            let overviewContainer = document.getElementById("dashboard-overview");
+            overviewContainer.innerHTML = `
+                    <div class="column is-narrow">
+                        <div id="gauge-container" style="position: relative; width: 250px; height: 250px"></div>
+                    </div>
+
+                    <div class="column has-text-left">
+                        <p id="userDisplayName" class="is-deep-purple has-text-weight-bold is-size-5">${userDisplayName}</p>
+                        <p id="userHandle" class="mb-4">${userHandle}</p>
+                        <p id="userBio" class="has-text-weight-bold">${userBio}</p>
+                    </div>
+
+                    <div class="column is-half">
+                        <div class="columns is-multiline">
+
+                            <div class="column is-one-third">
+                                <div class="columns is-gapless">
+                                    <div class="column is-narrow mr-4">
+                                        <div style="border-left: 10px solid orange; height: 100%; display: inline-block; border-radius: 20px;"></div>
+                                    </div>
+                                    <div class="column has-text-left">
+                                        <p class="is-deep-purple">Tweets Posted</p>
+                                        <p>${tweetsPosted} <span class="has-text-grey-light">/ ${tweetsPostedChange}</span></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="column is-one-third">
+                                <div class="columns is-gapless">
+                                    <div class="column is-narrow mr-4">
+                                        <div style="border-left: 10px solid orange; height: 100%; display: inline-block; border-radius: 20px;"></div>
+                                    </div>
+                                    <div class="column has-text-left">
+                                        <p class="is-deep-purple">Tweets Posted</p>
+                                        <p>${tweetsPosted} <span class="has-text-grey-light">/ ${tweetsPostedChange}</span></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="column is-one-third">
+                                <div class="columns is-gapless">
+                                    <div class="column is-narrow mr-4">
+                                        <div style="border-left: 10px solid orange; height: 100%; display: inline-block; border-radius: 20px;"></div>
+                                    </div>
+                                    <div class="column has-text-left">
+                                        <p class="is-deep-purple">Tweets Posted</p>
+                                        <p>${tweetsPosted} <span class="has-text-grey-light">/ ${tweetsPostedChange}</span></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="column is-full"></div>
+
+                            <div class="column is-one-third">
+                                <div class="columns is-gapless">
+                                    <div class="column is-narrow mr-4">
+                                        <div style="border-left: 10px solid orange; height: 100%; display: inline-block; border-radius: 20px;"></div>
+                                    </div>
+                                    <div class="column has-text-left">
+                                        <p class="is-deep-purple">Tweets Posted</p>
+                                        <p>${tweetsPosted} <span class="has-text-grey-light">/ ${tweetsPostedChange}</span></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="column is-one-third">
+                                <div class="columns is-gapless">
+                                    <div class="column is-narrow mr-4">
+                                        <div style="border-left: 10px solid orange; height: 100%; display: inline-block; border-radius: 20px;"></div>
+                                    </div>
+                                    <div class="column has-text-left">
+                                        <p class="is-deep-purple">Tweets Posted</p>
+                                        <p>${tweetsPosted} <span class="has-text-grey-light">/ ${tweetsPostedChange}</span></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="column is-one-third">
+                                <div class="columns is-gapless">
+                                    <div class="column is-narrow mr-4">
+                                        <div style="border-left: 10px solid orange; height: 100%; display: inline-block; border-radius: 20px;"></div>
+                                    </div>
+                                    <div class="column has-text-left">
+                                        <p class="is-deep-purple">Tweets Posted</p>
+                                        <p>${tweetsPosted} <span class="has-text-grey-light">/ ${tweetsPostedChange}</span></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+            `
+        }
+
+        function setupScoreGauge(twitterScore) {
+
+            // Getting dimensions of container
+            let gaugeContainer = document.getElementById("gauge-container");
+            let containerHeight = gaugeContainer.offsetHeight;
+
+            // Creating grey background ring canvas
+            let newElem = document.createElement("canvas");
+            newElem.id = "score-gauge-background";
+            newElem.style.position = "absolute";
+            newElem.style.left = "0";
+            newElem.height = containerHeight;
+            newElem.width = containerHeight;
+            gaugeContainer.appendChild(newElem);
+
+            // Creating grey background ring canvas
+            newElem = document.createElement("canvas");
+            newElem.id = "score-gauge-background-2";
+            newElem.style.position = "absolute";
+            newElem.style.left = "0";
+            newElem.height = containerHeight;
+            newElem.width = containerHeight;
+            gaugeContainer.appendChild(newElem);
+
+            // Creating score ring canvas
+            newElem = document.createElement("canvas");
+            newElem.id = "score-gauge";
+            newElem.style.position = "absolute";
+            newElem.style.left = "0";
+            newElem.style.rotate = "-90deg";
+            newElem.height = containerHeight;
+            newElem.width = containerHeight;
+            gaugeContainer.appendChild(newElem);
+
+
+            let canvas = document.getElementById('score-gauge-background');
+            let lineWidth = 27
+            let x = canvas.width / 2;
+            let y = canvas.height / 2;
+            let radius = (canvas.width / 2) - lineWidth / 2;
+
+            // Score background ring 2
+            let scoreRing = canvas.getContext('2d');
+            scoreRing.beginPath();
+            scoreRing.arc(x, y, radius, 0, 2 * Math.PI);
+            scoreRing.lineWidth = lineWidth;
+            scoreRing.strokeStyle = '#e5e5e5';
+            scoreRing.stroke();
+
+            // Score background ring
+            canvas = document.getElementById('score-gauge-background-2');
+            scoreRing = canvas.getContext('2d');
+            scoreRing.beginPath();
+            scoreRing.arc(x, y, radius, 0, 2 * Math.PI);
+            scoreRing.lineWidth = lineWidth - 2;
+            scoreRing.strokeStyle = '#efefef';
+            scoreRing.stroke();
+
+            let percentage = twitterScore / 975
+
+            // Score main ring
+            const grad = scoreRing.createLinearGradient(50, 50, 150, 150);
+            grad.addColorStop(0, "#fb4801");
+            grad.addColorStop(1, "#fba301");
+            scoreRing.strokeStyle = grad;
+            canvas = document.getElementById('score-gauge');
+            scoreRing = canvas.getContext('2d');
+            scoreRing.beginPath();
+            scoreRing.arc(x, y, radius, 0, percentage * 2 * Math.PI);
+            scoreRing.lineWidth = lineWidth;
+            scoreRing.strokeStyle = grad;
+            scoreRing.lineCap = "round"
+            scoreRing.stroke();
+
+            // Adding text
+            newElem = document.createElement("div");
+            newElem.style.height = canvas.height + "px";
+            newElem.style.lineHeight = canvas.height + "px";
+            newElem.innerHTML = `
+                                    <span style="line-height: 1.1; vertical-align: middle; display: inline-block; margin-top: -10px;">
+                                        <p style="font-size: 3.5em;" class="is-deep-purple">${twitterScore}</p>
+                                        <p>Out of 975</p>
+                                    </span>
+                                `;
+            gaugeContainer.appendChild(newElem);
+
+        }
+
+        setupDashboardOverview();
+        setupScoreGauge(userTwitterScore)
+
+        function createProfileObject(profileUrl, displayName, handle, score, mode) {
+            let newElem = document.createElement("div");
+            newElem.classList.add("carouselProfileContainer")
+            newElem.style.display = "inline-block";
+
+            newElem.innerHTML = `
+                <img class="carouselProfilePicture" src="${profileUrl}">
+                <div class="carouselDisplayName has-text-weight-bold">${displayName}</div>
+                <div class="carouselHandle has-text-grey">${handle}</div>
+            `
+
+            if (mode === "recommended") {
+                newElem.innerHTML += `
+                    <div>
+                        <span class="icon-text has-text-weight-bold is-deep-purple">
+                            <span class="icon has-text-primary"><i class="fas fa-plus-circle"></i></span>
+                            FOLLOW
+                        </span>
+                    </div>
+                `
+            } else if (mode === "followers") {
+                newElem.innerHTML += `
+                    <div class="has-text-weight-bold">
+                        <span class="is-bright-orange">TS</span>
+                        <span class="is-deep-purple is-size-5">400</span>
+                    </div>
+                `
+            } else {
+                alert("Invalid option selected")
+            }
+
+            return newElem;
+        }
+
+        function setupRecommendedList() {
+            let container = document.getElementById("recommendedListContainer");
+            for (let i = 0; i < recommendedUsers.length; i++) {
+                container.appendChild(
+                    createProfileObject(
+                        recommendedUsers[i]["profileImage"],
+                        recommendedUsers[i]["displayName"],
+                        recommendedUsers[i]["twitterHandle"],
+                        recommendedUsers[i]["twitterScore"],
+                        "recommended"
+                    )
+                )
+            }
+        }
+
+        setupRecommendedList();
+
+        function setupFollowerList() {
+            let container = document.getElementById("followerListContainer");
+            for (let i = 0; i < followerList.length; i++) {
+                container.appendChild(
+                    createProfileObject(
+                        followerList[i]["profileImage"],
+                        followerList[i]["displayName"],
+                        followerList[i]["twitterHandle"],
+                        followerList[i]["twitterScore"],
+                        "followers"
+                    )
+                )
+            }
+        }
+
+        setupFollowerList();
+
+    </script>
 
 {% endblock %}

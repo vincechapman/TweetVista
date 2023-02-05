@@ -366,16 +366,16 @@ def reply_to_tweet():
         url = request_body.get('url')
         short = request_body['shortUrl']
 
-        print('REPLYING TO TWEET:')
-        print('Campaign Id:', campaign_id)
-        print('Text:', text)
-        print('Tweet ID:', tweet_id)
-        print('Handle', handle)
-        print('Quote tweet', quote_tweet)
-        print('Image:', image)
-        print('Name:', name)
-        print('Url:', url)
-        print('Short:', short)
+        # print('REPLYING TO TWEET:')
+        # print('Campaign Id:', campaign_id)
+        # print('Text:', text)
+        # print('Tweet ID:', tweet_id)
+        # print('Handle', handle)
+        # print('Quote tweet', quote_tweet)
+        # print('Image:', image)
+        # print('Name:', name)
+        # print('Url:', url)
+        # print('Short:', short)
 
         response = wc.reply_to_tweet(
             campaign_id,
@@ -392,6 +392,52 @@ def reply_to_tweet():
         print(response)
 
         if response.get('status') == 200:
+            return jsonify(True)
+        else:
+            logging.error(f"Error message: {response.get('msg')}")
+            return jsonify(False)
+
+    except json.decoder.JSONDecodeError as e:
+        print('FAILED: request_body = json.loads(request.data)')
+        print(e)
+        return jsonify({
+            'status': 400,
+            'message': e,
+            'data': None
+        })
+
+    except Exception as e:
+        print(e)
+        return jsonify({
+            'status': 400,
+            'message': e,
+            'data': None
+        })
+
+
+@feed.route('/retweet', methods=['POST'])
+def retweet():
+
+    try:
+
+        print('api/feed/retweet called!')
+
+        from TLInterface import get_web_connection
+        wc = get_web_connection()
+
+        request_body = json.loads(request.data)
+
+        campaign_id = request_body.get('campaignId')
+        tweet_id = request_body['tweetId']
+
+        response = wc.retweet(
+            campaign_id,
+            tweet_id=tweet_id
+        )
+
+        print(response)
+
+        if response.get('status') == 200 or str(response.get('msg')).find("'code': 327") != -1:
             return jsonify(True)
         else:
             logging.error(f"Error message: {response.get('msg')}")
